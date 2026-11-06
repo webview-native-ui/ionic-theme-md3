@@ -12,18 +12,13 @@
       "import": "./dist/index.js"
     },
     "./dist/css/*": "./dist/css/*",
-    "./src/styles/*": "./src/styles/*",
-    "./dynamic-colors": {
-      "types": "./dist/dynamic-colors.d.ts",
-      "import": "./dist/dynamic-colors.js"
-    }
+    "./src/styles/*": "./src/styles/*"
   },
   "files": [
     "dist",
     "src",
     "package.json",
-    "docs",
-    "THIRD_PARTY_NOTICES.md"
+    "docs"
   ],
   "scripts": {
     "build": "npm run build:css && npm run build:ts",
@@ -35,8 +30,7 @@
     "fmt": "prettier --write \"./**/*.{scss,ts}\" &&  prettier --parser angular --write \"./**/*.html\"",
     "release": "np --no-tests --no-publish",
     "prepublishOnly": "npm run build",
-    "test:esm": "rdlabo-check-esm",
-    "test:dynamic-colors": "npm --prefix demo run test:dynamic-colors"
+    "test:esm": "rdlabo-check-esm"
   },
   "repository": {
     "type": "git",
