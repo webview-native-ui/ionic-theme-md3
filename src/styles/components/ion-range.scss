@@ -51,10 +51,10 @@ ion-range.md:not(.md3-disabled) {
     }
 
     &:not(.range-value-min):not(.range-value-max)::part(knob) {
-      outline: 6px solid var(--ion-background-color, #ffffff);
+      outline: 6px solid var(--md3-range-gap-color, var(--md3-surface-background, var(--ion-background-color, #ffffff)));
     }
     &.range-pressed:not(.range-value-min):not(.range-value-max)::part(knob) {
-      outline: 7px solid var(--ion-background-color, #ffffff);
+      outline: 7px solid var(--md3-range-gap-color, var(--md3-surface-background, var(--ion-background-color, #ffffff)));
     }
 
     &:not(.range-value-max)::part(bar-active) {
@@ -123,12 +123,12 @@ ion-range.md:not(.md3-disabled) {
 
     &:not(.range-value-min)::part(knob-lower),
     &:not(.range-value-max)::part(knob-upper) {
-      outline: 6px solid var(--ion-background-color, #ffffff);
+      outline: 6px solid var(--md3-range-gap-color, var(--md3-surface-background, var(--ion-background-color, #ffffff)));
     }
 
     &.range-pressed:not(.range-value-min)::part(knob-lower),
     &.range-pressed:not(.range-value-max)::part(knob-upper) {
-      outline: 7px solid var(--ion-background-color, #ffffff);
+      outline: 7px solid var(--md3-range-gap-color, var(--md3-surface-background, var(--ion-background-color, #ffffff)));
     }
   }
 

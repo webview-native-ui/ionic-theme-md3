@@ -32,10 +32,11 @@ ion-toolbar.md:not(.md3-disabled) {
   }
 
   ion-back-button.back-button-has-icon-only:not(.md3-disabled) {
+    --background: radial-gradient(circle 20px at center, var(--md3-back-background, transparent) 99%, transparent 100%);
+
     &::part(native) {
       width: 56px;
       height: 56px;
-      background: radial-gradient(circle 20px at center, var(--md3-back-background, transparent) 99%, transparent 100%);
     }
 
     --icon-font-size: 24px;

@@ -9,3 +9,5 @@ export type {
   DynamicColorThemeOptions,
   DynamicColorTheme,
 } from './dynamic-colors';
+
+export { applyToggleStateIcons } from './toggle-state-icons';

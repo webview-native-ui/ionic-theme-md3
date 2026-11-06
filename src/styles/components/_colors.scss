@@ -2,6 +2,19 @@
 
 // Resolve optional roles locally, retaining Ionic palettes and per-component opt-outs.
 
+// Resolve the surrounding paint at its owner, before a child control's color can change it.
+:is(ion-content, ion-toolbar, ion-item, ion-card, ion-modal, ion-popover).md {
+  --md3-surface-background: var(--background, var(--ion-background-color, #fff));
+
+  &.ion-color {
+    --md3-surface-background: var(--ion-color-base);
+  }
+}
+
+ion-accordion.md:not(.md3-disabled) {
+  background: #{md3.color(surface-bright)};
+}
+
 ion-content.md:not(.md3-disabled):not(.ion-color),
 ion-toolbar.md:not(.md3-disabled):not(.ion-color) {
   --background: #{md3.color(surface-container)};
@@ -259,11 +272,20 @@ ion-alert.md:not(.md3-disabled) .alert-message {
 }
 
 ion-alert.md:not(.md3-disabled) .alert-button {
+  background: #{md3.color(primary)};
+  color: #{md3.color(on-primary)};
+  border-color: transparent;
+}
+
+ion-alert.md:not(.md3-disabled) .alert-button-role-cancel {
+  background: transparent;
   color: #{md3.color(primary)};
+  border-color: #{md3.color(outline-variant)};
 }
 
 ion-alert.md:not(.md3-disabled) .alert-button-role-destructive {
-  color: #{md3.color(error)};
+  background: #{md3.color(error)};
+  color: #{md3.color(on-error)};
 }
 
 ion-action-sheet.md:not(.md3-disabled) {

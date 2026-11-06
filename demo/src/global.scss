@@ -209,6 +209,7 @@ code {
 }
 
 section.section-example {
+  --md3-surface-background: var(--ion-background-color, #fff);
   background: var(--ion-background-color, #fff);
   border-radius: 24px;
   padding: 16px;

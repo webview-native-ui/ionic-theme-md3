@@ -5,12 +5,27 @@ ion-alert.md:not(.md3-disabled) {
   transition: transform 200ms ease;
 
   .alert-wrapper {
-    border-radius: 24px;
+    border-radius: 28px;
     box-shadow: var(--token-elevation-3);
 
     .alert-head {
       padding-top: 24px;
       padding-bottom: 16px;
+    }
+
+    .alert-button-group {
+      padding: 0 24px 24px;
+      column-gap: 8px;
+      row-gap: 8px;
+    }
+
+    .alert-button {
+      min-height: 40px;
+      min-width: 64px;
+      margin: 0;
+      padding: 0 16px;
+      border: 1px solid transparent;
+      border-radius: 999px;
     }
 
     .alert-message {
