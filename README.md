@@ -224,14 +224,3 @@ Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, mi
 
 - [rdlabo](https://rdlabo.dev/)
 <!-- /rdlabo-docs-omit -->
-
-## Android dynamic colors
-
-Opt into Material You colors with light, dark, or system appearance. See
-[dynamic colors](docs/dynamic-colors.md) for setup, lifecycle, and role mapping.
-
-## Color system
-
-The theme derives component colors from Ionic palettes alone. Additional Material
-roles are optional overrides. See [color system](docs/color-system.md) for the
-fallback rules, component assignments, and tonal/elevated/filled variants.

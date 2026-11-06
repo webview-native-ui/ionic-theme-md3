@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DOCUMENT, inject, signal } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import {
@@ -13,9 +13,10 @@ import {
   IonList,
   IonListHeader,
   IonTitle,
+  IonToggle,
   IonToolbar,
+  ToggleCustomEvent,
 } from '@demo/ionic';
-import { demoColorMode, setDemoColorMode } from '../../theme/dynamic-colors';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface IComponent {
@@ -41,6 +42,7 @@ interface IComponent {
     IonList,
     IonListHeader,
     IonItemGroup,
+    IonToggle,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -54,7 +56,6 @@ export class IndexPageComponent {
     { name: 'card', enable: true },
     { name: 'checkbox', enable: true },
     { name: 'chip', enable: true },
-    { name: 'color-palette', enable: true },
     { name: 'date-and-time-pickers', enable: true },
     { name: 'floating-action-button', enable: true },
     { name: 'inputs', enable: true },
@@ -78,14 +79,13 @@ export class IndexPageComponent {
 
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
+  readonly #document = inject(DOCUMENT);
 
   async navigateComponent(item: IComponent) {
     await this.#router.navigate([item.name], { relativeTo: this.#route });
   }
 
-  readonly colorMode = demoColorMode;
-
-  changeColorMode(mode: 'system' | 'light' | 'dark') {
-    setDemoColorMode(mode);
+  changeColorMode(event: ToggleCustomEvent) {
+    this.#document.documentElement.classList.toggle('ion-palette-dark', event.detail.checked);
   }
 }

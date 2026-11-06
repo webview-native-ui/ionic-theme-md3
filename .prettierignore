@@ -1,9 +1,3 @@
 node_modules
 dist
 www
-
-# Generated Android demo assets and verification output.
-demo/android/**/build/
-demo/android/app/src/main/assets/public/
-demo/playwright-report/
-demo/test-results/
