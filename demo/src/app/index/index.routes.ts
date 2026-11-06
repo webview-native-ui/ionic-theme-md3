@@ -15,6 +15,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/alert/alert.page').then((m) => m.AlertPage),
   },
   {
+    path: 'color-palette',
+    loadComponent: () => import('./pages/color-palette/color-palette.page').then((m) => m.ColorPalettePage),
+  },
+  {
     path: 'button',
     loadComponent: () => import('./pages/button/button.page').then((m) => m.ButtonPage),
   },
