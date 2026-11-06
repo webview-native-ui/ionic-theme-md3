@@ -37,9 +37,18 @@ for (const mode of ['light', 'dark'] as const) {
     expect(metrics.line).toBeGreaterThanOrEqual(metrics.size * 1.2);
     const back = page.locator('app-item-list > ion-header ion-back-button');
     await back.evaluate((element) => (element as HTMLElement).style.setProperty('--background', '#ff0000'));
-    expect(await back.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part="native"]')!).backgroundColor)).toBe(
+    expect(await back.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part~="native"]')!).backgroundColor)).toBe(
       'rgb(255, 0, 0)',
     );
+    await back.evaluate((element) => {
+      (element as HTMLElement).style.removeProperty('--background');
+      element.closest('ion-toolbar')!.setAttribute('color', 'primary');
+    });
+    await expect(back.locator('..')).toHaveClass(/ion-color-primary/);
+    await expect
+      .poll(() => back.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part~="native"]')!).backgroundImage))
+      .toBe('radial-gradient(20px, rgba(0, 0, 0, 0) 99%, rgba(0, 0, 0, 0) 100%)');
+
     await page.goto('/main/index/accordion');
     const accordions = page.locator('app-accordion ion-accordion');
     await expect(accordions.first()).toHaveClass(/hydrated/);
@@ -57,7 +66,7 @@ for (const mode of ['light', 'dark'] as const) {
     const toggle = page.locator('app-toggle ion-toggle').first();
     const icons = () =>
       toggle.evaluate((element) => {
-        const h = element.shadowRoot!.querySelector('[part="handle"]')!;
+        const h = element.shadowRoot!.querySelector('[part~="handle"]')!;
         const s = getComputedStyle(h, '::before');
         return { count: h.querySelectorAll('ion-icon').length, content: s.content, mask: s.maskImage };
       });
@@ -84,19 +93,29 @@ for (const mode of ['light', 'dark'] as const) {
       element.closest('ion-item')!.style.setProperty('--background', '#345678');
     });
     await expect(range).not.toHaveClass(/range-value-min/);
-    const outline = () => range.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part="knob"]')!).outlineColor);
+    const outline = () => range.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part~="knob"]')!).outlineColor);
     await expect.poll(outline).toBe('rgb(52, 86, 120)');
-    await range.evaluate((element) => element.closest('ion-item')!.setAttribute('color', 'danger'));
+    await range.evaluate((element) => {
+      (element as HTMLIonRangeElement).color = 'success';
+      element.closest('ion-item')!.setAttribute('color', 'danger');
+    });
+    await range.getByRole('slider').focus();
+    await expect(range.getByRole('slider')).toBeFocused();
     await expect(range.locator('..')).toHaveClass(/ion-color-danger/);
     const expected = await range.evaluate((element) => {
       const span = document.createElement('span');
-      span.style.color = 'var(--md3-surface-background)';
-      element.append(span);
+      span.style.color = getComputedStyle(element.closest('ion-item')!).getPropertyValue('--ion-color-base');
+      document.body.append(span);
       const color = getComputedStyle(span).color;
       span.remove();
       return color;
     });
-    await expect.poll(outline).toBe(expected);
+    const paint = () =>
+      range.evaluate(
+        (element) => getComputedStyle(element.closest('ion-item')!.shadowRoot!.querySelector('[part~="native"]')!).backgroundColor,
+      );
+    await expect.poll(paint).toBe(expected);
+    await expect.poll(outline).toBe(await paint());
     await range.evaluate((element) => (element as HTMLElement).style.setProperty('--md3-range-gap-color', '#abcdef'));
     await expect.poll(outline).toBe('rgb(171, 205, 239)');
   });
@@ -108,7 +127,7 @@ test('child FAB and tab opt-outs restore Ionic shapes', async ({ page }) => {
   await expect(fab).toHaveClass(/hydrated/);
   const fabShape = await fab.evaluate((element) => {
     element.classList.add('md3-disabled');
-    const read = () => getComputedStyle(element.shadowRoot!.querySelector('[part="native"]')!).borderRadius;
+    const read = () => getComputedStyle(element.shadowRoot!.querySelector('[part~="native"]')!).borderRadius;
     const child = read();
     element.closest('ion-fab')!.classList.add('md3-disabled');
     return { child, ionic: read() };
@@ -134,13 +153,20 @@ test('child FAB and tab opt-outs restore Ionic shapes', async ({ page }) => {
 
 test('alert keeps cancellation and destructive roles with Settings shapes', async ({ page }) => {
   await page.goto('/main/index/alert?type=all');
-  const alert = page.locator('ion-alert.show-alert');
+  const alert = page.locator('ion-alert');
   await expect(alert).toBeVisible();
   expect(await alert.locator('.alert-wrapper').evaluate((element) => getComputedStyle(element).borderRadius)).toBe('28px');
   const cancel = alert.locator('.alert-button-role-cancel');
   const destructive = alert.locator('.alert-button-role-destructive');
   expect(await cancel.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
+  const border = await cancel.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { width: style.borderTopWidth, style: style.borderTopStyle, color: style.borderTopColor };
+  });
+  expect(border).toMatchObject({ width: '1px', style: 'solid' });
+  expect(border.color).not.toBe('rgba(0, 0, 0, 0)');
   expect(await destructive.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+  expect(await destructive.locator('.alert-button-inner').evaluate((element) => getComputedStyle(element).justifyContent)).toBe('center');
   await cancel.click();
   await expect(alert).toHaveCount(0);
 });

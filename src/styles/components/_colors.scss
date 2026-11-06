@@ -12,7 +12,10 @@
 }
 
 ion-accordion.md:not(.md3-disabled) {
-  background: #{md3.color(surface-bright)};
+  background: var(--md-sys-color-surface-bright, #{md3.color(surface)});
+  @supports (color: oklab(from white l a b)) {
+    background: #{md3.color(surface-bright)};
+  }
 }
 
 ion-content.md:not(.md3-disabled):not(.ion-color),
@@ -82,11 +85,11 @@ ion-card.md:not(.md3-disabled):not(.ion-color) {
   --color: #{md3.color(on-surface)};
 }
 
-ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-title:not(.ion-color):not(.md3-disabled) {
+ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-title.md:not(.ion-color):not(.md3-disabled) {
   --color: #{md3.color(on-surface)};
 }
 
-ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-subtitle:not(.ion-color):not(.md3-disabled) {
+ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-subtitle.md:not(.ion-color):not(.md3-disabled) {
   --color: #{md3.color(on-surface-variant)};
 }
 
@@ -101,7 +104,7 @@ ion-card.md:not(.md3-disabled):not(.ion-color).md3-outlined {
   box-shadow: none;
 }
 
-ion-fab.md:not(.md3-disabled) ion-fab-button:not(.md3-disabled):not(.ion-color) {
+ion-fab.md:not(.md3-disabled) ion-fab-button.md:not(.md3-disabled):not(.ion-color) {
   --background: #{md3.color(primary-container)};
   --color: #{md3.color(on-primary-container)};
   --background-hover: #{md3.color(primary-container)};
@@ -115,7 +118,7 @@ ion-chip.md:not(.md3-disabled):not(.ion-color) {
   --color: #{md3.color(on-surface-variant)};
 }
 
-ion-chip.md:not(.md3-disabled):not(.ion-color) ion-icon {
+ion-chip.md:not(.md3-disabled):not(.ion-color) ion-icon.md:not(.md3-disabled) {
   color: inherit;
 }
 
@@ -142,7 +145,7 @@ ion-item.md:not(.md3-disabled):not(.ion-color) {
   --border-color: #{md3.color(outline-variant)};
 }
 
-ion-list.md.list-inset:not(.md3-disabled) ion-item:not(.md3-disabled):not(.ion-color) {
+ion-list.md.list-inset:not(.md3-disabled) ion-item.md:not(.md3-disabled):not(.ion-color) {
   // Older WebViews retain a valid surface; native roles still take precedence.
   --background: var(--md-sys-color-surface-bright, #{md3.color(surface)});
   @supports (color: oklab(from white l a b)) {
@@ -157,16 +160,20 @@ ion-tab-bar.md:not(.md3-disabled):not(.ion-color) {
   --border: none;
 }
 
-ion-tab-bar.md:not(.md3-disabled):not(.ion-color) ion-tab-button:not(.md3-disabled):not(.ion-color) {
+ion-tab-bar.md:not(.md3-disabled):not(.ion-color) ion-tab-button.md:not(.md3-disabled):not(.ion-color) {
   --color: #{md3.color(on-surface-variant)};
   --color-selected: #{md3.color(on-surface)};
 }
 
-ion-tab-bar.md:not(.md3-disabled):not(.ion-color) ion-tab-button:not(.md3-disabled):not(.ion-color) ion-icon::before {
+ion-tab-bar.md:not(.md3-disabled):not(.ion-color)
+  ion-tab-button.md:not(.md3-disabled):not(.ion-color)
+  ion-icon.md:not(.md3-disabled)::before {
   background-color: #{md3.color(secondary-container)};
 }
 
-ion-tab-bar.md:not(.md3-disabled):not(.ion-color) ion-tab-button:not(.md3-disabled):not(.ion-color).tab-selected ion-icon {
+ion-tab-bar.md:not(.md3-disabled):not(.ion-color)
+  ion-tab-button.md:not(.md3-disabled):not(.ion-color).tab-selected
+  ion-icon.md:not(.md3-disabled) {
   color: #{md3.color(on-secondary-container)};
 }
 
@@ -174,7 +181,7 @@ ion-segment.md:not(.md3-disabled):not(.ion-color) {
   border-bottom-color: #{md3.color(outline-variant)};
 }
 
-ion-segment.md:not(.md3-disabled):not(.ion-color) ion-segment-button:not(.md3-disabled):not(.ion-color) {
+ion-segment.md:not(.md3-disabled):not(.ion-color) ion-segment-button.md:not(.md3-disabled):not(.ion-color) {
   --color: #{md3.color(on-surface-variant)};
   --color-checked: #{md3.color(primary)};
   --indicator-color: #{md3.color(primary)};
@@ -249,12 +256,12 @@ ion-progress-bar.md:not(.md3-disabled):not(.ion-color) {
   --color: #{md3.color(on-surface)};
 }
 
-ion-modal.md:not(.md3-disabled) :is(ion-content, ion-toolbar):not(.md3-disabled):not(.ion-color),
-ion-popover.md:not(.md3-disabled) :is(ion-list, ion-item):not(.md3-disabled):not(.ion-color) {
+ion-modal.md:not(.md3-disabled) :is(ion-content, ion-toolbar).md:not(.md3-disabled):not(.ion-color),
+ion-popover.md:not(.md3-disabled) :is(ion-list, ion-item).md:not(.md3-disabled):not(.ion-color) {
   --background: #{md3.color(surface-container-low)};
 }
 
-ion-popover.md:not(.md3-disabled) ion-list:not(.md3-disabled):not(.ion-color) {
+ion-popover.md:not(.md3-disabled) ion-list.md:not(.md3-disabled):not(.ion-color) {
   background: #{md3.color(surface-container-low)};
 }
 
@@ -325,11 +332,16 @@ ion-backdrop.md:not(.md3-disabled) {
 
 // Ionic explicitly colored toolbars pass their contrast color to their actions.
 ion-toolbar.md.ion-color:not(.md3-disabled)
-  :is(ion-button.button-clear, ion-button.button-outline, ion-back-button):not(.md3-disabled):not(.ion-color) {
+  :is(ion-button.button-clear, ion-button.button-outline, ion-back-button).md:not(.md3-disabled):not(.ion-color) {
   --color: var(--ion-color-contrast);
   --border-color: var(--ion-color-contrast);
   --background-hover: var(--ion-color-contrast);
   --background-focused: var(--ion-color-contrast);
   --background-activated: var(--ion-color-contrast);
   --ripple-color: var(--ion-color-contrast);
+}
+
+// An explicit toolbar palette owns both the action foreground and its surrounding paint.
+ion-toolbar.md.ion-color:not(.md3-disabled) ion-back-button.md:not(.md3-disabled):not(.ion-color) {
+  --md3-back-background: transparent;
 }

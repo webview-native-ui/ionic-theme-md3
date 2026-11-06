@@ -111,7 +111,7 @@ for (const mode of ['light', 'dark'] as const) {
 
     const back = page.locator('app-color-palette ion-back-button');
     const backStyle = await back.evaluate((element) => {
-      const style = getComputedStyle(element.shadowRoot!.querySelector('[part="native"]')!);
+      const style = getComputedStyle(element.shadowRoot!.querySelector('[part~="native"]')!);
       return { width: style.width, height: style.height, background: style.backgroundImage };
     });
     expect(backStyle).toMatchObject({ width: '56px', height: '56px' });
@@ -137,7 +137,7 @@ for (const mode of ['light', 'dark'] as const) {
     const toggle = page.locator('app-toggle ion-toggle').first();
     await expect(toggle).toHaveClass(/hydrated/);
     const glyph = () =>
-      toggle.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part="handle"]')!, '::before').maskImage);
+      toggle.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part~="handle"]')!, '::before').maskImage);
     const offGlyph = await glyph();
     expect(offGlyph).toContain('svg');
     await toggle.evaluate((element) => {

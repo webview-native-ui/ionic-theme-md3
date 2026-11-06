@@ -90,7 +90,7 @@ at commit `019986b8ef86f7ad235ceefa34e3ac40e617b0ba`.
 
 ## Validation notes
 
-Verified on an Android 15 (API 35) emulator: both native schemes match the applied
+Historical integration measurement (not full-theme acceptance; see [Android 16 review evidence](validation/android16-2026-11-07.md)). Verified on an Android 15 (API 35) emulator: both native schemes match the applied
 Ionic tokens; system appearance follows Android; explicit light/dark modes remain
 fixed across OS changes. Browser E2E covers the same appearance policy. Unit tests
 cover changed palettes, resume/configuration notifications, in-flight invalidation,

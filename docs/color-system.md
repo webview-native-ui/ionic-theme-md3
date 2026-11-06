@@ -120,6 +120,40 @@ in both modes. Older WebViews without relative color support retain the base sur
 Native optional roles replace this approximation directly in either case.
 
 Icon-only toolbar back buttons have a 40px tonal circle within a 56px touch target.
-Switch thumbs retain their 24px size and show a cross/check; an explicit Ionic
-`enable-on-off-labels` attribute retains Ionic's own labels. Component `md3-disabled`
-and explicit Ionic colors remain available.
+An explicitly colored toolbar uses a transparent back-button background and Ionic's
+contrast foreground; override `--md3-back-background` to customize that paint.
+Switch thumbs retain their 24px size. CSS-only installation retains Ionic's normal
+thumb and its `enableOnOffLabels` API. Optional cross/check icons are described below.
+Component `md3-disabled` and explicit Ionic colors remain available.
+
+## Optional switch state icons
+
+To add Android Settings cross/check icons to a toggle, install the optional helper
+once for that element and remove it during component teardown:
+
+```ts
+import { applyToggleStateIcons } from '@rdlabo/ionic-theme-md3/toggle-state-icons';
+
+const toggle = document.querySelector<HTMLElement>('ion-toggle')!;
+const removeIcons = await applyToggleStateIcons(toggle);
+
+// Call during component teardown, before releasing the element.
+removeIcons();
+```
+
+Call after creating/connecting the toggle. The helper waits for Ionic's custom element
+registration and, when available, `componentOnReady()`. For custom-element builds
+without that method, wait for the toggle's Shadow DOM to render before calling it.
+In Angular, call from `afterNextRender` and attach the returned cleanup to `DestroyRef`;
+if the component was destroyed while awaiting setup, call the cleanup immediately.
+
+The helper adds one style element to the public `handle` Part's Shadow DOM. It does
+not observe the document or intercept component properties. Icons appear only while
+the handle is empty: Ionic's own labels take priority when `enableOnOffLabels` is
+set through either an attribute or a framework/property binding, including later
+changes. `md3-disabled` and iOS mode suppress the enhancement. The demo's optional
+`md3StateIcons` directive is an example wrapper, not a globally registered Ionic API.
+
+The theme's colors and geometry work without this helper or a Capacitor plugin.
+For a range on an arbitrary HTML surface, set `--md3-range-gap-color` to that surface
+color; standard Ionic containers supply their background automatically.

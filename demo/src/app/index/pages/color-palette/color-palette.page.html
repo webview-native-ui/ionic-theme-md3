@@ -29,6 +29,16 @@
         ><ion-card-title>Elevated card</ion-card-title><ion-card-subtitle>Surface container low</ion-card-subtitle></ion-card-header
       ><ion-card-content>Colors follow the Ionic palette in both light and dark modes.</ion-card-content></ion-card
     >
+    <ion-card data-testid="palette-mixed-mode">
+      <ion-card-header>
+        <ion-card-title mode="ios" data-testid="palette-ios-title">Explicit iOS title</ion-card-title>
+        <ion-card-subtitle mode="ios" data-testid="palette-ios-subtitle">Ionic mode remains local to each component</ion-card-subtitle>
+        <ion-card-title mode="ios" class="md3-disabled" data-testid="palette-ios-reference">Ionic reference</ion-card-title>
+        <ion-card-subtitle mode="ios" class="md3-disabled" data-testid="palette-ios-subtitle-reference"
+          >Ionic reference subtitle</ion-card-subtitle
+        >
+      </ion-card-header>
+    </ion-card>
     <ion-card class="md3-filled" data-testid="palette-card-filled"><ion-card-content>Filled card</ion-card-content></ion-card>
     <ion-card class="md3-outlined" data-testid="palette-card-outlined"><ion-card-content>Outlined card</ion-card-content></ion-card>
     <ion-chip><ion-label>Chip</ion-label></ion-chip>

@@ -24,8 +24,13 @@ ion-alert.md:not(.md3-disabled) {
       min-width: 64px;
       margin: 0;
       padding: 0 16px;
-      border: 1px solid transparent;
+      border-width: 1px;
+      border-style: solid;
       border-radius: 999px;
+    }
+
+    .alert-button .alert-button-inner {
+      justify-content: center;
     }
 
     .alert-message {
