@@ -224,3 +224,8 @@ Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, mi
 
 - [rdlabo](https://rdlabo.dev/)
 <!-- /rdlabo-docs-omit -->
+
+## Android dynamic colors
+
+Opt into Material You colors with light, dark, or system appearance. See
+[dynamic colors](docs/dynamic-colors.md) for setup, lifecycle, and role mapping.
