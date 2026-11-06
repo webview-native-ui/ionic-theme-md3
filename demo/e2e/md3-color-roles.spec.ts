@@ -93,3 +93,103 @@ test('the CSS theme works without application JavaScript or a Capacitor plugin',
     await context.close();
   }
 });
+
+for (const mode of ['light', 'dark'] as const) {
+  test(`${mode}: Android Settings surfaces, groups, back button and switch glyphs`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: mode });
+    await page.goto('/main/index/color-palette');
+    const title = page.locator('app-color-palette ion-card-title').first();
+    await expect(title).toHaveClass(/hydrated/);
+    await title.evaluate((element) => element.setAttribute('color', 'danger'));
+    await expect(title).toHaveClass(/ion-color-danger/);
+    expect((await colors(title)).foreground).toEqual((await colors(page.getByTestId('palette-danger'))).background);
+    await title.evaluate((element) => {
+      element.removeAttribute('color');
+      (element as HTMLElement).style.setProperty('--color', '#123456');
+    });
+    await expect.poll(async () => (await colors(title)).foreground).toEqual([18, 52, 86]);
+
+    const back = page.locator('app-color-palette ion-back-button');
+    const backStyle = await back.evaluate((element) => {
+      const style = getComputedStyle(element.shadowRoot!.querySelector('[part="native"]')!);
+      return { width: style.width, height: style.height, background: style.backgroundImage };
+    });
+    expect(backStyle).toMatchObject({ width: '56px', height: '56px' });
+    expect(backStyle.background).toContain('20px');
+
+    await page.goto('/main/index/item-list');
+    const list = page.locator('app-item-list ion-list.list-inset').nth(1);
+    await expect(list).toBeVisible();
+    expect(await list.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
+    const group = list.locator('ion-item-group').first();
+    expect(await group.evaluate((element) => getComputedStyle(element).borderRadius)).toBe('20px');
+    const item = group.locator('ion-item').first();
+    await expect(item).toHaveClass(/hydrated/);
+    expect(await item.evaluate((element) => getComputedStyle(element).marginBottom)).toBe('2px');
+    await list.evaluate((element, mode) => {
+      (element as HTMLElement).style.setProperty('--md-sys-color-surface-bright', mode === 'light' ? '#faf8fe' : '#2a2c34');
+    }, mode);
+    await expect.poll(async () => (await colors(item)).background).toEqual(mode === 'light' ? [250, 248, 254] : [42, 44, 52]);
+    await item.evaluate((element) => element.classList.add('md3-disabled'));
+    expect(await item.evaluate((element) => getComputedStyle(element).marginBottom)).toBe('0px');
+
+    await page.goto('/main/index/toggle');
+    const toggle = page.locator('app-toggle ion-toggle').first();
+    await expect(toggle).toHaveClass(/hydrated/);
+    const glyph = () =>
+      toggle.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part="handle"]')!, '::before').maskImage);
+    const offGlyph = await glyph();
+    expect(offGlyph).toContain('svg');
+    await toggle.evaluate((element) => {
+      (element as HTMLIonToggleElement).checked = true;
+    });
+    await expect(toggle).toHaveClass(/toggle-checked/);
+    expect(await glyph()).not.toBe(offGlyph);
+    await toggle.evaluate((element) => element.classList.add('md3-disabled'));
+    expect(await glyph()).toBe('none');
+  });
+}
+
+test('Ionic-only surfaces retain the Settings hierarchy with local light and dark palettes', async ({ page }) => {
+  await page.goto('/main/index/item-list');
+  const content = page.locator('app-item-list ion-content');
+  await expect(content).toHaveClass(/hydrated/);
+  await content.evaluate((element) => element.removeAttribute('color'));
+  const row = page.locator('app-item-list ion-item-group ion-item').first();
+  for (const dark of [false, true]) {
+    await content.evaluate((element, dark) => {
+      const style = (element as HTMLElement).style;
+      style.setProperty('--ion-background-color', dark ? '#101010' : '#ffffff');
+      style.setProperty('--ion-text-color', dark ? '#ffffff' : '#000000');
+    }, dark);
+    // Content exposes its scroll background through --background; sample that value on a child.
+    const pageColor = await content.evaluate((element) => {
+      const probe = document.createElement('span');
+      probe.style.background = 'var(--background)';
+      element.append(probe);
+      const color = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      return color;
+    });
+    const rowColor = await colors(row);
+    expect(rowColor.background[0]).toBeGreaterThan(dark ? 30 : 249);
+    expect(pageColor).not.toBe('rgba(0, 0, 0, 0)');
+    // Exact page mix: 6% foreground over background, resolved without native roles.
+    await expect
+      .poll(async () => {
+        return content.evaluate((element) => {
+          const probe = document.createElement('canvas');
+          probe.width = probe.height = 1;
+          const swatch = document.createElement('span');
+          swatch.style.background = 'var(--background)';
+          element.append(swatch);
+          const ctx = probe.getContext('2d')!;
+          ctx.fillStyle = getComputedStyle(swatch).backgroundColor;
+          ctx.fillRect(0, 0, 1, 1);
+          swatch.remove();
+          return ctx.getImageData(0, 0, 1, 1).data[0];
+        });
+      })
+      .toBe(dark ? 30 : 240);
+  }
+});

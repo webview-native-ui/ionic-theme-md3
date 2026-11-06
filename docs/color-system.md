@@ -12,20 +12,21 @@ dark palettes use the same rules; there is no separate hardcoded MD3 palette.
 
 The theme's CSS derives missing component colors at the point of use:
 
-| Role                                               | Fallback from Ionic                               |
-| -------------------------------------------------- | ------------------------------------------------- |
-| primary / secondary / tertiary / error             | matching named color; error uses danger           |
-| on-primary / on-secondary / on-tertiary / on-error | matching named color's contrast                   |
-| surface / on-surface                               | background / text                                 |
-| each accent or error container                     | 12% accent + 88% surface                          |
-| each on-container                                  | on-surface                                        |
-| surface-container-lowest                           | surface                                           |
-| surface-container-low / container / high / highest | 4% / 6% / 8% / 12% on-surface mixed into surface  |
-| surface-bright / surface-dim / surface-variant     | surface / 12% / 12% on-surface mixed into surface |
-| on-surface-variant                                 | 80% on-surface + 20% surface                      |
-| outline / outline-variant                          | 55% / 20% on-surface mixed into surface           |
-| inverse-surface / inverse-on-surface               | text / background                                 |
-| inverse-primary                                    | 55% primary + 45% surface                         |
+| Role                                               | Fallback from Ionic                                    |
+| -------------------------------------------------- | ------------------------------------------------------ |
+| primary / secondary / tertiary / error             | matching named color; error uses danger                |
+| on-primary / on-secondary / on-tertiary / on-error | matching named color's contrast                        |
+| surface / on-surface                               | background / text                                      |
+| each accent or error container                     | 12% accent + 88% surface                               |
+| each on-container                                  | on-surface                                             |
+| surface-container-lowest                           | surface                                                |
+| surface-container-low / container / high / highest | 4% / 6% / 8% / 12% on-surface mixed into surface       |
+| surface-dim / surface-variant                      | 12% on-surface mixed into surface                      |
+| surface-bright                                     | surface with dark OKLab lightness raised by up to 0.12 |
+| on-surface-variant                                 | 80% on-surface + 20% surface                           |
+| outline / outline-variant                          | 55% / 20% on-surface mixed into surface                |
+| inverse-surface / inverse-on-surface               | text / background                                      |
+| inverse-primary                                    | 55% primary + 45% surface                              |
 
 These are deterministic theme fallbacks, not a reconstruction of Material's HCT
 tonal palette. `color-mix(in srgb, ...)` computes them in CSS, including after
@@ -82,8 +83,9 @@ pattern with an Ionic fallback.
 | outlined card (`md3-outlined`)               | surface                                                                         | on-surface; outline-variant border                         |
 | FAB                                          | primary-container                                                               | on-primary-container                                       |
 | chip / selected chip (`md3-selected`)        | surface-container-low / secondary-container                                     | on-surface-variant / on-secondary-container                |
-| content / toolbar / ordinary list item       | surface                                                                         | on-surface                                                 |
-| inset list item                              | surface-container-low                                                           | on-surface; outline-variant separator                      |
+| content / toolbar                            | surface-container                                                               | on-surface                                                 |
+| ordinary list item                           | surface                                                                         | on-surface                                                 |
+| inset list item                              | surface-bright                                                                  | on-surface; transparent 2px gap                            |
 | navigation bar                               | surface-container                                                               | on-surface-variant; secondary-container selected indicator |
 | primary segment / tab                        | inherited surface                                                               | primary selected; on-surface-variant unselected            |
 | search field                                 | surface-container-high                                                          | on-surface; on-surface-variant icon/placeholder            |
@@ -109,3 +111,15 @@ The demo's Color palette page compares the Ionic-only result with locally
 supplied additional roles. Browser tests check both appearances, local Ionic
 changes, optional-role removal, explicit colors, opt-outs, and a document with
 application JavaScript disabled.
+
+Android 16 Settings is the visual reference; Material guidelines supply supporting
+information. Settings pages use `surface-container`, inset rows use `surface-bright`,
+and groups have 20px outer corners with 2px page-colored gaps. The CSS-only bright
+surface fallback uses relative OKLab color, preserving local Ionic background overrides
+in both modes. Older WebViews without relative color support retain the base surface.
+Native optional roles replace this approximation directly in either case.
+
+Icon-only toolbar back buttons have a 40px tonal circle within a 56px touch target.
+Switch thumbs retain their 24px size and show a cross/check; an explicit Ionic
+`enable-on-off-labels` attribute retains Ionic's own labels. Component `md3-disabled`
+and explicit Ionic colors remain available.

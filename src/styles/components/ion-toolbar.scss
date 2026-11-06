@@ -31,10 +31,16 @@ ion-toolbar.md:not(.md3-disabled) {
     --padding-end: 10px;
   }
 
-  ion-back-button.back-button-has-icon-only {
+  ion-back-button.back-button-has-icon-only:not(.md3-disabled) {
+    &::part(native) {
+      width: 56px;
+      height: 56px;
+      background: radial-gradient(circle 20px at center, var(--md3-back-background, transparent) 99%, transparent 100%);
+    }
+
     --icon-font-size: 24px;
-    --min-width: 48px;
-    --min-height: 48px;
+    --min-width: 56px;
+    --min-height: 56px;
     --padding-top: 0;
     --padding-end: 0;
     --padding-bottom: 0;

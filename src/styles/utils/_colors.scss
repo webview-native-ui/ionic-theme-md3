@@ -11,7 +11,8 @@ $fallbacks: (
   surface-container: color-mix(in srgb, $on-surface 6%, $surface),
   surface-container-high: color-mix(in srgb, $on-surface 8%, $surface),
   surface-container-highest: color-mix(in srgb, $on-surface 12%, $surface),
-  surface-bright: $surface,
+  // Raise dark surfaces while retaining light surfaces and local Ionic overrides.
+  surface-bright: oklab(from $surface calc(l + clamp(0, (0.7 - l) * 0.4, 0.12)) a b),
   surface-dim: color-mix(in srgb, $on-surface 12%, $surface),
   surface-variant: color-mix(in srgb, $on-surface 12%, $surface),
   on-surface-variant: color-mix(in srgb, $on-surface 80%, $surface),

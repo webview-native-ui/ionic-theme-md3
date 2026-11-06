@@ -1,3 +1,5 @@
+@use '../utils/colors' as md3;
+
 ion-toggle.md:not(.md3-disabled) {
   --handle-width: 24px;
   --handle-height: 24px;
@@ -35,4 +37,34 @@ ion-toggle.md:not(.md3-disabled) {
       }
     }
   }
+}
+
+// Android Settings uses state glyphs inside the 24px thumb.
+// Keep explicitly requested Ionic on/off labels instead of drawing a second glyph.
+ion-toggle.md:not(.md3-disabled):not([enable-on-off-labels]):not(.toggle-checked)::part(handle)::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: #{md3.color(surface-container-highest)};
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m3 3 6 6m0-6-6 6' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+ion-toggle.md:not(.md3-disabled):not([enable-on-off-labels]).toggle-checked::part(handle)::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: #{md3.color(primary)};
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m2 6 3 3 5-6' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+ion-toggle.md:not(.md3-disabled).ion-color.toggle-checked::part(handle)::before {
+  background: var(--ion-color-base);
 }

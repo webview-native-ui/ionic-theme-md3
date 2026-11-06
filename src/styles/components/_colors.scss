@@ -4,7 +4,7 @@
 
 ion-content.md:not(.md3-disabled):not(.ion-color),
 ion-toolbar.md:not(.md3-disabled):not(.ion-color) {
-  --background: #{md3.color(surface)};
+  --background: #{md3.color(surface-container)};
   --color: #{md3.color(on-surface)};
 }
 
@@ -60,7 +60,8 @@ ion-button.md:not(.md3-disabled):not(.ion-color).button-solid.md3-elevated {
 }
 
 ion-back-button.md:not(.md3-disabled):not(.ion-color) {
-  --color: #{md3.color(on-surface)};
+  --color: #{md3.color(on-surface-variant)};
+  --md3-back-background: #{md3.color(surface-container-highest)};
 }
 
 ion-card.md:not(.md3-disabled):not(.ion-color) {
@@ -68,12 +69,12 @@ ion-card.md:not(.md3-disabled):not(.ion-color) {
   --color: #{md3.color(on-surface)};
 }
 
-ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-title {
-  color: #{md3.color(on-surface)};
+ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-title:not(.ion-color):not(.md3-disabled) {
+  --color: #{md3.color(on-surface)};
 }
 
-ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-subtitle {
-  color: #{md3.color(on-surface-variant)};
+ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-subtitle:not(.ion-color):not(.md3-disabled) {
+  --color: #{md3.color(on-surface-variant)};
 }
 
 ion-card.md:not(.md3-disabled):not(.ion-color).md3-filled {
@@ -116,7 +117,7 @@ ion-chip.md:not(.md3-disabled):not(.ion-color).md3-selected {
 }
 
 ion-list.md:not(.md3-disabled):not(.ion-color) {
-  background: #{md3.color(surface)};
+  background: transparent;
 }
 
 ion-item.md:not(.md3-disabled):not(.ion-color) {
@@ -129,7 +130,11 @@ ion-item.md:not(.md3-disabled):not(.ion-color) {
 }
 
 ion-list.md.list-inset:not(.md3-disabled) ion-item:not(.md3-disabled):not(.ion-color) {
-  --background: #{md3.color(surface-container-low)};
+  // Older WebViews retain a valid surface; native roles still take precedence.
+  --background: var(--md-sys-color-surface-bright, #{md3.color(surface)});
+  @supports (color: oklab(from white l a b)) {
+    --background: #{md3.color(surface-bright)};
+  }
   --border-color: #{md3.color(outline-variant)};
 }
 
