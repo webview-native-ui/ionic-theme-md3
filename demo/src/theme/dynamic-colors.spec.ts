@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { enableDynamicColors, materialToIonicColors, type DynamicColorScheme, type DynamicColorTheme } from '../../../src/dynamic-colors';
+import {
+  enableDynamicColors,
+  materialToIonicColors,
+  materialToMd3Colors,
+  type DynamicColorScheme,
+  type DynamicColorTheme,
+} from '../../../src/dynamic-colors';
 import fixtures from './ionic-color-fixtures.json';
 
 const light = { primary: '#6750a4', secondary: '#625b71', tertiary: '#7d5260', error: '#b3261e', surface: '#fffbfe', onSurface: '#1c1b1f' };
@@ -203,5 +209,47 @@ describe('dynamic theme lifecycle', () => {
     expect(document.documentElement.classList.contains('ion-palette-dark')).toBe(true);
     await theme.destroy();
     expect(media.removeEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+  });
+  it('accepts partial optional roles without inventing missing tokens', () => {
+    expect(materialToMd3Colors({ secondaryContainer: '#aabbcc', onSecondaryContainer: '#112233' })).toEqual({
+      '--md-sys-color-secondary-container': '#aabbcc',
+      '--md-sys-color-on-secondary-container': '#112233',
+    });
+    expect(() => materialToMd3Colors({ outline: 'invalid' })).toThrow(TypeError);
+  });
+  it('uses native role pairs while keeping the Ionic generator output intact', async () => {
+    theme = await enableDynamicColors({
+      getScheme: async () => ({
+        available: true,
+        systemDark: false,
+        light: { ...light, onPrimary: '#ffffee', primaryContainer: '#aabbcc', onPrimaryContainer: '#112233' },
+        dark,
+      }),
+    });
+    const style = document.documentElement.style;
+    expect(style.getPropertyValue('--md-sys-color-on-primary')).toBe('#ffffee');
+    expect(style.getPropertyValue('--ion-color-primary-contrast')).toBe('#ffffff');
+    expect(style.getPropertyValue('--md-sys-color-primary-container')).toBe('#aabbcc');
+    theme.setMode('dark');
+    expect(style.getPropertyValue('--md-sys-color-primary-container')).toBe('');
+  });
+  it('restores user overrides when optional roles disappear on refresh', async () => {
+    const root = document.documentElement;
+    root.style.setProperty('--md-sys-color-outline', '#abcdef');
+    let snapshot: DynamicColorScheme = {
+      available: true,
+      systemDark: false,
+      light: { ...light, outline: '#112233', secondaryContainer: '#aabbcc' },
+      dark,
+    };
+    theme = await enableDynamicColors({ getScheme: async () => snapshot });
+    expect(root.style.getPropertyValue('--md-sys-color-outline')).toBe('#112233');
+    snapshot = available();
+    await theme.refresh();
+    expect(root.style.getPropertyValue('--md-sys-color-outline')).toBe('#abcdef');
+    expect(root.style.getPropertyValue('--md-sys-color-secondary-container')).toBe('');
+    root.style.setProperty('--md-sys-color-outline', '#fedcba');
+    await theme.destroy();
+    expect(root.style.getPropertyValue('--md-sys-color-outline')).toBe('#fedcba');
   });
 });

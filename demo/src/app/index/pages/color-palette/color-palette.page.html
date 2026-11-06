@@ -1,0 +1,41 @@
+<ion-header
+  ><ion-toolbar
+    ><ion-buttons slot="start"><ion-back-button defaultHref="/main/index"></ion-back-button></ion-buttons
+    ><ion-title>Color palette</ion-title></ion-toolbar
+  ></ion-header
+>
+<ion-content>
+  <section class="palette-controls">
+    <p>The Ionic palette supplies every default. Add optional colors to refine selected roles.</p>
+    <ion-button type="button" data-testid="toggle-roles" (click)="extraRoles.set(!extraRoles())">{{
+      extraRoles() ? 'Use Ionic palette' : 'Add optional colors'
+    }}</ion-button>
+  </section>
+  <section class="palette-preview" data-testid="palette-preview" [class.extra-roles]="extraRoles()">
+    <ion-toolbar data-testid="palette-toolbar"><ion-title>Surface</ion-title></ion-toolbar>
+    <ion-toolbar color="primary"
+      ><ion-buttons slot="end"
+        ><ion-button type="button" fill="clear" data-testid="palette-toolbar-action">Toolbar action</ion-button></ion-buttons
+      ><ion-title>Explicit Ionic primary</ion-title></ion-toolbar
+    >
+    <ion-button type="button" data-testid="palette-filled">Filled</ion-button>
+    <ion-button type="button" class="md3-tonal" data-testid="palette-tonal">Tonal</ion-button>
+    <ion-button type="button" class="md3-elevated" data-testid="palette-elevated">Elevated</ion-button>
+    <ion-button type="button" fill="outline" data-testid="palette-outline">Outlined</ion-button>
+    <ion-button type="button" color="danger" data-testid="palette-danger">Ionic danger</ion-button>
+    <ion-button type="button" class="md3-disabled" data-testid="palette-disabled">Standard Ionic</ion-button>
+    <ion-card data-testid="palette-card"
+      ><ion-card-header
+        ><ion-card-title>Elevated card</ion-card-title><ion-card-subtitle>Surface container low</ion-card-subtitle></ion-card-header
+      ><ion-card-content>Colors follow the Ionic palette in both light and dark modes.</ion-card-content></ion-card
+    >
+    <ion-card class="md3-filled" data-testid="palette-card-filled"><ion-card-content>Filled card</ion-card-content></ion-card>
+    <ion-card class="md3-outlined" data-testid="palette-card-outlined"><ion-card-content>Outlined card</ion-card-content></ion-card>
+    <ion-chip><ion-label>Chip</ion-label></ion-chip>
+    <ion-chip class="md3-selected" data-testid="palette-chip-selected"><ion-label>Selected chip</ion-label></ion-chip>
+    <ion-searchbar data-testid="palette-search" placeholder="Search"></ion-searchbar>
+    <ion-fab
+      ><ion-fab-button data-testid="palette-fab"><ion-icon name="add" aria-label="Add"></ion-icon></ion-fab-button
+    ></ion-fab>
+  </section>
+</ion-content>

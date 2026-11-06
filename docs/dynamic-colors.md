@@ -2,7 +2,9 @@
 
 Dynamic colors are opt-in. Android 12+ supplies light and dark Material color
 schemes; this package converts their roles using the Ionic Docs color generator
-algorithms. Older Android, iOS, and Web retain the application's standard palette.
+algorithms. Older Android, iOS, and Web use the Ionic-derived MD3 defaults.
+See [color system](color-system.md): Ionic palettes alone are sufficient; native
+Material roles only refine optional CSS tokens.
 
 Use a capacitor-plugin build exposing `getDynamicColorScheme` and
 `addDynamicColorListener` (these APIs are introduced alongside this feature).
@@ -56,14 +58,20 @@ There may be one controller per document. Call `destroy()` on application teardo
 | surface                        | background color          |
 | onSurface                      | text color                |
 
-Named colors generate base, RGB, contrast, contrast RGB, shade and tint. Contrast
+The native bridge supplies the supported Material color roles for both modes;
+the original six fields remain the compatibility inputs and additional roles are
+optional in the TypeScript contract. Named colors generate base, RGB, contrast,
+contrast RGB, shade and tint. Contrast
 uses Ionic's black/white contrast-ratio comparison, rather than Material's `on*`
-roles. Background and text generate separate step-50 through step-950 tokens;
-legacy `--ion-color-step-*` aliases are also supplied. Success, warning, light,
-medium, dark, and component-specific surface tokens retain their existing values.
+roles. MD3 components use the supplied `on*` role when present. Background and text generate separate step-50 through step-950 tokens;
+legacy `--ion-color-step-*` aliases are also supplied. Success, warning, light, medium, and dark retain their existing Ionic values.
+The supplied native roles also become optional `--md-sys-color-*` tokens used by
+MD3 components. Missing optional roles return to local/user overrides or the
+Ionic-derived CSS fallback, including when switching modes or refreshing.
 An explicit `color="light"`, for example, continues using that Ionic palette.
 
-For conversion without DOM changes, use `materialToIonicColors(scheme)`.
+For conversion without DOM changes, use `materialToIonicColors(scheme)` for
+Ionic variables and `materialToMd3Colors(partialRoles)` for optional MD3 tokens.
 Inputs are opaque `#RRGGBB` strings. No runtime color-library dependency is used.
 Algorithm attribution and the upstream license are in `THIRD_PARTY_NOTICES.md`.
 
@@ -88,10 +96,18 @@ fixed across OS changes. Browser E2E covers the same appearance policy. Unit tes
 cover changed palettes, resume/configuration notifications, in-flight invalidation,
 unchanged-update suppression, errors, and teardown.
 
-A local WebView measurement (30 sequential native reads, 1,000 warmed conversion
-iterations) gave a native-read median of approximately 2.3 ms, p90 of 6.2 ms, and
-approximately 0.09 ms to convert both schemes. These are emulator observations,
-not device-wide performance guarantees; conversion timing excludes CSS rendering.
+The expanded 46-role API was verified on the Android emulator: every native role
+matched its `--md-sys-color-*` value. Ionic 8 and 9 browser tests cover Ionic-only
+fallbacks, optional overrides, explicit color palettes, and per-component opt-outs;
+a separate test disables application JavaScript. Linux visual tests cover all 80
+light/dark demo screens, with shared palette-page snapshots verified on Ionic 8.
+
+A local WebView measurement of the expanded API (30 sequential native reads,
+1,000 warmed conversion iterations) gave approximately 9 ms median / 21 ms p90
+for acquisition and approximately 0.6 ms to convert both schemes into Ionic and
+MD3 variables. These are debug-emulator observations, not device-wide performance
+guarantees; conversion excludes CSS rendering. Ordinary Ionic-only theming uses
+CSS directly and does not execute the conversion or call the bridge.
 
 Physical-device wallpaper replacement remains unverified. A shell-driven preset
 change on this emulator restarted the WebView without changing the native color

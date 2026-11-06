@@ -1,5 +1,59 @@
-/** The six native roles needed to generate Ionic's standard color tokens. */
-export interface MaterialColorScheme {
+/** Optional Material roles enrich the theme; Ionic palettes remain sufficient on their own. */
+export const materialColorRoles = [
+  'primary',
+  'onPrimary',
+  'primaryContainer',
+  'onPrimaryContainer',
+  'inversePrimary',
+  'secondary',
+  'onSecondary',
+  'secondaryContainer',
+  'onSecondaryContainer',
+  'tertiary',
+  'onTertiary',
+  'tertiaryContainer',
+  'onTertiaryContainer',
+  'error',
+  'onError',
+  'errorContainer',
+  'onErrorContainer',
+  'surface',
+  'onSurface',
+  'surfaceVariant',
+  'onSurfaceVariant',
+  'surfaceTint',
+  'inverseSurface',
+  'inverseOnSurface',
+  'outline',
+  'outlineVariant',
+  'scrim',
+  'surfaceBright',
+  'surfaceDim',
+  'surfaceContainer',
+  'surfaceContainerHigh',
+  'surfaceContainerHighest',
+  'surfaceContainerLow',
+  'surfaceContainerLowest',
+  'primaryFixed',
+  'primaryFixedDim',
+  'onPrimaryFixed',
+  'onPrimaryFixedVariant',
+  'secondaryFixed',
+  'secondaryFixedDim',
+  'onSecondaryFixed',
+  'onSecondaryFixedVariant',
+  'tertiaryFixed',
+  'tertiaryFixedDim',
+  'onTertiaryFixed',
+  'onTertiaryFixedVariant',
+] as const;
+export type MaterialColorRole = (typeof materialColorRoles)[number];
+const md3ColorProperties = materialColorRoles.map(
+  (role) => [role, `--md-sys-color-${role.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`] as const,
+);
+
+/** Six compatibility inputs; every additional Material role is optional. */
+export interface MaterialColorScheme extends Partial<Record<MaterialColorRole, string>> {
   primary: string;
   secondary: string;
   tertiary: string;
@@ -7,6 +61,7 @@ export interface MaterialColorScheme {
   surface: string;
   onSurface: string;
 }
+
 export type DynamicColorScheme =
   | { available: false; systemDark: boolean }
   | { available: true; systemDark: boolean; light: MaterialColorScheme; dark: MaterialColorScheme };
@@ -64,6 +119,22 @@ export const materialToIonicColors = (scheme: MaterialColorScheme): IonicColorVa
   return variables;
 };
 
+/** Emit only supplied roles. Omitted roles keep the CSS fallback to Ionic's palette. */
+export const materialToMd3Colors = (scheme: Partial<Record<MaterialColorRole, string>>): IonicColorVariables => {
+  const variables: IonicColorVariables = {};
+  for (const [role, property] of md3ColorProperties) {
+    const value = scheme[role];
+    if (value === undefined) continue;
+    if (!/^#[\da-f]{6}$/i.test(value)) throw new TypeError(`Expected #RRGGBB, received ${value}`);
+    variables[property] = value.toLowerCase();
+  }
+  return variables;
+};
+const themeColors = (scheme: MaterialColorScheme): IonicColorVariables => ({
+  ...materialToIonicColors(scheme),
+  ...materialToMd3Colors(scheme),
+});
+
 export interface DynamicColorThemeOptions {
   getScheme: () => Promise<DynamicColorScheme>;
   /** Pass capacitor-plugin's addDynamicColorListener to observe native changes. */
@@ -104,13 +175,16 @@ export const enableDynamicColors = async (options: DynamicColorThemeOptions): Pr
     root.style.setProperty(name, value);
     applied.set(name, value);
   };
+  const restore = (name: string) => {
+    const [value, priority] = originals.get(name)!;
+    if (value) root.style.setProperty(name, value, priority);
+    else root.style.removeProperty(name);
+    applied.delete(name);
+    originals.delete(name);
+  };
   const restoreColors = () => {
     for (const name of applied.keys()) {
-      if (name === 'color-scheme') continue;
-      const [value, priority] = originals.get(name)!;
-      if (value) root.style.setProperty(name, value, priority);
-      else root.style.removeProperty(name);
-      applied.delete(name);
+      if (name !== 'color-scheme') restore(name);
     }
   };
   const apply = () => {
@@ -125,8 +199,12 @@ export const enableDynamicColors = async (options: DynamicColorThemeOptions): Pr
     const key = dark ? 'dark' : 'light';
     let variables = cache.get(key);
     if (!variables) {
-      variables = materialToIonicColors(scheme[key]);
+      variables = themeColors(scheme[key]);
       cache.set(key, variables);
+    }
+    // Removed optional roles must return to user overrides or the CSS fallback.
+    for (const name of applied.keys()) {
+      if (name !== 'color-scheme' && !(name in variables)) restore(name);
     }
     // Synchronous writes; no computed-style or layout reads between updates.
     for (const [name, value] of Object.entries(variables)) write(name, value);
@@ -141,8 +219,8 @@ export const enableDynamicColors = async (options: DynamicColorThemeOptions): Pr
         // Validate both modes before replacing the last working palette.
         const nextFingerprint = next.available ? JSON.stringify([next.light, next.dark]) : '';
         if (nextFingerprint !== fingerprint) {
-          const light = next.available ? materialToIonicColors(next.light) : undefined;
-          const dark = next.available ? materialToIonicColors(next.dark) : undefined;
+          const light = next.available ? themeColors(next.light) : undefined;
+          const dark = next.available ? themeColors(next.dark) : undefined;
           cache.clear();
           if (light && dark) {
             cache.set('light', light);

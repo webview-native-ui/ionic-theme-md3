@@ -1,0 +1,308 @@
+@use '../utils/colors' as md3;
+
+// Resolve optional roles locally, retaining Ionic palettes and per-component opt-outs.
+
+ion-content.md:not(.md3-disabled):not(.ion-color),
+ion-toolbar.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface)};
+  --color: #{md3.color(on-surface)};
+}
+
+ion-button.md:not(.md3-disabled):not(.ion-color) {
+  --background-hover-opacity: 0.08;
+  --background-focused-opacity: 0.12;
+  --background-activated-opacity: 0.12;
+}
+
+ion-button.md:not(.md3-disabled):not(.ion-color).button-solid {
+  --background: #{md3.color(primary)};
+  --color: #{md3.color(on-primary)};
+  --background-hover: #{md3.color(on-primary)};
+  --background-focused: #{md3.color(on-primary)};
+  --background-activated: #{md3.color(on-primary)};
+  --ripple-color: #{md3.color(on-primary)};
+}
+
+ion-button.md:not(.md3-disabled):not(.ion-color).button-outline,
+ion-button.md:not(.md3-disabled):not(.ion-color).button-clear {
+  --background: transparent;
+  --color: #{md3.color(primary)};
+  --background-hover: #{md3.color(primary)};
+  --background-focused: #{md3.color(primary)};
+  --background-activated: #{md3.color(primary)};
+  --ripple-color: #{md3.color(primary)};
+}
+
+ion-button.md:not(.md3-disabled):not(.ion-color).button-outline {
+  --border-color: #{md3.color(outline)};
+}
+
+ion-button.md:not(.md3-disabled):not(.ion-color).button-solid.md3-tonal {
+  --background: #{md3.color(secondary-container)};
+  --color: #{md3.color(on-secondary-container)};
+  --background-hover: #{md3.color(on-secondary-container)};
+  --background-focused: #{md3.color(on-secondary-container)};
+  --background-activated: #{md3.color(on-secondary-container)};
+  --ripple-color: #{md3.color(on-secondary-container)};
+}
+
+ion-button.md:not(.md3-disabled):not(.ion-color).button-solid.md3-elevated {
+  --background: #{md3.color(surface-container-low)};
+  --color: #{md3.color(primary)};
+  --background-hover: #{md3.color(primary)};
+  --background-focused: #{md3.color(primary)};
+  --background-activated: #{md3.color(primary)};
+  --ripple-color: #{md3.color(primary)};
+}
+
+ion-button.md:not(.md3-disabled):not(.ion-color).button-solid.md3-elevated {
+  --box-shadow: var(--token-elevation-1);
+}
+
+ion-back-button.md:not(.md3-disabled):not(.ion-color) {
+  --color: #{md3.color(on-surface)};
+}
+
+ion-card.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container-low)};
+  --color: #{md3.color(on-surface)};
+}
+
+ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-title {
+  color: #{md3.color(on-surface)};
+}
+
+ion-card.md:not(.md3-disabled):not(.ion-color) ion-card-subtitle {
+  color: #{md3.color(on-surface-variant)};
+}
+
+ion-card.md:not(.md3-disabled):not(.ion-color).md3-filled {
+  --background: #{md3.color(surface-container-highest)};
+  box-shadow: none;
+}
+
+ion-card.md:not(.md3-disabled):not(.ion-color).md3-outlined {
+  --background: #{md3.color(surface)};
+  border: 1px solid #{md3.color(outline-variant)};
+  box-shadow: none;
+}
+
+ion-fab.md:not(.md3-disabled) ion-fab-button:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(primary-container)};
+  --color: #{md3.color(on-primary-container)};
+  --background-hover: #{md3.color(primary-container)};
+  --background-activated: #{md3.color(primary-container)};
+  --background-focused: #{md3.color(primary-container)};
+  --ripple-color: #{md3.color(on-primary-container)};
+}
+
+ion-chip.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container-low)};
+  --color: #{md3.color(on-surface-variant)};
+}
+
+ion-chip.md:not(.md3-disabled):not(.ion-color) ion-icon {
+  color: inherit;
+}
+
+ion-chip.md:not(.md3-disabled):not(.ion-color).chip-outline {
+  --background: transparent;
+  border-color: #{md3.color(outline)};
+}
+
+ion-chip.md:not(.md3-disabled):not(.ion-color).md3-selected {
+  --background: #{md3.color(secondary-container)};
+  --color: #{md3.color(on-secondary-container)};
+}
+
+ion-list.md:not(.md3-disabled):not(.ion-color) {
+  background: #{md3.color(surface)};
+}
+
+ion-item.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface)};
+  --color: #{md3.color(on-surface)};
+}
+
+ion-item.md:not(.md3-disabled):not(.ion-color) {
+  --border-color: #{md3.color(outline-variant)};
+}
+
+ion-list.md.list-inset:not(.md3-disabled) ion-item:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container-low)};
+  --border-color: #{md3.color(outline-variant)};
+}
+
+ion-tab-bar.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container)};
+  --color: #{md3.color(on-surface-variant)};
+  --border: none;
+}
+
+ion-tab-bar.md:not(.md3-disabled):not(.ion-color) ion-tab-button:not(.md3-disabled):not(.ion-color) {
+  --color: #{md3.color(on-surface-variant)};
+  --color-selected: #{md3.color(on-surface)};
+}
+
+ion-tab-bar.md:not(.md3-disabled):not(.ion-color) ion-tab-button:not(.md3-disabled):not(.ion-color) ion-icon::before {
+  background-color: #{md3.color(secondary-container)};
+}
+
+ion-tab-bar.md:not(.md3-disabled):not(.ion-color) ion-tab-button:not(.md3-disabled):not(.ion-color).tab-selected ion-icon {
+  color: #{md3.color(on-secondary-container)};
+}
+
+ion-segment.md:not(.md3-disabled):not(.ion-color) {
+  border-bottom-color: #{md3.color(outline-variant)};
+}
+
+ion-segment.md:not(.md3-disabled):not(.ion-color) ion-segment-button:not(.md3-disabled):not(.ion-color) {
+  --color: #{md3.color(on-surface-variant)};
+  --color-checked: #{md3.color(primary)};
+  --indicator-color: #{md3.color(primary)};
+}
+
+ion-searchbar.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container-high)};
+  --color: #{md3.color(on-surface)};
+  --icon-color: #{md3.color(on-surface-variant)};
+  --placeholder-color: #{md3.color(on-surface-variant)};
+  --placeholder-opacity: 1;
+}
+
+ion-toggle.md:not(.md3-disabled):not(.ion-color) {
+  --track-background: #{md3.color(surface-container-highest)};
+  --handle-background: #{md3.color(outline)};
+}
+
+ion-toggle.md:not(.md3-disabled):not(.ion-color)::part(track) {
+  border-color: #{md3.color(outline)};
+}
+
+ion-toggle.md:not(.md3-disabled):not(.ion-color).toggle-checked {
+  --track-background-checked: #{md3.color(primary)};
+  --handle-background-checked: #{md3.color(on-primary)};
+}
+
+ion-toggle.md:not(.md3-disabled):not(.ion-color).toggle-checked::part(track) {
+  border-color: #{md3.color(primary)};
+}
+
+ion-range.md:not(.md3-disabled):not(.ion-color) {
+  --bar-background: #{md3.color(secondary-container)};
+  --bar-background-active: #{md3.color(primary)};
+  --knob-background: #{md3.color(primary)};
+  --pin-background: #{md3.color(inverse-surface)};
+  --pin-color: #{md3.color(inverse-on-surface)};
+}
+
+ion-checkbox.md:not(.md3-disabled):not(.ion-color) {
+  --border-color: #{md3.color(on-surface-variant)};
+  --border-color-checked: #{md3.color(primary)};
+  --checkbox-background-checked: #{md3.color(primary)};
+  --checkmark-color: #{md3.color(on-primary)};
+}
+
+ion-radio.md:not(.md3-disabled):not(.ion-color) {
+  --color: #{md3.color(on-surface-variant)};
+  --color-checked: #{md3.color(primary)};
+}
+
+:is(ion-input, ion-textarea).md:not(.md3-disabled):not(.ion-color) {
+  --color: #{md3.color(on-surface)};
+  --placeholder-color: #{md3.color(on-surface-variant)};
+  --border-color: #{md3.color(outline)};
+  --highlight-color-focused: #{md3.color(primary)};
+  --highlight-color-valid: #{md3.color(primary)};
+  --highlight-color-invalid: #{md3.color(error)};
+}
+
+:is(ion-input, ion-textarea).md:not(.md3-disabled):not(.ion-color):is(.input-fill-solid, .textarea-fill-solid) {
+  --background: #{md3.color(surface-container-highest)};
+}
+
+ion-progress-bar.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(secondary-container)};
+  --progress-background: #{md3.color(primary)};
+}
+
+:is(ion-modal, ion-popover).md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container-low)};
+  --color: #{md3.color(on-surface)};
+}
+
+ion-modal.md:not(.md3-disabled) :is(ion-content, ion-toolbar):not(.md3-disabled):not(.ion-color),
+ion-popover.md:not(.md3-disabled) :is(ion-list, ion-item):not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container-low)};
+}
+
+ion-popover.md:not(.md3-disabled) ion-list:not(.md3-disabled):not(.ion-color) {
+  background: #{md3.color(surface-container-low)};
+}
+
+ion-alert.md:not(.md3-disabled) {
+  --background: #{md3.color(surface-container-high)};
+}
+
+ion-alert.md:not(.md3-disabled) .alert-title,
+ion-alert.md:not(.md3-disabled) .alert-sub-title {
+  color: #{md3.color(on-surface)};
+}
+
+ion-alert.md:not(.md3-disabled) .alert-message {
+  color: #{md3.color(on-surface-variant)};
+}
+
+ion-alert.md:not(.md3-disabled) .alert-button {
+  color: #{md3.color(primary)};
+}
+
+ion-alert.md:not(.md3-disabled) .alert-button-role-destructive {
+  color: #{md3.color(error)};
+}
+
+ion-action-sheet.md:not(.md3-disabled) {
+  --background: #{md3.color(surface-container-low)};
+  --color: #{md3.color(on-surface)};
+  --button-color: #{md3.color(on-surface)};
+}
+
+ion-action-sheet.md:not(.md3-disabled) .action-sheet-title {
+  color: #{md3.color(on-surface-variant)};
+}
+
+ion-action-sheet.md:not(.md3-disabled) .action-sheet-destructive {
+  color: #{md3.color(error)};
+}
+
+ion-loading.md:not(.md3-disabled) {
+  --background: #{md3.color(surface-container-high)};
+  --spinner-color: #{md3.color(primary)};
+  color: #{md3.color(on-surface)};
+}
+
+ion-toast.md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(inverse-surface)};
+  --color: #{md3.color(inverse-on-surface)};
+  --button-color: #{md3.color(inverse-primary)};
+}
+
+:is(ion-datetime, ion-picker).md:not(.md3-disabled):not(.ion-color) {
+  --background: #{md3.color(surface-container-high)};
+  color: #{md3.color(on-surface)};
+}
+
+ion-backdrop.md:not(.md3-disabled) {
+  --ion-backdrop-color: #{md3.color(scrim)};
+}
+
+// Ionic explicitly colored toolbars pass their contrast color to their actions.
+ion-toolbar.md.ion-color:not(.md3-disabled)
+  :is(ion-button.button-clear, ion-button.button-outline, ion-back-button):not(.md3-disabled):not(.ion-color) {
+  --color: var(--ion-color-contrast);
+  --border-color: var(--ion-color-contrast);
+  --background-hover: var(--ion-color-contrast);
+  --background-focused: var(--ion-color-contrast);
+  --background-activated: var(--ion-color-contrast);
+  --ripple-color: var(--ion-color-contrast);
+}

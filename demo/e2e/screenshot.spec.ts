@@ -19,6 +19,7 @@ const typesPath = (path: IPath, types: string[]): IPath[] => {
 };
 
 const routes = [
+  { path: '/main/index/color-palette', name: 'color-palette' },
   ...typesPath({ path: '/main/index/action-sheet', name: 'action-sheet' }, actionSheetTypes),
   ...typesPath({ path: '/main/index/alert', name: 'alert' }, alertTypes),
   { path: '/main/index/button', name: 'button' },
