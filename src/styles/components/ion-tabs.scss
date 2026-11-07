@@ -2,7 +2,6 @@ ion-tab-bar.md:not(.md3-disabled) {
   height: 62px;
   ion-tab-button:not(.md3-disabled) {
     --ripple-color: transparent;
-    --color-selected: var(--ion-color-contrast, var(--ion-color-primary-shade));
     ion-icon:not(.md3-disabled) {
       padding: 4px 16px;
       margin-top: 6px;

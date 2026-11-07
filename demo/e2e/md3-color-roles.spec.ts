@@ -41,8 +41,7 @@ for (const mode of ['light', 'dark'] as const) {
     expect(before['toolbar-action'].foreground).toEqual(before['filled'].foreground);
     expect(before['tonal'].background).not.toEqual(before['filled'].background);
     expect(before['card-filled'].background).not.toEqual(before['card-outlined'].background);
-    expect(before['card'].background).toEqual(before['elevated'].background);
-    expect(before['tonal'].foreground).toEqual(before['card'].foreground);
+    expect(before['card'].background).not.toEqual(before['elevated'].background);
 
     // A local Ionic palette is sufficient, and changes propagate without a JS theme calculation.
     await page.getByTestId('palette-preview').evaluate((element) => {
@@ -150,7 +149,7 @@ for (const mode of ['light', 'dark'] as const) {
   });
 }
 
-test('Ionic-only surfaces retain the Settings hierarchy with local light and dark palettes', async ({ page }) => {
+test('Ionic-only surfaces preserve local light and dark background colors', async ({ page }) => {
   await page.goto('/main/index/item-list');
   const content = page.locator('app-item-list ion-content');
   await expect(content).toHaveClass(/hydrated/);
@@ -171,10 +170,9 @@ test('Ionic-only surfaces retain the Settings hierarchy with local light and dar
       probe.remove();
       return color;
     });
-    const rowColor = await colors(row);
-    expect(rowColor.background[0]).toBeGreaterThan(dark ? 30 : 249);
+    await expect.poll(async () => (await colors(row)).background).toEqual([dark ? 16 : 255, dark ? 16 : 255, dark ? 16 : 255]);
     expect(pageColor).not.toBe('rgba(0, 0, 0, 0)');
-    // Exact page mix: 6% foreground over background, resolved without native roles.
+    // No generated neutral tint when optional Material roles are absent.
     await expect
       .poll(async () => {
         return content.evaluate((element) => {
@@ -190,6 +188,6 @@ test('Ionic-only surfaces retain the Settings hierarchy with local light and dar
           return ctx.getImageData(0, 0, 1, 1).data[0];
         });
       })
-      .toBe(dark ? 30 : 240);
+      .toBe(dark ? 16 : 255);
   }
 });

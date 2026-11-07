@@ -10,33 +10,24 @@ Import the usual Ionic styles and this theme. Define the standard Ionic named
 colors (including contrast), background, and text colors as usual. Both light and
 dark palettes use the same rules; there is no separate hardcoded MD3 palette.
 
-The theme's CSS derives missing component colors at the point of use:
+Ordinary components retain Ionic's existing color intent. Content and menu use
+`--ion-background-color`; toolbar, card, item, and tab bar retain their dedicated
+Ionic background/text variables and their normal fallback chains. No neutral
+surface tint is generated for ordinary cards, pages, lists, or overlays.
+Explicit `color` attributes and component `--background` / `--color` overrides
+remain available. Optional Material roles explicitly refine the underlying Ionic palette.
+Component `--background` / `--color` overrides remain the final application control.
 
-| Role                                               | Fallback from Ionic                                    |
-| -------------------------------------------------- | ------------------------------------------------------ |
-| primary / secondary / tertiary / error             | matching named color; error uses danger                |
-| on-primary / on-secondary / on-tertiary / on-error | matching named color's contrast                        |
-| surface / on-surface                               | background / text                                      |
-| each accent or error container                     | 12% accent + 88% surface                               |
-| each on-container                                  | on-surface                                             |
-| surface-container-lowest                           | surface                                                |
-| surface-container-low / container / high / highest | 4% / 6% / 8% / 12% on-surface mixed into surface       |
-| surface-dim / surface-variant                      | 12% on-surface mixed into surface                      |
-| surface-bright                                     | surface with dark OKLab lightness raised by up to 0.12 |
-| on-surface-variant                                 | 80% on-surface + 20% surface                           |
-| outline / outline-variant                          | 55% / 20% on-surface mixed into surface                |
-| inverse-surface / inverse-on-surface               | text / background                                      |
-| inverse-primary                                    | 55% primary + 45% surface                              |
+Supplying an optional Material role refines only its consumers. Unspecified roles
+fall back to the component's Ionic colors; supplying one role does not turn on an
+entire generated neutral palette. Light and dark mode use the same mechanism.
 
-These are deterministic theme fallbacks, not a reconstruction of Material's HCT
-tonal palette. `color-mix(in srgb, ...)` computes them in CSS, including after
-local Ionic variable changes, without JavaScript color calculations. Supply a
-readable Ionic background/text pair and appropriate contrast colors as usual;
-custom palettes remain the application's responsibility.
-
-Defaults are consumed locally rather than defined as root aliases. A section
-that overrides `--ion-color-secondary`, for example, also changes its tonal
-buttons while retaining the rest of the theme.
+Explicit variants (`.md3-tonal`, `.md3-elevated`, `.md3-filled`,
+`.md3-outlined`, `.md3-selected`) intentionally request additional color treatments.
+Their missing container/outline colors can be derived from the Ionic palette using
+CSS color mixing. This derivation belongs to those requested variants, rather than
+changing every uncolored component. Accent controls retain Ionic primary/contrast
+when optional Material accent/container pairs are absent.
 
 ## Optional roles
 
@@ -66,8 +57,9 @@ API also exposes optional fixed/inverse roles for custom component designs.
 For your own Sass components, import `utils/colors` from the package's exported
 `src/styles` path and use `color(secondary-container)` under that module's
 namespace. The function emits an optional role plus the same Ionic fallback.
-It supports the roles in the table above and fails the Sass build on unknown
-roles. For plain CSS custom components, use the same `var(--md-sys-color-..., ...)`
+It supports the roles defined in `utils/_colors.scss` and fails the Sass build
+on unknown roles. Its generated container fallbacks are intended for explicitly
+requested variants; ordinary components retain their own Ionic fallback chains. For plain CSS custom components, use the same `var(--md-sys-color-..., ...)`
 pattern with an Ionic fallback.
 
 ## Component assignments
@@ -83,14 +75,14 @@ pattern with an Ionic fallback.
 | outlined card (`md3-outlined`)               | surface                                                                         | on-surface; outline-variant border                         |
 | FAB                                          | primary-container                                                               | on-primary-container                                       |
 | chip / selected chip (`md3-selected`)        | surface-container-low / secondary-container                                     | on-surface-variant / on-secondary-container                |
-| content / toolbar                            | surface-container                                                               | on-surface                                                 |
+| content / menu / toolbar                            | surface-container                                                               | on-surface                                                 |
 | ordinary list item                           | surface                                                                         | on-surface                                                 |
 | inset list item                              | surface-bright                                                                  | on-surface; transparent 2px gap                            |
 | navigation bar                               | surface-container                                                               | on-surface-variant; secondary-container selected indicator |
 | primary segment / tab                        | inherited surface                                                               | primary selected; on-surface-variant unselected            |
 | search field                                 | surface-container-high                                                          | on-surface; on-surface-variant icon/placeholder            |
 | switch, checkbox, radio, progress, slider    | neutral surface or secondary-container when off/inactive; primary when selected | matching on-primary, outline, or on-surface-variant        |
-| text input                                   | surface-container-highest for solid fill                                        | on-surface; primary focus; error invalid state             |
+| text input                                   | Ionic fill-state background                                        | on-surface; primary focus; error invalid state             |
 | modal / popover / action sheet               | surface-container-low                                                           | on-surface                                                 |
 | alert / loading / datetime / picker          | surface-container-high                                                          | on-surface; primary actions                                |
 | snackbar/toast                               | inverse-surface                                                                 | inverse-on-surface; inverse-primary actions                |
@@ -113,10 +105,10 @@ changes, optional-role removal, explicit colors, opt-outs, and a document with
 application JavaScript disabled.
 
 Android 17 Settings is the visual reference; Material guidelines supply supporting
-information. Settings pages use `surface-container`, inset rows use `surface-bright`,
-and groups have 20px outer corners with 2px page-colored gaps. The CSS-only bright
-surface fallback uses relative OKLab color, preserving local Ionic background overrides
-in both modes. Older WebViews without relative color support retain the base surface.
+information. When supplied, `surface-container` refines page/menu backgrounds and
+`surface-bright` refines inset rows. Without those roles, Ionic backgrounds remain
+unchanged. Groups retain 20px outer corners and 2px gaps. The assignments above
+name optional roles; they do not imply generated surface colors for omitted roles.
 Native optional roles replace this approximation directly in either case.
 
 Icon-only toolbar back buttons have a 40px tonal circle within a 56px touch target.
