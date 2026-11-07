@@ -1,113 +1,58 @@
-# Device-color screenshot review — 2026-11-07
+# Device-colored screenshot coverage — 2026-11-07
 
-## Scope
+## PR boundary
 
-The new visual tests feed a recorded Android 17 light/dark scheme through a mocked
-Capacitor native transport. The real demo adapter, theme controller, conversion,
-CSS application and native change callback execute. They do not directly install
-CSS fixtures or skip dynamic-color startup.
+PR #59 adds device-colored image regression coverage. Its prerequisite, PR #60,
+contains all common CSS fixes, normal-color screenshot changes and shared capture
+readiness/focus setup. Those changes are excluded from the #59 review diff.
 
-The fixed response comes from the earlier [Android 17 cold-start capture](android17-tablet-2026-11-07/cold-start-scheme.json).
-It is an input fixture, not a new native measurement or proof of wallpaper event
-delivery. The [fixture notes](../../demo/e2e/fixtures/README.md) describe the bridge boundary.
+The PRs are stacked: #60 targets main; #59 targets the #60 branch. After #60 is
+merged, retarget #59 to main and verify the resulting head. Normal-color baselines
+remain unchanged relative to #59's base.
 
-## Coverage and oracle
+## Input and coverage
 
-- All 42 existing route variants with the device scheme in light and dark: 84 images.
-- Native change notifications reducing the scheme to the six compatibility fields:
-  two images, with stale optional roles explicitly checked for removal.
-- Actively dragged Range pins: two images, with inverse-surface/inverse-on-surface
-  checked against the raw device response.
-- Popover, Select and Modal scenes use actual trigger clicks. Select's interface is
-  asserted before opening, avoiding a misleading Alert capture for a Popover case.
-- Rendered colors for filled/tonal/elevated buttons, card variants, FAB, selected
-  chips, explicit Ionic danger, Searchbar and Toggle are compared with raw fixture
-  roles. This supplements image comparison: generating a first baseline is not
-  evidence that its color assignment is correct.
+A [recorded Android 17 response](android17-tablet-2026-11-07/cold-start-scheme.json)
+passes through a mocked Capacitor transport and the real demo adapter, conversion,
+theme controller and native change callback. CSS values are not installed directly.
+[Fixture notes](../../demo/e2e/fixtures/README.md) describe this boundary.
 
-## Findings and corrections
+The 88 added images cover:
 
-The first rendered-color checks found that shape styles had greater specificity
-than optional-role styles. Searchbar retained its old background, text and icon
-colors; Toggle checked-thumb and track-border colors could mask Material roles;
-Range's pin background retained an older neutral value.
+- All 42 route variants with the device's full light/dark schemes: 84 images.
+- Native updates containing only the six compatibility fields: two images, with
+  stale optional roles explicitly checked for removal.
+- Actively dragged Range pins: two images, with inverse-surface/inverse-on-surface pairs.
 
-CI also exposed an existing one-button Alert focus race. Ionic's scoped
-`.ion-focused` background could replace the filled destructive surface with gray
-while retaining its contrast foreground, producing a dark gray/black pair in
-Ionic-only dark mode. Focused preferred/destructive actions now retain their role
-pairs and gain a visible inset focus ring. Their screenshot scenes explicitly
-exercise keyboard focus; native scenes also assert the raw role pair.
+Popover, Select and Modal scenes use actual triggers. Select waits for its public
+presentation event and verifies the requested interface. Its Alert scene includes
+an actual pointer selection. The shared keyboard-focus setup comes from #60;
+#59 checks the resulting preferred/destructive paint against raw native roles.
 
-Color ownership now remains in the color stylesheet. Shape styles keep dimensions,
-borders and geometry; explicit Ionic Toggle palettes retain their neutral off-state
-border and selected palette border. No native acquisition or conversion algorithm
-was changed.
+Rendered role-pair checks also cover button/card variants, FAB, selected chips,
+Searchbar, Toggle and explicit Ionic danger. These checks deliberately fail if the
+prerequisite role fixes are absent; expectations have not been weakened to accept
+incorrect first-time baselines.
 
-## Direct image inspection
+## Direct review and validation
 
-Reviewed the 86 initial route/update candidates in labeled contact sheets. Opened
-palette, Searchbar and Toggle images at larger size, and separately inspected both
-active Range-pin images. Also inspected Linux palette/pin candidates and the
-final pointer-selected Select Alert. Checked surface/text pairs, accent/container treatments,
-explicit Ionic colors, disabled controls and visible overlay content. Long route
-sheets were reviewed for color/layout patterns; the raw-role assertions provide
-the precise pair checks on representative controls.
+Reviewed all initial route/update candidates in contact sheets and inspected
+palette, Searchbar, Toggle, active pin and final focused Alert images at larger
+size. Checked surface/text combinations, accents/containers, explicit Ionic colors,
+disabled states and visible overlay bodies. Long route sheets were checked for
+color/layout patterns; representative raw-role assertions provide exact pair checks.
 
-The chosen recorded scheme retains readable foregrounds in the inspected states.
-No remaining missing assignment or incorrect pair was found within this scope.
-This does not establish every possible custom palette, control state or OEM scheme.
+Before separation, [CI image generation and cross-version comparison](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42341326054)
+passed 229 cases per Ionic version without flaky cases or retries. The
+[latest combined-head normal CI](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42342196632)
+also passed all 229 test cases per version. Its separate report-publication check
+was affected by GitHub Pages file-sync delays.
 
-## Capture readiness
+The combined suite consists of the base's 141 cases (84 normal screenshots and
+57 functional cases), plus #59's 88 colored screenshots. Baselines were produced
+through `/update-screenshots` CI. Separation changes ownership and documentation;
+combined runtime, test behavior and image bytes are preserved.
 
-Captures wait for hydrated content, loaded fonts and two animation frames instead
-of sleeping for one second per image. Select triggers wait for the public overlay
-`DidPresent` event before selecting a radio option. This ensures the overlay's
-initial focus work completes before the pointer selection is captured.
-
-The first [CI regeneration attempt](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42338159934)
-reached the ten-minute job limit during Ionic 8 comparison. It did not commit
-baselines and is not counted as successful CI validation. CI now emits per-case
-list output alongside the HTML report so any comparison failure is identifiable.
-
-The [second CI attempt](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42339946715)
-committed 88 additional baselines and eight changed existing images. Ionic 9 passed
-229 cases; Ionic 8 passed 228 directly with one flaky existing dark Alert case.
-That retry-dependent result motivated the Alert focus correction above and is not
-claimed as a clean final acceptance result.
-
-## Verification status
-
-- Initial local Chromium candidate run: all 88 added cases passed.
-- Linux Ionic 9: 229 cases passed during candidate generation. After making Select
-  Alert pointer selection explicit, both affected cases were regenerated and passed.
-- Linux Ionic 8: final 229 cases passed against the same candidates without updating
-  images (172 screenshot cases and 57 existing non-screenshot cases).
-- Readiness changes: 229 Ionic 8 cases passed with CI-like two-worker execution
-  in 2.2 minutes; all eight affected Select cases passed again after adding the
-  presentation-event wait. The 88 Ionic 9 device cases passed in 23.6 seconds.
-- Focus regression: eight keyboard-focused appearance/role states were verified
-  three times each without updating images and with retries disabled. All 24
-  passed on each Ionic version; background/foreground roles and the inset focus
-  ring were also asserted on device-color scenes.
-- Theme build, formatting and focused E2E TypeScript checking passed.
-- The initial cross-version comparison caught only a Select Alert initial-focus
-  outline difference. Capturing an actual pointer-selected option makes the states
-  equivalent without hiding focus indicators or changing production accessibility.
-
-Candidate images are kept outside the repository during review. Repository baseline
-updates should use the PR `/update-screenshots` CI, generating with Ionic 9 and
-comparing the same images with Ionic 8.
-
-## Final CI result
-
-The [final image-update CI](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42341326054)
-passed all 229 cases on both Ionic 9 (2.8 minutes) and Ionic 8 (3.2 minutes), with
-no flaky cases or retries reported. It generated the baselines with Ionic 9 and
-compared them unchanged with Ionic 8. The final image commit is `b035351` on PR #59.
-
-The suite contains 172 screenshot cases: 84 Ionic-default screens and 88
-device-color/update/active-pin screens, alongside 57 existing functional cases.
-These results supersede the incomplete and retry-dependent attempts noted above.
-The final keyboard-focused Alert candidates were inspected for both their
-semantic color pairs and visible focus rings.
+This is browser rendering given a recorded native response. Android resource
+lookup, real wallpaper event delivery, every possible custom palette and OEM
+coverage are outside this verification scope.
