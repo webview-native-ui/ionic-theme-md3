@@ -56,8 +56,11 @@ const routes = [
 ].sort(() => Math.random() - 0.5);
 
 const prepareScreenShot = async (page: Page, routeName: string) => {
-  await page.waitForTimeout(1000);
-  await page.waitForSelector('ion-content[role="main"]', { timeout: 10000 });
+  await expect(page.locator('ion-content[role="main"]')).toHaveClass(/hydrated/);
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+  });
   if (!routeName.includes(':')) {
     const scrollHeight = await page.locator('ion-content[role="main"]').evaluate(async (el: any) => {
       const scrollEl = await el.getScrollElement();
@@ -120,7 +123,22 @@ for (const mode of ['light', 'dark'] as const) {
           const type = route.name.split(':')[1];
           const select = page.locator(`app-select ion-select.select-${type}`);
           await expect(select).toHaveJSProperty('interface', type);
-          await select.click();
+          const presentEvents: Record<string, string> = {
+            alert: 'ionAlertDidPresent',
+            'action-sheet': 'ionActionSheetDidPresent',
+            popover: 'ionPopoverDidPresent',
+            modal: 'ionModalDidPresent',
+          };
+          await Promise.all([
+            page.evaluate(
+              (eventName) =>
+                new Promise<void>((resolve) => {
+                  document.addEventListener(eventName, () => resolve(), { once: true });
+                }),
+              presentEvents[type],
+            ),
+            select.click(),
+          ]);
           await expect(page.locator(`ion-${type}:not(.overlay-hidden)`)).toBeVisible();
           if (type === 'alert') {
             // Capture an actual pointer-selected state, rather than version-specific initial dialog focus.

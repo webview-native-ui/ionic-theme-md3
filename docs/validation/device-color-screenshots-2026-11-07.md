@@ -51,6 +51,18 @@ The chosen recorded scheme retains readable foregrounds in the inspected states.
 No remaining missing assignment or incorrect pair was found within this scope.
 This does not establish every possible custom palette, control state or OEM scheme.
 
+## Capture readiness
+
+Captures wait for hydrated content, loaded fonts and two animation frames instead
+of sleeping for one second per image. Select triggers wait for the public overlay
+`DidPresent` event before selecting a radio option. This ensures the overlay's
+initial focus work completes before the pointer selection is captured.
+
+The first [CI regeneration attempt](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42338159934)
+reached the ten-minute job limit during Ionic 8 comparison. It did not commit
+baselines and is not counted as successful CI validation. CI now emits per-case
+list output alongside the HTML report so any comparison failure is identifiable.
+
 ## Verification status
 
 - Initial local Chromium candidate run: all 88 added cases passed.
@@ -58,6 +70,9 @@ This does not establish every possible custom palette, control state or OEM sche
   Alert pointer selection explicit, both affected cases were regenerated and passed.
 - Linux Ionic 8: final 229 cases passed against the same candidates without updating
   images (172 screenshot cases and 57 existing non-screenshot cases).
+- Readiness changes: 229 Ionic 8 cases passed with CI-like two-worker execution
+  in 2.2 minutes; all eight affected Select cases passed again after adding the
+  presentation-event wait. The 88 Ionic 9 device cases passed in 23.6 seconds.
 - Theme build, formatting and focused E2E TypeScript checking passed.
 - The initial cross-version comparison caught only a Select Alert initial-focus
   outline difference. Capturing an actual pointer-selected option makes the states
