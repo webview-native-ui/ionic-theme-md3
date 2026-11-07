@@ -98,3 +98,16 @@ claimed as a clean final acceptance result.
 Candidate images are kept outside the repository during review. Repository baseline
 updates should use the PR `/update-screenshots` CI, generating with Ionic 9 and
 comparing the same images with Ionic 8.
+
+## Final CI result
+
+The [final image-update CI](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42341326054)
+passed all 229 cases on both Ionic 9 (2.8 minutes) and Ionic 8 (3.2 minutes), with
+no flaky cases or retries reported. It generated the baselines with Ionic 9 and
+compared them unchanged with Ionic 8. The final image commit is `b035351` on PR #59.
+
+The suite contains 172 screenshot cases: 84 Ionic-default screens and 88
+device-color/update/active-pin screens, alongside 57 existing functional cases.
+These results supersede the incomplete and retry-dependent attempts noted above.
+The final keyboard-focused Alert candidates were inspected for both their
+semantic color pairs and visible focus rings.
