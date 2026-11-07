@@ -8,33 +8,23 @@ ion-toggle.md:not(.md3-disabled) {
   --handle-box-shadow: none;
   --handle-spacing: 2px;
   --handle-transition: transform var(--token-expressive-default-special), background-color var(--token-expressive-default-effects);
-  --track-background: var(--ion-background-color-step-100, #e6e0e9);
-  --handle-background: var(--ion-text-color-step-450, #79747e);
 
   &::part(track) {
     box-sizing: border-box;
     min-height: 32px;
     min-width: 52px;
-    border: 2px solid var(--ion-text-color-step-450, #79747e);
+    border-width: 2px;
+    border-style: solid;
   }
 
-  &.toggle-checked {
-    --track-background-checked: var(--ion-color-base);
-    --handle-background-checked: var(--ion-color-contrast);
+  // Explicit Ionic palettes retain the neutral off-state border.
+  &.ion-color:not(.toggle-checked)::part(track) {
+    border-color: var(--ion-text-color-step-450, #79747e);
+  }
 
+  &.ion-color.toggle-checked {
     &::part(track) {
       border-color: var(--ion-color-base);
-    }
-  }
-
-  &:not(.ion-color) {
-    &.toggle-checked {
-      --track-background-checked: var(--ion-color-primary);
-      --handle-background-checked: var(--ion-color-primary-contrast);
-
-      &::part(track) {
-        border-color: var(--ion-color-primary);
-      }
     }
   }
 }

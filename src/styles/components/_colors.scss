@@ -290,6 +290,17 @@ ion-alert.md:where(:not(.md3-disabled)) .alert-button-role-destructive {
   color: #{md3.color(on-error)};
 }
 
+// Ionic's scoped focused-button background must not replace semantic filled pairs.
+ion-alert.md:where(:not(.md3-disabled)) .alert-button-role-preferred.ion-focused {
+  background: #{md3.color(primary)};
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
+ion-alert.md:where(:not(.md3-disabled)) .alert-button-role-destructive.ion-focused {
+  background: #{md3.color(error)};
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
 ion-action-sheet.md:where(:not(.md3-disabled)) {
   --background: var(--md-sys-color-surface-container-low, var(--ion-overlay-background-color, var(--ion-background-color, #fff)));
   --color: var(--md-sys-color-on-surface-variant, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54));
