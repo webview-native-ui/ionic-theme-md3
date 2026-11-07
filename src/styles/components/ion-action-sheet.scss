@@ -13,5 +13,11 @@ ion-action-sheet.md:not(.md3-disabled) {
     .action-sheet-button {
       padding: 12px 24px;
     }
+
+    .action-sheet-preferred {
+      margin-inline: 24px;
+      width: calc(100% - 48px);
+      border-radius: 999px;
+    }
   }
 }

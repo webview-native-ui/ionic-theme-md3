@@ -279,9 +279,14 @@ ion-alert.md:not(.md3-disabled) .alert-message {
 }
 
 ion-alert.md:not(.md3-disabled) .alert-button {
+  background: transparent;
+  color: #{md3.color(on-surface)};
+  border-color: transparent;
+}
+
+ion-alert.md:not(.md3-disabled) .alert-button-role-preferred {
   background: #{md3.color(primary)};
   color: #{md3.color(on-primary)};
-  border-color: transparent;
 }
 
 ion-alert.md:not(.md3-disabled) .alert-button-role-cancel {
@@ -303,6 +308,14 @@ ion-action-sheet.md:not(.md3-disabled) {
 
 ion-action-sheet.md:not(.md3-disabled) .action-sheet-title {
   color: #{md3.color(on-surface-variant)};
+}
+
+ion-action-sheet.md:not(.md3-disabled) .action-sheet-preferred {
+  --button-background: #{md3.color(primary)};
+  --button-color: #{md3.color(on-primary)};
+  --button-color-hover: #{md3.color(on-primary)};
+  --button-color-focused: #{md3.color(on-primary)};
+  --button-color-activated: #{md3.color(on-primary)};
 }
 
 ion-action-sheet.md:not(.md3-disabled) .action-sheet-destructive {

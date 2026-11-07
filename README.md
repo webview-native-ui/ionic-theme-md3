@@ -10,7 +10,7 @@ A CSS/JS theme library that applies Material Design 3 design system to Ionic app
 
 DEMO is here: https://ionic-theme-md3.rdlabo.dev/
 
-Designed for compatibility with `@rdlabo/ionic-theme-ios26`, so one markup tree can style both Ionic modes.
+Designed for compatibility with `@rdlabo/ionic-theme-ios27`, so one markup tree can style both Ionic modes.
 
 ## Installation
 
@@ -72,34 +72,34 @@ Use this markup to preview the inset grouped list look. For the list structure t
 </ion-list>
 ```
 
-### Optional: use the MD3 and iOS 26 themes together
+### Optional: use the MD3 and iOS 27 themes together
 
-Install the iOS 26 theme to style both Ionic modes from the same application.
+Install the iOS 27 theme to style both Ionic modes from the same application.
 
 The current releases of both themes require `@ionic/core` 8.8.1 or later. Upgrade Ionic before using this setup if your application is on 8.8.0 or earlier.
 
 ```bash
-npm install @rdlabo/ionic-theme-ios26
+npm install @rdlabo/ionic-theme-ios27
 ```
 
 When your global stylesheet uses Sass, initialize the themes in this order:
 
 ```scss
-@use '@rdlabo/ionic-theme-ios26/src/styles/default-variables.scss' as ios26-vars;
-@use '@rdlabo/ionic-theme-ios26/src/styles/ionic-theme-ios26.scss';
-@use '@rdlabo/ionic-theme-ios26/src/styles/ionic-theme-ios26-dark-class.scss';
-@use '@rdlabo/ionic-theme-ios26/src/styles/md-remove-ios-class-effect.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/default-variables.scss' as ios27-vars;
+@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios27.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios27-dark-class.scss';
+@use '@rdlabo/ionic-theme-ios27/src/styles/md-remove-ios-class-effect.scss';
 @use '@rdlabo/ionic-theme-md3/dist/css/default-variables.css' as md3-vars;
 @use '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
 ```
 
-The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 26 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios26-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
+The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 27 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios27-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
 
 Configure both transition implementations when both themes are installed:
 
 ```ts
 import { isPlatform } from '@ionic/core'; // or @ionic/angular (Ionic 9), @ionic/angular/standalone (Ionic 8), @ionic/react, @ionic/vue
-import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios26';
+import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios27';
 import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
 
 // Angular
@@ -130,7 +130,7 @@ createApp(App)
 
 ## Documentation
 
-- [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 26 and MD3.
+- [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
 - [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.
 - [ESLint](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/eslint) — check list structure with ESLint rules.
 - [Migration](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/migration) — changes required when updating theme markup.
@@ -141,7 +141,7 @@ If you need a more comprehensive Material Design 3 implementation, you may also 
 
 - **[md3-for-ionic](https://github.com/danielkleebinder/md3-for-ionic)** by danielkleebinder
 
-> **Note:** This theme is purpose-built for compatibility with Ionic's design approach and `@rdlabo/ionic-theme-ios26`; it is not intended as a strict, full MD3 recreation.
+> **Note:** This theme is purpose-built for compatibility with Ionic's design approach and `@rdlabo/ionic-theme-ios27`; it is not intended as a strict, full MD3 recreation.
 
 <!-- rdlabo-docs-omit -->
 

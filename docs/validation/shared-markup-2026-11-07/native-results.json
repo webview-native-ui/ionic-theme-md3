@@ -1,0 +1,134 @@
+{
+  "light-alert": {
+    "buttons": [
+      {
+        "text": "Details",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(48, 50, 59)",
+        "x": 72,
+        "y": 449.6190490722656,
+        "width": 267.4285888671875,
+        "height": 41.52381134033203
+      },
+      {
+        "text": "Continue",
+        "background": "rgb(78, 94, 139)",
+        "color": "rgb(249, 248, 255)",
+        "x": 72,
+        "y": 499.1428527832031,
+        "width": 267.4285888671875,
+        "height": 41.52381134033203
+      },
+      {
+        "text": "Cancel",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(78, 94, 139)",
+        "x": 72,
+        "y": 548.6666870117188,
+        "width": 267.4285888671875,
+        "height": 41.52381134033203
+      }
+    ],
+    "dpr": 2.625,
+    "dismissal": "preferred"
+  },
+  "light-action-sheet": {
+    "buttons": [
+      {
+        "text": "Details",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(48, 50, 59)",
+        "x": 0,
+        "y": 734.2857055664062,
+        "width": 411.4285888671875,
+        "height": 52
+      },
+      {
+        "text": "Continue",
+        "background": "rgb(78, 94, 139)",
+        "color": "rgb(249, 248, 255)",
+        "x": 24,
+        "y": 786.2857055664062,
+        "width": 363.4285888671875,
+        "height": 52
+      },
+      {
+        "text": "Cancel",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(48, 50, 59)",
+        "x": 0,
+        "y": 838.2857055664062,
+        "width": 411.4285888671875,
+        "height": 52
+      }
+    ],
+    "dpr": 2.625,
+    "dismissal": "preferred"
+  },
+  "dark-alert": {
+    "buttons": [
+      {
+        "text": "Details",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(228, 229, 240)",
+        "x": 72,
+        "y": 449.6190490722656,
+        "width": 267.4285888671875,
+        "height": 41.52381134033203
+      },
+      {
+        "text": "Continue",
+        "background": "rgb(186, 197, 238)",
+        "color": "rgb(51, 63, 97)",
+        "x": 72,
+        "y": 499.1428527832031,
+        "width": 267.4285888671875,
+        "height": 41.52381134033203
+      },
+      {
+        "text": "Cancel",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(186, 197, 238)",
+        "x": 72,
+        "y": 548.6666870117188,
+        "width": 267.4285888671875,
+        "height": 41.52381134033203
+      }
+    ],
+    "dpr": 2.625,
+    "dismissal": "preferred"
+  },
+  "dark-action-sheet": {
+    "buttons": [
+      {
+        "text": "Details",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(228, 229, 240)",
+        "x": 0,
+        "y": 734.2857055664062,
+        "width": 411.4285888671875,
+        "height": 52
+      },
+      {
+        "text": "Continue",
+        "background": "rgb(186, 197, 238)",
+        "color": "rgb(51, 63, 97)",
+        "x": 24,
+        "y": 786.2857055664062,
+        "width": 363.4285888671875,
+        "height": 52
+      },
+      {
+        "text": "Cancel",
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(228, 229, 240)",
+        "x": 0,
+        "y": 838.2857055664062,
+        "width": 411.4285888671875,
+        "height": 52
+      }
+    ],
+    "dpr": 2.625,
+    "dismissal": "preferred"
+  }
+}
