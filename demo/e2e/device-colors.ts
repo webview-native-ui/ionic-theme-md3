@@ -159,3 +159,12 @@ export const sendCompatibilityDeviceColors = async (page: Page, mode: 'light' | 
     .poll(() => page.evaluate(() => (window as unknown as { __deviceColors: { reads: number } }).__deviceColors.reads))
     .toBeGreaterThan(1);
 };
+
+export const expectDeviceAlertFocusColors = async (page: Page, mode: 'light' | 'dark', preferred = false) => {
+  const roles = scheme[mode];
+  const rgb = (hex: string) => `rgb(${[1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)).join(', ')})`;
+  const button = page.locator(`ion-alert .alert-button-role-${preferred ? 'preferred' : 'destructive'}.ion-focused`);
+  await expect(button).toHaveCSS('background-color', rgb(preferred ? roles.primary : roles.error));
+  await expect(button).toHaveCSS('color', rgb(preferred ? roles.onPrimary : roles.onError));
+  await expect(button).toHaveCSS('box-shadow', new RegExp('inset'));
+};

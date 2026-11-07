@@ -32,6 +32,13 @@ than optional-role styles. Searchbar retained its old background, text and icon
 colors; Toggle checked-thumb and track-border colors could mask Material roles;
 Range's pin background retained an older neutral value.
 
+CI also exposed an existing one-button Alert focus race. Ionic's scoped
+`.ion-focused` background could replace the filled destructive surface with gray
+while retaining its contrast foreground, producing a dark gray/black pair in
+Ionic-only dark mode. Focused preferred/destructive actions now retain their role
+pairs and gain a visible inset focus ring. Their screenshot scenes explicitly
+exercise keyboard focus; native scenes also assert the raw role pair.
+
 Color ownership now remains in the color stylesheet. Shape styles keep dimensions,
 borders and geometry; explicit Ionic Toggle palettes retain their neutral off-state
 border and selected palette border. No native acquisition or conversion algorithm
@@ -63,6 +70,12 @@ reached the ten-minute job limit during Ionic 8 comparison. It did not commit
 baselines and is not counted as successful CI validation. CI now emits per-case
 list output alongside the HTML report so any comparison failure is identifiable.
 
+The [second CI attempt](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42339946715)
+committed 88 additional baselines and eight changed existing images. Ionic 9 passed
+229 cases; Ionic 8 passed 228 directly with one flaky existing dark Alert case.
+That retry-dependent result motivated the Alert focus correction above and is not
+claimed as a clean final acceptance result.
+
 ## Verification status
 
 - Initial local Chromium candidate run: all 88 added cases passed.
@@ -73,6 +86,10 @@ list output alongside the HTML report so any comparison failure is identifiable.
 - Readiness changes: 229 Ionic 8 cases passed with CI-like two-worker execution
   in 2.2 minutes; all eight affected Select cases passed again after adding the
   presentation-event wait. The 88 Ionic 9 device cases passed in 23.6 seconds.
+- Focus regression: eight keyboard-focused appearance/role states were verified
+  three times each without updating images and with retries disabled. All 24
+  passed on each Ionic version; background/foreground roles and the inset focus
+  ring were also asserted on device-color scenes.
 - Theme build, formatting and focused E2E TypeScript checking passed.
 - The initial cross-version comparison caught only a Select Alert initial-focus
   outline difference. Capturing an actual pointer-selected option makes the states
