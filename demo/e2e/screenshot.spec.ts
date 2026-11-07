@@ -91,6 +91,7 @@ test.describe('Screenshot Tests - All Routes', () => {
       await prepareScreenShot(page, route.name);
       await expect(page).toHaveScreenshot(`${route.name}.png`, {
         fullPage: true,
+        threshold: route.name === 'searchbar' ? 0.05 : 0.2,
         animations: 'disabled',
         mask: [page.locator('ion-spinner')],
       });
@@ -110,6 +111,7 @@ test.describe('Screenshot Tests - Dark Mode', () => {
       await prepareScreenShot(page, route.name);
       await expect(page).toHaveScreenshot(`${route.name}-dark.png`, {
         fullPage: true,
+        threshold: route.name === 'searchbar' ? 0.05 : 0.2,
         animations: 'disabled',
         mask: [page.locator('ion-spinner')],
       });
