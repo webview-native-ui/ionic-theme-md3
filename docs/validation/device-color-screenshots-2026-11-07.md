@@ -48,8 +48,10 @@ passed 229 cases per Ionic version without flaky cases or retries. The
 also passed all 229 test cases per version. Its separate report-publication check
 was affected by GitHub Pages file-sync delays.
 
-The combined suite consists of the base's 141 cases (84 normal screenshots and
-57 functional cases), plus #59's 88 colored screenshots. Baselines were produced
+The current combined suite consists of the base's 143 cases (84 normal screenshots
+and 59 functional cases, including the restored Searchbar fallback checks), plus
+#59's 88 colored screenshots: 231 cases. The earlier CI links above record the
+229-case suite before those two new base checks. Baselines were produced
 through `/update-screenshots` CI. Separation changes ownership and documentation;
 combined runtime, test behavior and image bytes are preserved.
 
