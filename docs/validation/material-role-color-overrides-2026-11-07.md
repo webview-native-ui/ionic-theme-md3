@@ -5,6 +5,8 @@ This change is separate from the device-colored screenshot addition in PR #59.
 ## Fixes
 
 - Searchbar shape styles no longer override background, text and icon roles.
+  Without an optional surface role, retain the existing 8% neutral background
+  instead of using the page background; a supplied surface role takes precedence.
 - Toggle geometry no longer overrides checked-thumb/track role colors. Explicit
   Ionic palettes retain their neutral off-state and selected-palette borders.
 - Range shape styles no longer override knob/pin colors.
