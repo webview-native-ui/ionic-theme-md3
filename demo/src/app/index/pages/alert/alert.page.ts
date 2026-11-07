@@ -57,7 +57,12 @@ export class AlertPage implements OnInit {
 
   async present(type: (typeof alertTypes)[number]) {
     const applyConfig = ((type) => {
-      if (type === 'button-only') {
+      if (type === 'preferred') {
+        return {
+          ...alertUtil(),
+          buttons: [{ text: 'Details' }, { text: 'Continue', role: 'preferred' }, { text: 'Cancel', role: 'cancel' }],
+        };
+      } else if (type === 'button-only') {
         return {
           ...alertUtil(),
           header: undefined,

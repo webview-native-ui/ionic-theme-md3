@@ -53,7 +53,7 @@ export class ModalPage implements OnInit {
 
   constructor() {
     effect(async () => {
-      if (this.#params()?.['type']) {
+      if (!this.isModal() && this.#params()?.['type']) {
         await this.present(this.#params()?.['type']);
       }
     });

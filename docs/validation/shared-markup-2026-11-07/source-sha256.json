@@ -1,0 +1,9 @@
+{
+  "src/styles/components/_colors.scss": "a05a53c1088613761eb623f059c33fc7cb7271d6809e8ad5ea04ed2b0c55b018",
+  "src/styles/components/ion-action-sheet.scss": "ef5b5646de4d40ee831e77230c145b4a70de7de0788efa05e5cecea5c407cf75",
+  "demo/src/app/overlay-types.ts": "02a9632ff7a82248efa83f9d289616f5f26a2301ad978320cb33815cbadd28dd",
+  "demo/src/app/index/pages/alert/alert.page.ts": "03d3f0ed17756e851aea61d94a0ae0a2108fcb2bf6dcfa91ec5f7769724500e8",
+  "demo/src/app/index/pages/alert/alert.page.html": "bf863db0bdaae0915d2eb299a8ab06d652600129b9b96cff9c3d19111b5a57e9",
+  "demo/src/app/index/pages/action-sheet/action-sheet.page.ts": "5618633e8f8aa8badb5d2fce29cc53d9a20870a723334d07140613ce9a015ab5",
+  "demo/src/app/index/pages/action-sheet/action-sheet.page.html": "61ed80f62f1546fe6188a05211b8b5ee13442328ed60d7c223f09d30de89a5e9"
+}

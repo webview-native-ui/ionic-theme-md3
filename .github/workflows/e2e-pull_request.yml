@@ -55,6 +55,9 @@ jobs:
         run: npm install --no-save --package-lock=false @ionic/angular@${{ matrix.ionic-version }} @ionic/core@${{ matrix.ionic-version }} @rdlabo/eslint-plugin-rules@21.3.0
         working-directory: './demo'
 
+      - name: Verify dynamic color conversion and lifecycle
+        run: npm run test:dynamic-colors
+
       - name: Run Playwright tests
         run: |
           if [ "${{ matrix.ionic-major }}" = "8" ]; then

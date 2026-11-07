@@ -1,0 +1,83 @@
+{
+  "dpr": 2,
+  "landscape-light": {
+    "settings": {
+      "page": "#eeedf6",
+      "row": "#faf8fe",
+      "firstBand": [
+        282,
+        426
+      ],
+      "left": 32,
+      "radiusPhysical": 40.733200530681515
+    },
+    "demo": {
+      "page": "#eeedf6",
+      "row": "rgb(250, 248, 254)",
+      "radiusCSS": "20px",
+      "radiusPhysical": 41.107935318735024,
+      "sampledRow": "#faf8fe"
+    },
+    "pageMatches": true
+  },
+  "landscape-dark": {
+    "settings": {
+      "page": "#181920",
+      "row": "#2a2c34",
+      "firstBand": [
+        282,
+        426
+      ],
+      "left": 32,
+      "radiusPhysical": 40.874507866387546
+    },
+    "demo": {
+      "page": "#181920",
+      "row": "rgb(42, 44, 52)",
+      "radiusCSS": "20px",
+      "radiusPhysical": 41.107935318735024,
+      "sampledRow": "#2a2c34"
+    },
+    "pageMatches": true
+  },
+  "portrait-light": {
+    "settings": {
+      "page": "#eeedf6",
+      "row": "#faf8fe",
+      "firstBand": [
+        282,
+        426
+      ],
+      "left": 32,
+      "radiusPhysical": 40.733200530681515
+    },
+    "demo": {
+      "page": "#eeedf6",
+      "row": "rgb(250, 248, 254)",
+      "radiusCSS": "20px",
+      "radiusPhysical": 40.733200530681515,
+      "sampledRow": "#faf8fe"
+    },
+    "pageMatches": true
+  },
+  "portrait-dark": {
+    "settings": {
+      "page": "#181920",
+      "row": "#2a2c34",
+      "firstBand": [
+        282,
+        426
+      ],
+      "left": 32,
+      "radiusPhysical": 40.874507866387546
+    },
+    "demo": {
+      "page": "#181920",
+      "row": "rgb(42, 44, 52)",
+      "radiusCSS": "20px",
+      "radiusPhysical": 40.733200530681515,
+      "sampledRow": "#2a2c34"
+    },
+    "pageMatches": true
+  }
+}

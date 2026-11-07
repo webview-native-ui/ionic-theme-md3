@@ -1,0 +1,104 @@
+{
+  "landscape": {
+    "before": {
+      "width": 1280,
+      "height": 800,
+      "screen": {
+        "width": 1280,
+        "height": 800
+      },
+      "visual": {
+        "height": 800,
+        "offsetTop": 0
+      },
+      "alert": {
+        "x": 224,
+        "y": 291.25,
+        "width": 832,
+        "height": 217.5,
+        "bottom": 508.75
+      },
+      "focused": "DIV"
+    },
+    "after": {
+      "width": 1280,
+      "height": 424,
+      "screen": {
+        "width": 1280,
+        "height": 800
+      },
+      "visual": {
+        "height": 424,
+        "offsetTop": 0
+      },
+      "alert": {
+        "x": 224,
+        "y": 103.25,
+        "width": 832,
+        "height": 217.5,
+        "bottom": 320.75
+      },
+      "focused": "INPUT"
+    },
+    "overrides": {
+      "--width": 400,
+      "--max-width": 400
+    },
+    "cssClassOverrides": {
+      "native-review-width": 400,
+      "native-review-max": 400
+    },
+    "ime": "      mInputShown=true"
+  },
+  "portrait": {
+    "before": {
+      "width": 800,
+      "height": 1280,
+      "screen": {
+        "width": 800,
+        "height": 1280
+      },
+      "visual": {
+        "height": 1280,
+        "offsetTop": 0
+      },
+      "alert": {
+        "x": 60,
+        "y": 531.25,
+        "width": 680,
+        "height": 217.5,
+        "bottom": 748.75
+      },
+      "focused": "DIV"
+    },
+    "after": {
+      "width": 800,
+      "height": 904,
+      "screen": {
+        "width": 800,
+        "height": 1280
+      },
+      "visual": {
+        "height": 904,
+        "offsetTop": 0
+      },
+      "alert": {
+        "x": 60,
+        "y": 343.25,
+        "width": 680,
+        "height": 217.5,
+        "bottom": 560.75
+      },
+      "focused": "INPUT"
+    },
+    "overrides": {
+      "--width": 400,
+      "--max-width": 400
+    },
+    "cssClassOverrides": {
+      "native-review-width": 400,
+      "native-review-max": 400
+    },
+    "ime": "      mInputShown=true"
+  }
+}

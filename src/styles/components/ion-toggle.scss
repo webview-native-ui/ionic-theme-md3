@@ -1,3 +1,5 @@
+@use '../utils/colors' as md3;
+
 ion-toggle.md:not(.md3-disabled) {
   --handle-width: 24px;
   --handle-height: 24px;
@@ -33,6 +35,19 @@ ion-toggle.md:not(.md3-disabled) {
       &::part(track) {
         border-color: var(--ion-color-primary);
       }
+    }
+  }
+}
+
+// Used only by the optional applyToggleStateIcons() enhancement.
+ion-toggle.md:not(.md3-disabled) {
+  --md3-toggle-state-icon-color: #{md3.color(surface-container-highest)};
+
+  &.toggle-checked {
+    --md3-toggle-state-icon-color: #{md3.color(primary)};
+
+    &.ion-color {
+      --md3-toggle-state-icon-color: var(--ion-color-base);
     }
   }
 }

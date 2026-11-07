@@ -1,12 +1,12 @@
 ion-fab.md:not(.md3-disabled) {
-  ion-fab-button {
+  ion-fab-button:not(.md3-disabled) {
     width: 56px;
     height: 56px;
     --border-radius: 16px;
     --transition: border-radius var(--token-expressive-fast-special);
     --box-shadow: var(--token-elevation-3);
 
-    ion-icon {
+    ion-icon:not(.md3-disabled) {
       width: 24px;
       height: 24px;
     }
@@ -29,8 +29,8 @@ ion-fab.md:not(.md3-disabled) {
     }
   }
 
-  &:has(.fab-button-small) {
-    ion-fab-button {
+  &:has(.fab-button-small:not(.md3-disabled)) {
+    ion-fab-button:not(.md3-disabled) {
       width: 40px;
       height: 40px;
     }

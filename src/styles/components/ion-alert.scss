@@ -1,16 +1,66 @@
-ion-alert.md:not(.md3-disabled) {
-  --backdrop-opacity: 0.2;
+// Allow normal ion-alert.custom-class rules to override public sizing.
+ion-alert.md:where(:not(.md3-disabled)) {
   --min-width: 280px;
   --max-width: min(560px, calc(100% - 48px * 2));
+
+  // Android 17 Settings uses 85% of portrait width and 65% in landscape.
+  // Keep width and maximum independent so Ionic application overrides still win.
+  @media (min-width: 768px) and (min-height: 600px) {
+    --max-width: 85vw;
+    --width: 85vw;
+
+    @media (orientation: landscape) {
+      --max-width: 65vw;
+      --width: 65vw;
+    }
+  }
+
+  // Android's IME resizes the viewport, but not the CSS screen dimensions.
+  // Use device orientation for wide tablet windows so typing does not resize the dialog.
+  :where(html.plt-android) & {
+    @media (min-width: 768px) and (min-device-width: 600px) and (min-device-height: 600px) {
+      --width: 85vw;
+      --max-width: 85vw;
+
+      @media (min-device-aspect-ratio: 1/1) {
+        --width: 65vw;
+        --max-width: 65vw;
+      }
+    }
+  }
+}
+
+ion-alert.md:not(.md3-disabled) {
+  --backdrop-opacity: 0.2;
   transition: transform 200ms ease;
 
   .alert-wrapper {
-    border-radius: 24px;
+    border-radius: 28px;
     box-shadow: var(--token-elevation-3);
 
     .alert-head {
       padding-top: 24px;
       padding-bottom: 16px;
+    }
+
+    .alert-button-group {
+      padding: 0 24px 24px;
+      column-gap: 8px;
+      row-gap: 8px;
+    }
+
+    .alert-button {
+      min-height: 40px;
+      min-width: 64px;
+      margin: 0;
+      padding: 0 16px;
+      border-width: 1px;
+      border-style: solid;
+      border-radius: 999px;
+    }
+
+    .alert-button .alert-button-inner {
+      justify-content: center;
     }
 
     .alert-message {

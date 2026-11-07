@@ -1,0 +1,110 @@
+{
+  "landscape-light": {
+    "reference": {
+      "display": [
+        2560,
+        1600
+      ],
+      "fill": "#e7e7f1",
+      "boundsPhysical": {
+        "x": 448,
+        "y": 607,
+        "width": 1664,
+        "height": 369
+      },
+      "widthCSS": 832,
+      "radiusApproxCSS": 28.143650760992955
+    },
+    "demo": {
+      "boundsPhysical": {
+        "x": 448,
+        "y": 503,
+        "width": 1664,
+        "height": 594
+      },
+      "widthCSS": 832,
+      "radiusApproxCSS": 28.143650760992955
+    }
+  },
+  "landscape-dark": {
+    "reference": {
+      "display": [
+        2560,
+        1600
+      ],
+      "fill": "#1e1f26",
+      "boundsPhysical": {
+        "x": 448,
+        "y": 607,
+        "width": 1664,
+        "height": 369
+      },
+      "widthCSS": 832,
+      "radiusApproxCSS": 28.143650760992955
+    },
+    "demo": {
+      "boundsPhysical": {
+        "x": 448,
+        "y": 503,
+        "width": 1664,
+        "height": 594
+      },
+      "widthCSS": 832,
+      "radiusApproxCSS": 28.143650760992955
+    }
+  },
+  "portrait-light": {
+    "reference": {
+      "display": [
+        1600,
+        2560
+      ],
+      "fill": "#e7e7f1",
+      "boundsPhysical": {
+        "x": 120,
+        "y": 1087,
+        "width": 1360,
+        "height": 369
+      },
+      "widthCSS": 680,
+      "radiusApproxCSS": 28.143650760992955
+    },
+    "demo": {
+      "boundsPhysical": {
+        "x": 120,
+        "y": 983,
+        "width": 1360,
+        "height": 594
+      },
+      "widthCSS": 680,
+      "radiusApproxCSS": 28.143650760992955
+    }
+  },
+  "portrait-dark": {
+    "reference": {
+      "display": [
+        1600,
+        2560
+      ],
+      "fill": "#1e1f26",
+      "boundsPhysical": {
+        "x": 120,
+        "y": 1087,
+        "width": 1360,
+        "height": 369
+      },
+      "widthCSS": 680,
+      "radiusApproxCSS": 28.143650760992955
+    },
+    "demo": {
+      "boundsPhysical": {
+        "x": 120,
+        "y": 983,
+        "width": 1360,
+        "height": 594
+      },
+      "widthCSS": 680,
+      "radiusApproxCSS": 28.04983443527075
+    }
+  }
+}

@@ -4,11 +4,53 @@ title: Special markup
 
 # Special markup
 
-Most Ionic markup works without changes. The combinations below are explicit opt-ins and are useful when the same template also uses `@rdlabo/ionic-theme-ios26`.
+Most Ionic markup works without changes. Shared markup carries the same meaning in
+`@rdlabo/ionic-theme-ios27` and this theme; its appearance follows the active platform.
+Android Settings is the MD3 visual reference. Shared markup does not request an iOS
+Glass appearance on Android.
+
+## Submit buttons
+
+Use `type="submit"` for a real form submission. If submitting through a form is not
+possible, `type="button" class="button-submit"` identifies the equivalent action;
+the class only describes appearance and does not submit, validate, or install a handler.
+For a filled primary action, use Ionic's public `fill="solid"`. MD3 already renders
+solid buttons using the palette's base/contrast pair, so these two forms share the
+same Android appearance without an additional effect or JavaScript helper.
+
+```html preview
+<ion-button type="submit" fill="solid" color="primary">Submit</ion-button>
+<ion-button type="button" class="button-submit" fill="solid" color="primary">Continue</ion-button>
+```
+
+Explicit Ionic colors, disabled state, and `fill="clear"` / `fill="outline"` keep their
+normal meaning. The class does not force a different fill.
+
+## Preferred overlay actions
+
+For alerts and action sheets, use `role: 'preferred'` for the recommended action,
+matching the iOS 27 theme's convention. MD3 gives it a filled primary surface and
+on-primary foreground, derived from the Ionic palette unless optional Material
+roles are supplied. Ordinary/default actions remain text actions; `confirm` alone
+does not request emphasis. Cancellation, selection, and destructive roles remain
+separate from recommendation.
+
+```ts
+buttons: [
+  { text: 'Cancel', role: 'cancel' },
+  { text: 'Continue', role: 'preferred' },
+];
+```
+
+This custom Ionic role does not select or invoke an action automatically. The
+button's handler runs normally and dismissal reports `preferred`; handle that
+role explicitly if the application inspects dismissal results. `cancel` retains
+Ionic cancellation behavior. Do not replace `cancel`, `selected`, or `destructive`
+with `preferred` just to change their color.
 
 ## Two-line inset list items
 
-Place an unslotted `ion-label` immediately alongside an unslotted `ion-note` to render a two-line item. Use `slot="end"` on `ion-note` when you want the standard trailing-note layout instead.
+Place an unslotted `ion-label` immediately alongside an unslotted `ion-note` to render a two-line item. Wrap inset items in `ion-item-group` and keep `ion-list-header` outside the group. Use `slot="end"` on `ion-note` when you want the standard trailing-note layout instead.
 
 ```html preview
 <ion-list inset="true">
@@ -54,6 +96,14 @@ This is an introductory group. Place regular list items in a separate `ion-item-
   </ion-item-group>
 </ion-list>
 ```
+
+## Platform-specific extensions
+
+The shared structure above works without platform-specific templates. iOS-only
+`segment-style-glass`, `searchbar-classic`, floating iPad sheets, and iOS tab-bar
+positioning are not Android appearance requirements. MD3 retains Ionic's segment,
+searchbar, modal, and tab-bar behavior. `.button-square` is an optional MD3 shape
+extension, not a required shared markup convention.
 
 ## Opting out
 
