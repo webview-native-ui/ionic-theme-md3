@@ -232,6 +232,7 @@ Opt into Material You colors with light, dark, or system appearance. See
 
 ## Color system
 
-The theme derives component colors from Ionic palettes alone. Additional Material
-roles are optional overrides. See [color system](docs/color-system.md) for the
+The theme preserves Ionic default color intent. Optional Material roles refine
+component colors, while explicit variants can derive additional colors from the
+Ionic palette. See [color system](docs/color-system.md) for the
 fallback rules, component assignments, and tonal/elevated/filled variants.

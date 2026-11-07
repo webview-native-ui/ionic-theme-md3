@@ -46,7 +46,8 @@ Native resume/configuration events, document resume/visibility, and browser
 appearance changes trigger refresh. Concurrent requests share a bridge read.
 Both schemes are fetched together; unchanged palettes skip conversion and
 unchanged properties skip CSS writes. Refresh errors preserve the last working
-palette and reach `onError`; initialization errors reject and clean up.
+palette. Automatic refresh failures reach `onError`; an explicit `theme.refresh()` rejects for the caller to handle.
+Initialization errors reject and clean up.
 There may be one controller per document. Call `destroy()` on application teardown.
 
 ## Mapping
@@ -96,11 +97,14 @@ fixed across OS changes. Browser E2E covers the same appearance policy. Unit tes
 cover changed palettes, resume/configuration notifications, in-flight invalidation,
 unchanged-update suppression, errors, and teardown.
 
-The expanded 46-role API was verified on the Android emulator: every native role
-matched its `--md-sys-color-*` value. Ionic 8 and 9 browser tests cover Ionic-only
+In that historical integration measurement, the expanded 46-role API was verified
+on the Android emulator: every native role matched its `--md-sys-color-*` value. Ionic 8 and 9 browser tests cover Ionic-only
 fallbacks, optional overrides, explicit color palettes, and per-component opt-outs;
-a separate test disables application JavaScript. Linux visual tests cover all 80
-light/dark demo screens, with shared palette-page snapshots verified on Ionic 8.
+a separate test disables application JavaScript. The
+[2026-11-07 screenshot-update CI](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42332891975)
+verified 141 tests on each of Ionic 8 and 9, including 84 light/dark screenshots.
+See [Ionic color inheritance review](validation/ionic-color-inheritance-2026-11-07.md)
+for the latest color-policy correction and its browser-only verification scope.
 
 A local WebView measurement of the expanded API (30 sequential native reads,
 1,000 warmed conversion iterations) gave approximately 9 ms median / 21 ms p90

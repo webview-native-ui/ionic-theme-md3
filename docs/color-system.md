@@ -64,6 +64,9 @@ pattern with an Ionic fallback.
 
 ## Component assignments
 
+The table lists optional Material role consumers. If a role is absent, the
+component retains the Ionic fallback described above.
+
 | Component / variant                          | Background                                                                      | Foreground / detail                                        |
 | -------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | filled button                                | primary                                                                         | on-primary                                                 |
@@ -79,11 +82,12 @@ pattern with an Ionic fallback.
 | ordinary list item                           | surface                                                                         | on-surface                                                 |
 | inset list item                              | surface-bright                                                                  | on-surface; transparent 2px gap                            |
 | navigation bar                               | surface-container                                                               | on-surface-variant; secondary-container selected indicator |
-| primary segment / tab                        | inherited surface                                                               | primary selected; on-surface-variant unselected            |
-| search field                                 | surface-container-high                                                          | on-surface; on-surface-variant icon/placeholder            |
+| segment                                      | inherited surface                                                               | primary selected; on-surface-variant unselected            |
+| search field                                 | surface-container-high                                                          | on-surface; on-surface-variant icon; Ionic placeholder behavior            |
 | switch, checkbox, radio, progress, slider    | neutral surface or secondary-container when off/inactive; primary when selected | matching on-primary, outline, or on-surface-variant        |
 | text input                                   | Ionic fill-state background                                        | on-surface; primary focus; error invalid state             |
-| modal / popover / action sheet               | surface-container-low                                                           | on-surface                                                 |
+| modal / popover                              | surface-container-low                                                           | Ionic text; nested components resolve their own roles       |
+| action sheet                                 | surface-container-low                                                           | on-surface action buttons; on-surface-variant title         |
 | alert / loading / datetime / picker          | surface-container-high                                                          | on-surface; primary actions                                |
 | snackbar/toast                               | inverse-surface                                                                 | inverse-on-surface; inverse-primary actions                |
 
@@ -109,11 +113,12 @@ information. When supplied, `surface-container` refines page/menu backgrounds an
 `surface-bright` refines inset rows. Without those roles, Ionic backgrounds remain
 unchanged. Groups retain 20px outer corners and 2px gaps. The assignments above
 name optional roles; they do not imply generated surface colors for omitted roles.
-Native optional roles replace this approximation directly in either case.
 
-Icon-only toolbar back buttons have a 40px tonal circle within a 56px touch target.
-An explicitly colored toolbar uses a transparent back-button background and Ionic's
-contrast foreground; override `--md3-back-background` to customize that paint.
+Icon-only toolbar back buttons retain a 56px touch target and geometry for a 40px circle.
+That circle is transparent by default; supplying `--md-sys-color-surface-container-highest`
+paints it. An explicitly colored toolbar retains a transparent back-button background
+and Ionic's contrast foreground. Set `--md3-back-background` on the back button to
+customize its paint.
 Switch thumbs retain their 24px size. CSS-only installation retains Ionic's normal
 thumb and its `enableOnOffLabels` API. Optional cross/check icons are described below.
 Component `md3-disabled` and explicit Ionic colors remain available.
@@ -150,7 +155,10 @@ The theme's colors and geometry work without this helper or a Capacitor plugin.
 For a range on an arbitrary HTML surface, set `--md3-range-gap-color` to that surface
 color; standard Ionic containers supply their background automatically.
 
-For tablet dialog sizing, measured colors and corners, keyboard behavior, and the exact review scope, see [Android 17 tablet review](validation/android17-tablet-2026-11-07.md).
+For measured tablet dialog sizing, corners, keyboard behavior, and the historical
+native reference captures, see [Android 17 tablet review](validation/android17-tablet-2026-11-07.md).
+For the subsequent Ionic-default color correction and its browser verification, see
+[Ionic color inheritance review](validation/ionic-color-inheritance-2026-11-07.md).
 
 ## Tablet Alert sizing
 

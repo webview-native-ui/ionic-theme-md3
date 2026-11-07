@@ -1,5 +1,12 @@
 # Android 17 tablet review — 2026-11-07
 
+Historical capture set: runtime source fingerprints below identify the revision
+measured here. The subsequent [Ionic color inheritance correction](ionic-color-inheritance-2026-11-07.md)
+changed ordinary fallback colors and back-button paint. These native captures
+have not been regenerated for that correction and must not be treated as pixel
+verification of the current theme. Tablet sizing and geometry evidence remains
+scoped to the measurements recorded here.
+
 Android 17 Settings is the current visual reference. Material guidelines remain supporting information; Ionic markup, sizing overrides, opt-outs, and modal behavior remain the application contract. This report supersedes the Android 16 reference for the tablet observations below, without relabeling earlier captures.
 
 ## Result and change
