@@ -112,7 +112,7 @@ supplied additional roles. Browser tests check both appearances, local Ionic
 changes, optional-role removal, explicit colors, opt-outs, and a document with
 application JavaScript disabled.
 
-Android 16 Settings is the visual reference; Material guidelines supply supporting
+Android 17 Settings is the visual reference; Material guidelines supply supporting
 information. Settings pages use `surface-container`, inset rows use `surface-bright`,
 and groups have 20px outer corners with 2px page-colored gaps. The CSS-only bright
 surface fallback uses relative OKLab color, preserving local Ionic background overrides
@@ -157,3 +157,25 @@ changes. `md3-disabled` and iOS mode suppress the enhancement. The demo's option
 The theme's colors and geometry work without this helper or a Capacitor plugin.
 For a range on an arbitrary HTML surface, set `--md3-range-gap-color` to that surface
 color; standard Ionic containers supply their background automatically.
+
+For tablet dialog sizing, measured colors and corners, keyboard behavior, and the exact review scope, see [Android 17 tablet review](validation/android17-tablet-2026-11-07.md).
+
+## Tablet Alert sizing
+
+Wide tablet Alerts follow the measured Android 17 Settings proportions: 85% in
+portrait and 65% in landscape. Android tablet typing keeps that width when the
+IME resizes the viewport. Phone-sized windows retain Ionic's content-sized layout.
+
+Use the public sizing properties to customize a dialog. For a controller-created
+Alert, set `cssClass: 'app-alert'` and place a component-qualified rule in the
+application's global stylesheet after the theme:
+
+```css
+ion-alert.app-alert {
+  --width: 400px;
+  --max-width: min(400px, calc(100vw - 32px));
+}
+```
+
+Inline style bindings work as well. The ordinary CSS minimum/maximum constraints
+still apply, and `md3-disabled` restores Ionic's own sizing defaults.

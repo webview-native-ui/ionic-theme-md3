@@ -1,0 +1,8 @@
+{
+  "ro.build.version.release": "17",
+  "ro.build.version.sdk": "37",
+  "ro.build.fingerprint": "google/sdk_gphone64_arm64/emu64a:17/CE2A.260420.051.A3/16571990:userdebug/dev-keys",
+  "ro.build.version.security_patch": "2026-08-05",
+  "size": "Physical size: 2560x1600",
+  "density": "Physical density: 320"
+}
