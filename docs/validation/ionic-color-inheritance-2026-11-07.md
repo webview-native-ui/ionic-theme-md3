@@ -24,9 +24,12 @@ this change was verified in Chromium with Ionic 9, not re-captured on Android.
 - Non-screenshot browser E2E: 57 passed, including tablet sizing/IME, explicit
   colors, opt-outs, mixed modes and overlay operations.
 - New tests compare eight ordinary components against their Ionic opt-out
-  counterparts, using local background/text/primary colors. They also check
+  counterparts, using local background/text/primary colors. Inset-item and
+  outline-chip variants are also covered; outline paint and border use computed
+  rendered colors rather than unused custom-property values. They also check
   partial Material role injection, role removal, a dedicated card background,
-  and a normal application CSS class override.
+  and normal application CSS class overrides on card and inset item (with and
+  without an optional surface role).
 - Both light/dark, at 411×891 and 1280×800 CSS pixels. These are browser viewport
   checks, not claims about Android hardware or OEM coverage.
 - Snapshot baselines are regenerated through the PR `/update-screenshots` CI.

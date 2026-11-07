@@ -132,7 +132,7 @@ ion-chip.md:where(:not(.md3-disabled):not(.ion-color)) ion-icon.md:where(:not(.m
 
 ion-chip.md:where(:not(.md3-disabled):not(.ion-color)).chip-outline {
   --background: transparent;
-  border-color: var(--md-sys-color-outline, var(--ion-text-color-step-450, #797979));
+  border-color: var(--md-sys-color-outline, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.32));
 }
 
 ion-chip.md:where(:not(.md3-disabled):not(.ion-color)).md3-selected {
@@ -156,7 +156,7 @@ ion-item.md:where(:not(.md3-disabled):not(.ion-color)) {
   );
 }
 
-ion-list.md.list-inset:not(.md3-disabled) ion-item.md:where(:not(.md3-disabled):not(.ion-color)) {
+:where(ion-list.md.list-inset:not(.md3-disabled)) ion-item.md:where(:not(.md3-disabled):not(.ion-color)) {
   --background: var(
     --md-sys-color-surface-bright,
     var(--md-sys-color-surface, var(--ion-item-background, var(--ion-background-color, #fff)))
