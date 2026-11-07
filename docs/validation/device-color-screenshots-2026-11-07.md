@@ -42,18 +42,21 @@ size. Checked surface/text combinations, accents/containers, explicit Ionic colo
 disabled states and visible overlay bodies. Long route sheets were checked for
 color/layout patterns; representative raw-role assertions provide exact pair checks.
 
-Before separation, [CI image generation and cross-version comparison](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42341326054)
-passed 229 cases per Ionic version without flaky cases or retries. The
-[latest combined-head normal CI](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42342196632)
-also passed all 229 test cases per version. Its separate report-publication check
-was affected by GitHub Pages file-sync delays.
+[CI regeneration and cross-version comparison](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42378795066)
+passed all 231 cases on Ionic 9 and all 231 on Ionic 8 without flaky cases.
+The suite consists of the base's 143 cases (84 normal screenshots and 59 functional
+cases), plus this PR's 88 colored screenshots. Baselines were regenerated with
+`--update-snapshots=all` through `/update-screenshots` CI; the shared command and
+stricter normal Searchbar comparison belong to #60.
 
-The current combined suite consists of the base's 143 cases (84 normal screenshots
-and 59 functional cases, including the restored Searchbar fallback checks), plus
-#59's 88 colored screenshots: 231 cases. The earlier CI links above record the
-229-case suite before those two new base checks. Baselines were produced
-through `/update-screenshots` CI. Separation changes ownership and documentation;
-combined runtime, test behavior and image bytes are preserved.
+After inheriting #60's final images, the #59 diff was checked again: no source CSS,
+normal-color PNG, shared capture setup or package/config changes remain. Two
+unrelated normal Select recaptures were excluded to match #60's retained baselines.
+All 88 colored images were reviewed again in light/dark contact sheets. Full-role
+and six-role compatibility Searchbars were also inspected at larger size: the
+optional surface and restored neutral fallback both remain visible. Background/
+foreground pairing, explicit Ionic colors, overlay bodies, focused actions and
+active Range pin colors showed no additional regression in this review.
 
 This is browser rendering given a recorded native response. Android resource
 lookup, real wallpaper event delivery, every possible custom palette and OEM
