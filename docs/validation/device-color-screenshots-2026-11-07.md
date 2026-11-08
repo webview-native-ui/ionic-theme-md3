@@ -6,9 +6,8 @@ PR #59 adds device-colored image regression coverage. Its prerequisite, PR #60,
 contains all common CSS fixes, normal-color screenshot changes and shared capture
 readiness/focus setup. Those changes are excluded from the #59 review diff.
 
-The PRs are stacked: #60 targets main; #59 targets the #60 branch. After #60 is
-merged, retarget #59 to main and verify the resulting head. Normal-color baselines
-remain unchanged relative to #59's base.
+PR #60 has been squash-merged. PR #59 now targets main and includes that merged
+main in its history. Normal-color baselines remain unchanged relative to main.
 
 ## Input and coverage
 
