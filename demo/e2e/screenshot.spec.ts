@@ -48,8 +48,22 @@ const routes = [
 ].sort(() => Math.random() - 0.5);
 
 const prepareScreenShot = async (page: Page, routeName: string) => {
-  await page.waitForTimeout(1000);
-  await page.waitForSelector('ion-content[role="main"]', { timeout: 10000 });
+  await expect(page.locator('ion-content[role="main"]')).toHaveClass(/hydrated/);
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+  });
+  if (routeName === 'alert:no-cancel' || routeName === 'alert:preferred') {
+    // Initial autofocus can precede Ionic's focus-visible listener. Exercise a real keyboard state.
+    const alert = page.locator('ion-alert:not(.overlay-hidden)');
+    const focused = alert.locator(routeName === 'alert:no-cancel' ? '.alert-button-role-destructive' : '.alert-button-role-preferred');
+    await expect(focused).toBeVisible();
+    await alert.locator('.alert-wrapper').focus();
+    await page.keyboard.press('Tab');
+    if (routeName === 'alert:preferred') await page.keyboard.press('Tab');
+    await expect(focused).toBeFocused();
+    await expect(focused).toHaveClass(/ion-focused/);
+  }
   if (!routeName.includes(':')) {
     const scrollHeight = await page.locator('ion-content[role="main"]').evaluate(async (el: any) => {
       const scrollEl = await el.getScrollElement();
@@ -68,6 +82,7 @@ test.describe('Screenshot Tests - All Routes', () => {
       await prepareScreenShot(page, route.name);
       await expect(page).toHaveScreenshot(`${route.name}.png`, {
         fullPage: true,
+        threshold: route.name === 'searchbar' ? 0.05 : 0.2,
         animations: 'disabled',
         mask: [page.locator('ion-spinner')],
       });
@@ -87,6 +102,7 @@ test.describe('Screenshot Tests - Dark Mode', () => {
       await prepareScreenShot(page, route.name);
       await expect(page).toHaveScreenshot(`${route.name}-dark.png`, {
         fullPage: true,
+        threshold: route.name === 'searchbar' ? 0.05 : 0.2,
         animations: 'disabled',
         mask: [page.locator('ion-spinner')],
       });

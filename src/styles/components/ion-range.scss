@@ -3,12 +3,9 @@ ion-range.md:not(.md3-disabled) {
   --bar-height: 16px;
   --bar-border-radius: 8px;
 
-  --knob-background: var(--ion-color-primary);
   --knob-box-shadow: none;
   --knob-border-radius: 8px;
   --knob-size: 44px;
-
-  --pin-background: var(--ion-background-color-step-700, #4a4458);
 
   &.range-has-pin {
     padding-top: 2.6rem;
