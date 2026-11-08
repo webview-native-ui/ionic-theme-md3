@@ -36,14 +36,9 @@ Action Sheet. Alert's distinct action area is different from a list of sheet
 choices: the recorded Android 17 Settings [Force stop confirmation](android17-tablet-2026-11-07/dialog-portrait-light.png)
 uses an outlined Cancel and filled primary confirmation. Its appearance remains
 unchanged here. Select selection states, Modal action bars and Toast actions also
-remain unchanged. This is a scoped hierarchy review, not a claim that every
+remain unchanged. Select's Action Sheet interface inherits the same Cancel-group
+separator and continuous sheet surface. This is a scoped hierarchy review, not a claim that every
 component, interaction state or OEM is identical to Android Settings.
-
-The freshly opened Android 17 [Internet panel](overlay-action-hierarchy-2026-11-08/android17-internet-panel.png)
-also separates its filled Done action into a footer, rather than placing a CTA
-among its network rows. Its selected network is a selection state, not this
-project's custom `preferred` role; the screen is contextual evidence, not a
-one-to-one Action Sheet specification.
 
 ## Measurements and native operation
 
@@ -96,7 +91,13 @@ focus, not for the ordinary touch flow; keyboard focus cues were preserved.
 The final Action Sheet scene subset was also recaptured on Linux/Ionic 8 after
 the hover/focus correction: 22 screenshot/shared-markup cases passed.
 
-Candidate screenshots were generated only in temporary directories. Images under
-this report are visual-review evidence, not regression baselines. No normal or
-`device-*` baseline PNG has been replaced locally. Once a new PR is authorized,
-run `/update-screenshots` there and inspect the resulting CI images before merge.
+[PR #61 CI generation](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42455640794)
+regenerated the baseline images on Ionic 9 and verified the same images on Ionic 8:
+**239 passed per version**, without flaky cases. The resulting 20 Action Sheet /
+Select Action Sheet images were reviewed directly in light/dark and Ionic/device
+palettes. Four unrelated Modal, Segment and Toggle recaptures were excluded.
+
+Local candidates were generated only in temporary directories. Images under this
+report are visual-review evidence, not regression baselines. Retained baseline
+changes are the exact files generated and committed by `/update-screenshots` CI;
+local macOS candidates were not copied into the baseline directory.
