@@ -15,18 +15,27 @@ for (const mode of ['light', 'dark'] as const) {
           const style = getComputedStyle(element);
           return { background: style.backgroundColor, color: style.color };
         });
-      await expect.poll(async () => (await paint(preferred)).background).not.toBe('rgba(0, 0, 0, 0)');
-      expect((await paint(preferred)).background).not.toBe((await paint(ordinary)).background);
+      if (kind === 'alert') {
+        await expect.poll(async () => (await paint(preferred)).background).not.toBe('rgba(0, 0, 0, 0)');
+        expect((await paint(preferred)).background).not.toBe((await paint(ordinary)).background);
+      } else {
+        expect((await paint(preferred)).background).toBe((await paint(ordinary)).background);
+        expect((await paint(preferred)).color).not.toBe((await paint(ordinary)).color);
+      }
       // Optional native roles refine the same semantic action without new markup.
       await overlay.evaluate((element) => {
         (element as HTMLElement).style.setProperty('--md-sys-color-primary', '#123456');
         (element as HTMLElement).style.setProperty('--md-sys-color-on-primary', '#ffffff');
       });
-      await expect.poll(() => paint(preferred)).toEqual({ background: 'rgb(18, 52, 86)', color: 'rgb(255, 255, 255)' });
+      const emphasized =
+        kind === 'alert'
+          ? { background: 'rgb(18, 52, 86)', color: 'rgb(255, 255, 255)' }
+          : { background: (await paint(ordinary)).background, color: 'rgb(18, 52, 86)' };
+      await expect.poll(() => paint(preferred)).toEqual(emphasized);
       await overlay.evaluate((element) => element.classList.add('md3-disabled'));
-      await expect.poll(async () => (await paint(preferred)).background).not.toBe('rgb(18, 52, 86)');
+      await expect.poll(() => paint(preferred)).not.toEqual(emphasized);
       await overlay.evaluate((element) => element.classList.remove('md3-disabled'));
-      await expect.poll(() => paint(preferred)).toEqual({ background: 'rgb(18, 52, 86)', color: 'rgb(255, 255, 255)' });
+      await expect.poll(() => paint(preferred)).toEqual(emphasized);
       // Role is reported by Ionic; visual emphasis must not invoke it automatically.
       await overlay.evaluate((element, kind) => {
         (window as any).sharedDismissal = undefined;

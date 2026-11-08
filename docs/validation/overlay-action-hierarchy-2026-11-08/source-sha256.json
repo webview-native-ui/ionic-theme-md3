@@ -1,0 +1,8 @@
+{
+  "src/styles/components/ion-action-sheet.scss": "d8bf705665978c8acef809c8f060a3f8bdb291e618190207cc85b0b1c653428e",
+  "src/styles/components/_colors.scss": "3b774b9ffe07b984c0c31aba256742eb449355d966c32b8368aa2394b66274ef",
+  "demo/e2e/overlay-action-hierarchy.spec.ts": "39afd8900aa0fc8ca52e1c4350c3bc4b625d5a98c5118c39c964333dc075333b",
+  "demo/e2e/shared-markup.spec.ts": "042789fc666583fc4c64473582d6791ad7307d400f42c35b34170d200ab1c6a9",
+  "demo/android/app/build/outputs/apk/debug/app-debug.apk": "e6380d7db6de11b58fb58624e453e8a6d654ab4e2b884cedfc39951bc32ed740",
+  "demo/www/styles-AKZGY2VF.css": "fd803bdfa4f9cc6d498a10aa52704ad4101436bd9fc6e367f3262223fb8dc4c4"
+}

@@ -1,0 +1,8 @@
+{
+  "release": "17",
+  "api": "37",
+  "build": "sdk_gphone64_arm64-userdebug 17 CE2A.260420.051.A3 16571990 dev-keys",
+  "webview": "Current WebView package (name, version): (com.google.android.webview, 145.0.7632.218)",
+  "targetSdk": 36,
+  "companionPluginVersion": "2.1.1"
+}

@@ -1,5 +1,9 @@
 # Shared markup validation — 2026-11-07
 
+Historical capture set. The Action Sheet preferred fill described here is superseded
+by the [overlay hierarchy correction](overlay-action-hierarchy-2026-11-08.md).
+The role semantics are unchanged; current Action Sheet emphasis is row-based.
+
 This supplements the [earlier Android 16 review](android16-2026-11-07.md) for the shared-markup changes. The markup carries the same action meaning as iOS27; Android Settings remains the visual reference. `preferred` is a webview-native-ui convention, not a new Android or Ionic built-in behavior.
 
 ## Scope

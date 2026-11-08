@@ -29,11 +29,14 @@ normal meaning. The class does not force a different fill.
 ## Preferred overlay actions
 
 For alerts and action sheets, use `role: 'preferred'` for the recommended action,
-matching the iOS 27 theme's convention. MD3 gives it a filled primary surface and
-on-primary foreground, derived from the Ionic palette unless optional Material
-roles are supplied. Ordinary/default actions remain text actions; `confirm` alone
-does not request emphasis. Cancellation, selection, and destructive roles remain
-separate from recommendation.
+matching the iOS 27 theme's convention. Appearance follows the overlay's purpose:
+an Alert uses a filled primary/on-primary action, while an Action Sheet keeps the
+same full-width row geometry as its other choices and emphasizes its text/icon
+with primary color and medium weight. The Action Sheet's Cancel group is separated
+from the choices by spacing and a divider. Colors derive from the Ionic palette
+unless optional Material roles are supplied. Ordinary/default actions remain text
+actions; `confirm` alone does not request emphasis. Cancellation, selection, and
+destructive roles remain separate from recommendation.
 
 ```ts
 buttons: [
