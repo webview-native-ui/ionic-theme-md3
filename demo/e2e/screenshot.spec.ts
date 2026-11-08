@@ -1,6 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { actionSheetTypes, alertTypes, loadingTypes, modalTypes, selectTypes, toastTypes } from '../src/app/overlay-types';
 import type { Page } from 'playwright-core';
+import deviceScheme from './fixtures/android17-device-colors.json';
+import {
+  expectDeviceColorPairs,
+  expectDeviceColors,
+  expectDeviceToggleColors,
+  expectDeviceAlertFocusColors,
+  mockDeviceColors,
+  sendCompatibilityDeviceColors,
+} from './device-colors';
 
 /**
  * Screenshot tests for all routes defined in index.routes.ts
@@ -109,3 +118,110 @@ test.describe('Screenshot Tests - Dark Mode', () => {
     });
   }
 });
+
+// Native bridge responses are fixed; conversion, role application and mode selection are real.
+for (const mode of ['light', 'dark'] as const) {
+  test.describe(`Screenshot Tests - Device colors ${mode}`, () => {
+    for (const route of routes) {
+      test(`should match device ${mode} screenshot for ${route.name}`, async ({ page }) => {
+        await mockDeviceColors(page, mode);
+        const manualOverlay = route.name === 'popover' || route.name.startsWith('select:') || route.name.startsWith('modal:');
+        await page.goto(manualOverlay ? route.path.split('?')[0] : route.path, { waitUntil: 'networkidle' });
+        await expectDeviceColors(page, mode);
+        if (route.name === 'color-palette') await expectDeviceColorPairs(page, mode);
+        if (route.name === 'toggle') await expectDeviceToggleColors(page, mode);
+        if (route.name === 'popover') {
+          await page.locator('#click-trigger-item').click();
+          await expect(page.locator('ion-popover:not(.overlay-hidden) [part~=content]')).toBeVisible();
+        } else if (route.name.startsWith('select:')) {
+          const type = route.name.split(':')[1];
+          const select = page.locator(`app-select ion-select.select-${type}`);
+          await expect(select).toHaveJSProperty('interface', type);
+          const presentEvents: Record<string, string> = {
+            alert: 'ionAlertDidPresent',
+            'action-sheet': 'ionActionSheetDidPresent',
+            popover: 'ionPopoverDidPresent',
+            modal: 'ionModalDidPresent',
+          };
+          await Promise.all([
+            page.evaluate(
+              (eventName) =>
+                new Promise<void>((resolve) => {
+                  document.addEventListener(eventName, () => resolve(), { once: true });
+                }),
+              presentEvents[type],
+            ),
+            select.click(),
+          ]);
+          await expect(page.locator(`ion-${type}:not(.overlay-hidden)`)).toBeVisible();
+          if (type === 'alert') {
+            // Capture an actual pointer-selected state, rather than version-specific initial dialog focus.
+            const apple = page.locator('ion-alert').getByRole('radio', { name: 'Apple', exact: true });
+            await apple.click();
+            await expect(apple).toHaveAttribute('aria-checked', 'true');
+          }
+        } else if (route.name.startsWith('modal:')) {
+          const type = route.name.split(':')[1];
+          await page
+            .locator('app-modal ion-item')
+            .filter({ hasText: new RegExp(`^present:${type}$`) })
+            .click();
+          await expect(page.locator('ion-modal.show-modal [part~=content][role=dialog]')).toBeVisible();
+        }
+        await prepareScreenShot(page, route.name);
+        if (route.name === 'alert:no-cancel' || route.name === 'alert:preferred')
+          await expectDeviceAlertFocusColors(page, mode, route.name === 'alert:preferred');
+        await expect(page).toHaveScreenshot(`device-${route.name}-${mode}.png`, {
+          fullPage: true,
+          animations: 'disabled',
+          mask: [page.locator('ion-spinner')],
+        });
+      });
+    }
+  });
+}
+
+for (const mode of ['light', 'dark'] as const) {
+  test(`should match device ${mode} screenshot after a six-role native update`, async ({ page }) => {
+    await mockDeviceColors(page, mode);
+    await page.goto('/main/index/color-palette', { waitUntil: 'networkidle' });
+    await expectDeviceColors(page, mode);
+    await expectDeviceColorPairs(page, mode);
+    await sendCompatibilityDeviceColors(page, mode);
+    await prepareScreenShot(page, 'color-palette');
+    await expect(page).toHaveScreenshot(`device-compatibility-${mode}.png`, { fullPage: true, animations: 'disabled' });
+  });
+}
+
+for (const mode of ['light', 'dark'] as const) {
+  test(`should match device ${mode} screenshot for an active range pin`, async ({ page }) => {
+    await mockDeviceColors(page, mode);
+    await page.goto('/main/index/range', { waitUntil: 'networkidle' });
+    await expectDeviceColors(page, mode);
+    const range = page.locator('app-range .section-example ion-range').first();
+    await expect(range).toHaveClass(/hydrated/);
+    await range.evaluate((element) => {
+      const control = element as HTMLElement & { pin: boolean; value: number };
+      control.pin = true;
+      control.value = 50;
+    });
+    await range.scrollIntoViewIfNeeded();
+    const knob = range.locator('[part~=knob]');
+    const bounds = await knob.boundingBox();
+    if (!bounds) throw new Error('Range knob is not rendered');
+    await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(bounds.x + bounds.width / 2 + 20, bounds.y + bounds.height / 2, { steps: 5 });
+    try {
+      await expect(range).toHaveClass(/range-pressed/);
+      const pin = range.locator('[part~=pin]');
+      await expect(pin).toBeVisible();
+      const rgb = (hex: string) => `rgb(${[1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)).join(', ')})`;
+      await expect(pin).toHaveCSS('background-color', rgb(deviceScheme[mode].inverseSurface));
+      await expect(pin).toHaveCSS('color', rgb(deviceScheme[mode].inverseOnSurface));
+      await expect(range).toHaveScreenshot(`device-range-pin-${mode}.png`, { animations: 'disabled' });
+    } finally {
+      await page.mouse.up();
+    }
+  });
+}
