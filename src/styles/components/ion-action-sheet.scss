@@ -3,6 +3,7 @@ ion-action-sheet.md:not(.md3-disabled) {
 
   .action-sheet-container {
     overflow: hidden;
+    background: var(--background);
     border-radius: 28px 28px 0 0;
     box-shadow: var(--token-elevation-1);
 
@@ -14,10 +15,16 @@ ion-action-sheet.md:not(.md3-disabled) {
       padding: 12px 24px;
     }
 
+    // Recommendation stays within the action list, rather than becoming a CTA.
     .action-sheet-preferred {
-      margin-inline: 24px;
-      width: calc(100% - 48px);
-      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    // Ionic keeps cancellation in its own group; make that boundary visible.
+    .action-sheet-group-cancel:not(:first-child) {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-block-start: 1px solid var(--md-sys-color-outline-variant, var(--ion-border-color, rgba(0, 0, 0, 0.13)));
     }
   }
 }

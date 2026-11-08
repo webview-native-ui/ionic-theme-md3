@@ -1,0 +1,486 @@
+{
+  "reference": "Android 17 API 37 emulator",
+  "modeSelection": "Explicit Ionic class; published companion plugin does not yet implement getDynamicColorScheme. Browser tests separately exercise the recorded native response.",
+  "cases": {
+    "landscape-light-action-sheet": {
+      "viewport": {
+        "width": 1280,
+        "height": 800,
+        "dpr": 2
+      },
+      "dark": false,
+      "surface": "rgb(255, 255, 255)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 320,
+            "y": 595,
+            "width": 640,
+            "height": 52,
+            "top": 595,
+            "right": 960,
+            "bottom": 647,
+            "left": 320
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(38, 38, 38)",
+          "radius": "0px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 320,
+            "y": 647,
+            "width": 640,
+            "height": 52,
+            "top": 647,
+            "right": 960,
+            "bottom": 699,
+            "left": 320
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 84, 233)",
+          "radius": "0px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 320,
+            "y": 716,
+            "width": 640,
+            "height": 52,
+            "top": 716,
+            "right": 960,
+            "bottom": 768,
+            "left": 320
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(38, 38, 38)",
+          "radius": "0px"
+        }
+      ],
+      "dismissal": "preferred"
+    },
+    "landscape-light-alert": {
+      "viewport": {
+        "width": 1280,
+        "height": 800,
+        "dpr": 2
+      },
+      "dark": false,
+      "surface": "rgb(255, 255, 255)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 248,
+            "y": 382.59375,
+            "width": 784,
+            "height": 42,
+            "top": 382.59375,
+            "right": 1032,
+            "bottom": 424.59375,
+            "left": 248
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 84, 233)",
+          "radius": "999px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 248,
+            "y": 432.59375,
+            "width": 784,
+            "height": 42,
+            "top": 432.59375,
+            "right": 1032,
+            "bottom": 474.59375,
+            "left": 248
+          },
+          "background": "rgb(0, 84, 233)",
+          "color": "rgb(255, 255, 255)",
+          "radius": "999px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 248,
+            "y": 482.59375,
+            "width": 784,
+            "height": 42,
+            "top": 482.59375,
+            "right": 1032,
+            "bottom": 524.59375,
+            "left": 248
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 84, 233)",
+          "radius": "999px"
+        }
+      ],
+      "dismissal": "preferred"
+    },
+    "landscape-dark-action-sheet": {
+      "viewport": {
+        "width": 1280,
+        "height": 800,
+        "dpr": 2
+      },
+      "dark": true,
+      "surface": "rgb(18, 18, 18)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 320,
+            "y": 595,
+            "width": 640,
+            "height": 52,
+            "top": 595,
+            "right": 960,
+            "bottom": 647,
+            "left": 320
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(219, 219, 219)",
+          "radius": "0px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 320,
+            "y": 647,
+            "width": 640,
+            "height": 52,
+            "top": 647,
+            "right": 960,
+            "bottom": 699,
+            "left": 320
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(77, 141, 255)",
+          "radius": "0px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 320,
+            "y": 716,
+            "width": 640,
+            "height": 52,
+            "top": 716,
+            "right": 960,
+            "bottom": 768,
+            "left": 320
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(219, 219, 219)",
+          "radius": "0px"
+        }
+      ],
+      "dismissal": "preferred"
+    },
+    "landscape-dark-alert": {
+      "viewport": {
+        "width": 1280,
+        "height": 800,
+        "dpr": 2
+      },
+      "dark": true,
+      "surface": "rgb(18, 18, 18)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 248,
+            "y": 382.59375,
+            "width": 784,
+            "height": 42,
+            "top": 382.59375,
+            "right": 1032,
+            "bottom": 424.59375,
+            "left": 248
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(77, 141, 255)",
+          "radius": "999px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 248,
+            "y": 432.59375,
+            "width": 784,
+            "height": 42,
+            "top": 432.59375,
+            "right": 1032,
+            "bottom": 474.59375,
+            "left": 248
+          },
+          "background": "rgb(77, 141, 255)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 248,
+            "y": 482.59375,
+            "width": 784,
+            "height": 42,
+            "top": 482.59375,
+            "right": 1032,
+            "bottom": 524.59375,
+            "left": 248
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(77, 141, 255)",
+          "radius": "999px"
+        }
+      ],
+      "dismissal": "preferred"
+    },
+    "portrait-light-action-sheet": {
+      "viewport": {
+        "width": 800,
+        "height": 1280,
+        "dpr": 2
+      },
+      "dark": false,
+      "surface": "rgb(255, 255, 255)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 80,
+            "y": 1075,
+            "width": 640,
+            "height": 52,
+            "top": 1075,
+            "right": 720,
+            "bottom": 1127,
+            "left": 80
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(38, 38, 38)",
+          "radius": "0px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 80,
+            "y": 1127,
+            "width": 640,
+            "height": 52,
+            "top": 1127,
+            "right": 720,
+            "bottom": 1179,
+            "left": 80
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 84, 233)",
+          "radius": "0px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 80,
+            "y": 1196,
+            "width": 640,
+            "height": 52,
+            "top": 1196,
+            "right": 720,
+            "bottom": 1248,
+            "left": 80
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(38, 38, 38)",
+          "radius": "0px"
+        }
+      ],
+      "dismissal": "preferred"
+    },
+    "portrait-light-alert": {
+      "viewport": {
+        "width": 800,
+        "height": 1280,
+        "dpr": 2
+      },
+      "dark": false,
+      "surface": "rgb(255, 255, 255)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 84,
+            "y": 622.59375,
+            "width": 632,
+            "height": 42,
+            "top": 622.59375,
+            "right": 716,
+            "bottom": 664.59375,
+            "left": 84
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 84, 233)",
+          "radius": "999px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 84,
+            "y": 672.59375,
+            "width": 632,
+            "height": 42,
+            "top": 672.59375,
+            "right": 716,
+            "bottom": 714.59375,
+            "left": 84
+          },
+          "background": "rgb(0, 84, 233)",
+          "color": "rgb(255, 255, 255)",
+          "radius": "999px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 84,
+            "y": 722.59375,
+            "width": 632,
+            "height": 42,
+            "top": 722.59375,
+            "right": 716,
+            "bottom": 764.59375,
+            "left": 84
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 84, 233)",
+          "radius": "999px"
+        }
+      ],
+      "dismissal": "preferred"
+    },
+    "portrait-dark-action-sheet": {
+      "viewport": {
+        "width": 800,
+        "height": 1280,
+        "dpr": 2
+      },
+      "dark": true,
+      "surface": "rgb(18, 18, 18)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 80,
+            "y": 1075,
+            "width": 640,
+            "height": 52,
+            "top": 1075,
+            "right": 720,
+            "bottom": 1127,
+            "left": 80
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(219, 219, 219)",
+          "radius": "0px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 80,
+            "y": 1127,
+            "width": 640,
+            "height": 52,
+            "top": 1127,
+            "right": 720,
+            "bottom": 1179,
+            "left": 80
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(77, 141, 255)",
+          "radius": "0px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 80,
+            "y": 1196,
+            "width": 640,
+            "height": 52,
+            "top": 1196,
+            "right": 720,
+            "bottom": 1248,
+            "left": 80
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(219, 219, 219)",
+          "radius": "0px"
+        }
+      ],
+      "dismissal": "preferred"
+    },
+    "portrait-dark-alert": {
+      "viewport": {
+        "width": 800,
+        "height": 1280,
+        "dpr": 2
+      },
+      "dark": true,
+      "surface": "rgb(18, 18, 18)",
+      "buttons": [
+        {
+          "text": "Details",
+          "box": {
+            "x": 84,
+            "y": 622.59375,
+            "width": 632,
+            "height": 42,
+            "top": 622.59375,
+            "right": 716,
+            "bottom": 664.59375,
+            "left": 84
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(77, 141, 255)",
+          "radius": "999px"
+        },
+        {
+          "text": "Continue",
+          "box": {
+            "x": 84,
+            "y": 672.59375,
+            "width": 632,
+            "height": 42,
+            "top": 672.59375,
+            "right": 716,
+            "bottom": 714.59375,
+            "left": 84
+          },
+          "background": "rgb(77, 141, 255)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px"
+        },
+        {
+          "text": "Cancel",
+          "box": {
+            "x": 84,
+            "y": 722.59375,
+            "width": 632,
+            "height": 42,
+            "top": 722.59375,
+            "right": 716,
+            "bottom": 764.59375,
+            "left": 84
+          },
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(77, 141, 255)",
+          "radius": "999px"
+        }
+      ],
+      "dismissal": "preferred"
+    }
+  }
+}

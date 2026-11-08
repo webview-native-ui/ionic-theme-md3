@@ -312,15 +312,21 @@ ion-action-sheet.md:where(:not(.md3-disabled)) .action-sheet-title {
 }
 
 ion-action-sheet.md:where(:not(.md3-disabled)) .action-sheet-preferred {
-  --button-background: #{md3.color(primary)};
-  --button-color: #{md3.color(on-primary)};
-  --button-color-hover: #{md3.color(on-primary)};
-  --button-color-focused: #{md3.color(on-primary)};
-  --button-color-activated: #{md3.color(on-primary)};
+  --button-color: #{md3.color(primary)};
+  --button-color-hover: #{md3.color(primary)};
+  --button-color-focused: #{md3.color(primary)};
+  --button-color-activated: #{md3.color(primary)};
 }
 
 ion-action-sheet.md:where(:not(.md3-disabled)) .action-sheet-destructive {
-  color: #{md3.color(error)};
+  --button-color: #{md3.color(error)};
+  --button-color-hover: #{md3.color(error)};
+  --button-color-focused: #{md3.color(error)};
+  --button-color-activated: #{md3.color(error)};
+}
+
+ion-action-sheet.md:where(:not(.md3-disabled)) :is(.action-sheet-preferred, .action-sheet-destructive) .action-sheet-icon {
+  color: inherit;
 }
 
 ion-loading.md:where(:not(.md3-disabled)) {
