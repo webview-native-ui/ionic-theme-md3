@@ -49,3 +49,20 @@ npx playwright show-report
 When adding a demo route or overlay variant, update `demo/e2e/screenshot.spec.ts` and regenerate the relevant baselines. Commit baseline changes only after reviewing the visual diff.
 
 Pull requests run the E2E workflow in `.github/workflows/e2e-pull_request.yml`; pushes to `main` run `.github/workflows/e2e-main.yml`.
+
+## Updating PR baselines
+
+For an intentional PR appearance change, post `/update-screenshots` on that PR.
+The workflow checks collaborator permission, generates images in the pinned
+Playwright container and commits them to the PR branch. Fetch that commit before
+continuing work. Inspect changed images in light/dark mode and keep unexpected
+changes out of the baseline. Local screenshots are investigation artifacts, not
+replacement baselines for this workflow.
+
+## Documentation previews
+
+The demo Docs page is generated from `docs/special-markup.md`. After editing it,
+run `npm --prefix demo run docs:generate`, commit the generated content and inspect
+`/main/docs` in the running demo. `prestart` and `prebuild` also regenerate it.
+Keep setup instructions in the linked user guides and preview markup in the source
+Markdown; do not edit `docs-content.generated.ts` by hand.

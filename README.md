@@ -1,6 +1,6 @@
 # Ionic Theme Material Design 3
 
-A CSS/JS theme library that applies Material Design 3 design system to Ionic applications.
+A CSS/JS theme for Ionic applications, using Android Settings as its visual reference while preserving Ionic component APIs and color semantics.
 
 <!-- rdlabo-docs-pick -->
 
@@ -72,6 +72,17 @@ Use this markup to preview the inset grouped list look. For the list structure t
 </ion-list>
 ```
 
+### Optional: Android Settings appearance
+
+The theme keeps Ionic's color semantics and application font. Standard toggles are
+icon-free. Pixel Settings typography and the Material back arrow are separate
+opt-ins; neither requires Material You colors or a Capacitor plugin.
+
+See [Android Settings appearance](docs/android-settings.md) for installation,
+framework setup, cleanup, fallbacks and component overrides. Existing users should
+review the [unreleased migration notes](docs/migration.md#unreleased-android-settings-alignment)
+for changes to toolbar, list and toggle dimensions.
+
 ### Optional: use the MD3 and iOS 27 themes together
 
 Install the iOS 27 theme to style both Ionic modes from the same application.
@@ -129,6 +140,8 @@ createApp(App)
 ```
 
 ## Documentation
+
+- [Android Settings appearance](docs/android-settings.md) — default geometry, optional local typography and back arrow.
 
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
 - [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.
@@ -194,8 +207,8 @@ npm run test:e2e:ui
 # Debug tests
 npm run test:e2e:debug
 
-# Update baseline screenshots (when intentionally changing UI)
-npm run test:e2e:update
+# For a PR, request baseline updates with a /update-screenshots comment.
+# Review the CI-generated changes before accepting them.
 ```
 
 ### Prerelease channels

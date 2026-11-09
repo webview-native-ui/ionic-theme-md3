@@ -25,6 +25,6 @@ describe('DocsPage', () => {
     expect(element.querySelector('article.docs-content h1')?.textContent).toContain('Special markup');
     expect(element.querySelectorAll('.code-block-container pre.shiki code').length).toBeGreaterThan(0);
     expect(element.querySelector('.code-block-container code span[style*="color"]')).not.toBeNull();
-    expect(element.querySelectorAll('figure.docs-example').length).toBe(5);
+    expect(element.querySelectorAll('figure.docs-example').length).toBe(6);
   });
 });

@@ -15,10 +15,10 @@
 
 | ID | 画面と再現経路 | 確認できた部品 | ローカル証拠 |
 | --- | --- | --- | --- |
-| S1 | `android.settings.DISPLAY_SETTINGS` → ディスプレイとタップ | 戻るボタン、タイトル、セクション見出し、グループ行、説明文、ON/OFFスイッチ、遷移矢印、複合行の仕切り | `/tmp/md3-native-display.png`、同名 `.xml` |
-| S2 | S1 → 画面自動消灯 | 単一選択ラジオ行、選択/非選択、説明領域、スイッチ | `/tmp/md3-native-timeout.png`、同名 `.xml` |
-| S3 | `android.settings.SOUND_SETTINGS` → 音とバイブレーション | 連続スライダー、最小値/中間値、末尾アイコン、ラベル付き行 | `/tmp/md3-native-sound.png`、同名 `.xml` |
-| S4 | `android.settings.panel.action.INTERNET_CONNECTIVITY` | 中央の角丸パネル、標題、説明、filled/outlinedボタン、アイコンなしスイッチ、選択行、線形進捗表示 | `/tmp/md3-native-internet.png`、同名 `.xml` |
+| S1 | `android.settings.DISPLAY_SETTINGS` → ディスプレイとタップ | 戻るボタン、タイトル、セクション見出し、グループ行、説明文、ON/OFFスイッチ、遷移矢印、複合行の仕切り | `md3-native-display.png`（ローカル調査時のファイル名、同梱なし）、同名 `.xml` |
+| S2 | S1 → 画面自動消灯 | 単一選択ラジオ行、選択/非選択、説明領域、スイッチ | `md3-native-timeout.png`（ローカル調査時のファイル名、同梱なし）、同名 `.xml` |
+| S3 | `android.settings.SOUND_SETTINGS` → 音とバイブレーション | 連続スライダー、最小値/中間値、末尾アイコン、ラベル付き行 | `md3-native-sound.png`（ローカル調査時のファイル名、同梱なし）、同名 `.xml` |
+| S4 | `android.settings.panel.action.INTERNET_CONNECTIVITY` | 中央の角丸パネル、標題、説明、filled/outlinedボタン、アイコンなしスイッチ、選択行、線形進捗表示 | `md3-native-internet.png`（ローカル調査時のファイル名、同梱なし）、同名 `.xml` |
 
 設定値は変更していない。S4の通信先情報を含む画像はローカル証拠に留め、この文書に埋め込まない。今回の壁紙アプリの画面はSettingsとは別アプリなので基準から除外した。
 
