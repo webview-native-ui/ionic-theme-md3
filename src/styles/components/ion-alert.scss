@@ -37,6 +37,9 @@ ion-alert.md:not(.md3-disabled) {
   .alert-wrapper {
     border-radius: 28px;
     box-shadow: var(--token-elevation-3);
+    // Ionic focuses the dialog on presentation. Keep that behavior without a
+    // browser ring around the whole surface; action focus indicators stay intact.
+    outline: none;
 
     .alert-head {
       padding-top: 24px;

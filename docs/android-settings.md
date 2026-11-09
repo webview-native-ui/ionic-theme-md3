@@ -62,6 +62,13 @@ area. The circle is transparent unless its optional color role is supplied; see
 [color system](color-system.md). Native Settings and Ionic glyphs can differ;
 matching the native arrow is not a theme requirement.
 
+## Alert focus appearance
+
+The MD theme suppresses the browser outline around the dialog surface itself.
+Ionic still moves focus into the Alert on presentation and manages Tab navigation,
+focus containment and dismissal. Action buttons retain their keyboard-focus
+indicators. `md3-disabled` and iOS-mode Alerts retain Ionic's default appearance.
+
 ## Toggle labels and optional state icons
 
 The default track is 52×28px with a 20px thumb and no cross/check icons. For Ionic's
