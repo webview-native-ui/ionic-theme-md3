@@ -71,8 +71,10 @@ test('dark device search fields remain distinct from toolbar panels', async ({ p
   await mockDeviceColors(page, 'dark');
   await page.goto('/main/index/searchbar');
   await expectDeviceColors(page, 'dark');
-  const fields = page.locator('app-searchbar ion-toolbar:not(.ion-color) ion-searchbar .searchbar-input');
-  expect(await fields.count()).toBeGreaterThan(0);
+  const searchbars = page.locator('app-searchbar ion-toolbar:not(.ion-color) ion-searchbar');
+  await expect(searchbars.first()).toBeVisible();
+  const fields = searchbars.locator('.searchbar-input');
+  await expect(fields).toHaveCount(await searchbars.count());
   const rgb = (hex: string) => `rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(', ')})`;
   for (const field of await fields.all()) {
     await expect(field).toHaveCSS('background-color', rgb(scheme.dark.surfaceContainerHighest));
