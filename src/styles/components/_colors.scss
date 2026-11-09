@@ -255,6 +255,21 @@ ion-progress-bar.md:where(:not(.md3-disabled):not(.ion-color)) {
   --background: var(--md-sys-color-surface-container-low, var(--ion-background-color, #fff));
 }
 
+// A select menu is one surface; its list must not repaint the overlay as a page.
+// Resolve at the popover so explicit overlay backgrounds also reach its options.
+ion-popover.md:where(:not(.md3-disabled):not(.ion-color)) {
+  --md3-select-background: var(--background);
+}
+
+:where(ion-popover.md:not(.md3-disabled):not(.ion-color) ion-select-popover) ion-list.md:where(:not(.md3-disabled):not(.ion-color)) {
+  background: var(--md3-select-background);
+}
+
+:where(ion-popover.md:not(.md3-disabled):not(.ion-color) ion-select-popover ion-list:not(.md3-disabled):not(.ion-color))
+  ion-item.md:where(:not(.md3-disabled):not(.ion-color)) {
+  --background: var(--md3-select-background);
+}
+
 ion-alert.md:where(:not(.md3-disabled)) {
   --background: var(--md-sys-color-surface-container-high, var(--ion-overlay-background-color, var(--ion-background-color, #fff)));
 }
