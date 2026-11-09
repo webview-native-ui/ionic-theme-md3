@@ -241,7 +241,10 @@ Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, mi
 
 ## Android dynamic colors
 
-Opt into Material You colors with light, dark, or system appearance. See
+Opt into supported Android 12+ Material You colors with light, dark, or system appearance.
+Read colors from `@rdlabo/capacitor-native-ui` and apply them with
+`@rdlabo/ionic-theme-md3/dynamic-colors`; Native UI projection is not required.
+Ionic palettes remain the fallback on other platforms. See
 [dynamic colors](docs/dynamic-colors.md) for setup, lifecycle, and role mapping.
 
 ## Color system

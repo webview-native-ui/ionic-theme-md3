@@ -2,8 +2,8 @@ import { signal } from '@angular/core';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { enableDynamicColors, type ColorMode, type DynamicColorScheme, type DynamicColorTheme } from '../../../src/dynamic-colors';
 
-// Keep browser builds compatible with published plugins while the native API is released.
-// Android requires the companion capacitor-plugin PR; use its local build to test it.
+// The demo adapter keeps browser builds independent of the installed plugin exports.
+// Android needs a native build with the getter (plugin 2.1.3+); apps should use the public root exports.
 const native = registerPlugin<{
   getDynamicColorScheme(): Promise<DynamicColorScheme>;
   addListener(name: 'dynamicColorSchemeChange', listener: () => void): Promise<{ remove(): Promise<void> }>;

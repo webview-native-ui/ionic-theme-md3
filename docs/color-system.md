@@ -51,7 +51,9 @@ roles still follow Ionic. No separate registration or complete scheme is needed.
 Material You is one optional provider of these values. See
 [dynamic colors](dynamic-colors.md) for native acquisition and appearance control.
 The provider preserves Material's `on*` roles for MD3 components; Ionic named
-colors still use Ionic's official contrast/shade/tint calculations. The native
+colors use supplied `onPrimary`, `onSecondary`, `onTertiary` and `onError` for their
+contrast values, with Ionic's contrast calculation as the per-role fallback.
+Shade and tint retain Ionic's calculations. The native
 API also exposes optional fixed/inverse roles for custom component designs.
 
 For your own Sass components, import `utils/colors` from the package's exported
@@ -64,32 +66,41 @@ pattern with an Ionic fallback.
 
 ## Component assignments
 
+For ordinary surfaces, **base** means `surface-container-lowest` in light mode and
+`surface-container-low` in dark mode. **Panel** means `surface-container-lowest`
+in light mode and `surface-container-high` in dark mode. Missing roles retain the
+component's Ionic background fallback. This keeps default light surfaces white;
+`color="light"` is a separate palette selection (`surface-container-low` in light,
+`surface-container-highest` in dark), not an alias for every default background.
+
 The table lists optional Material role consumers. If a role is absent, the
 component retains the Ionic fallback described above.
 
-| Component / variant                          | Background                                                                      | Foreground / detail                                        |
-| -------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| filled button                                | primary                                                                         | on-primary                                                 |
-| tonal button (`md3-tonal`, solid fill)       | secondary-container                                                             | on-secondary-container                                     |
-| elevated button (`md3-elevated`, solid fill) | surface-container-low                                                           | primary                                                    |
-| outlined / text button                       | transparent                                                                     | primary; outline border for outlined                       |
-| card (default elevated)                      | surface-container-low                                                           | on-surface; on-surface-variant subtitle                    |
-| filled card (`md3-filled`)                   | surface-container-highest                                                       | on-surface                                                 |
-| outlined card (`md3-outlined`)               | surface                                                                         | on-surface; outline-variant border                         |
-| FAB                                          | primary-container                                                               | on-primary-container                                       |
-| chip / selected chip (`md3-selected`)        | surface-container-low / secondary-container                                     | on-surface-variant / on-secondary-container                |
-| content / menu / toolbar                            | surface-container                                                               | on-surface                                                 |
-| ordinary list item                           | surface                                                                         | on-surface                                                 |
-| inset list item                              | surface-bright                                                                  | on-surface; transparent 2px gap                            |
-| navigation bar                               | surface-container                                                               | on-surface-variant; secondary-container selected indicator |
-| segment                                      | inherited surface                                                               | primary selected; on-surface-variant unselected            |
-| search field                                 | surface-container-high                                                          | on-surface; on-surface-variant icon; Ionic placeholder behavior            |
-| switch, checkbox, radio, progress, slider    | neutral surface or secondary-container when off/inactive; primary when selected | matching on-primary, outline, or on-surface-variant        |
-| text input                                   | Ionic fill-state background                                        | on-surface; primary focus; error invalid state             |
-| modal / popover                              | surface-container-low                                                           | Ionic text; nested components resolve their own roles       |
-| action sheet                                 | surface-container-low                                                           | on-surface action buttons; on-surface-variant title         |
-| alert / loading / datetime / picker          | surface-container-high                                                          | on-surface; primary actions                                |
-| snackbar/toast                               | inverse-surface                                                                 | inverse-on-surface; inverse-primary actions                |
+| Component / variant                          | Background                                                                              | Foreground / detail                                                                                        |
+| -------------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| filled button                                | primary                                                                                 | on-primary                                                                                                 |
+| tonal button (`md3-tonal`, solid fill)       | secondary-container                                                                     | on-secondary-container                                                                                     |
+| elevated button (`md3-elevated`, solid fill) | surface-container-low                                                                   | primary                                                                                                    |
+| outlined / text button                       | transparent                                                                             | primary; outline border for outlined                                                                       |
+| card (default elevated)                      | Panel                                                                                   | on-surface; on-surface-variant subtitle                                                                    |
+| filled card (`md3-filled`)                   | surface-container-highest                                                               | on-surface                                                                                                 |
+| outlined card (`md3-outlined`)               | surface                                                                                 | on-surface; outline-variant border                                                                         |
+| FAB                                          | primary-container                                                                       | on-primary-container                                                                                       |
+| chip / selected chip (`md3-selected`)        | surface-container-low / secondary-container                                             | on-surface-variant / on-secondary-container                                                                |
+| content / menu                               | Base                                                                                    | on-surface                                                                                                 |
+| toolbar                                      | Panel                                                                                   | on-surface                                                                                                 |
+| list / ordinary list item                    | Panel                                                                                   | on-surface                                                                                                 |
+| inset list item                              | Panel; surface before Ionic fallback when panel role is absent                          | on-surface; transparent 2px gap                                                                            |
+| navigation bar                               | Panel                                                                                   | on-surface-variant; secondary-container selected indicator / on-secondary-container selected icon          |
+| segment                                      | inherited surface                                                                       | primary selected; on-surface-variant unselected                                                            |
+| search field                                 | surface-container-high; surface-container-highest inside an uncolored dark toolbar/item | on-surface; on-surface-variant icon; Ionic placeholder behavior                                            |
+| switch, checkbox, radio, progress, slider    | neutral surface or secondary-container when off/inactive; primary when selected         | matching on-primary, outline, or on-surface-variant                                                        |
+| text input                                   | Ionic fill-state background                                                             | on-surface; primary focus; error invalid state                                                             |
+| modal / popover                              | Base                                                                                    | Ionic text; nested components resolve their own roles; select popover options share the overlay background |
+| action sheet                                 | Base                                                                                    | on-surface actions; primary preferred action; error destructive action; on-surface-variant title           |
+| alert                                        | Base                                                                                    | on-surface; preferred primary/on-primary; destructive error/on-error; outlined cancel                      |
+| loading / datetime / picker                  | surface-container-high                                                                  | on-surface; primary actions/spinner                                                                        |
+| snackbar/toast                               | inverse-surface                                                                         | inverse-on-surface; inverse-primary actions                                                                |
 
 The existing Ionic `color="..."` remains an explicit palette selection. These
 MD3 defaults do not replace it. `md3-disabled` opts an individual component out
@@ -109,8 +120,8 @@ changes, optional-role removal, explicit colors, opt-outs, and a document with
 application JavaScript disabled.
 
 Android 17 Settings is the visual reference; Material guidelines supply supporting
-information. When supplied, `surface-container` refines page/menu backgrounds and
-`surface-bright` refines inset rows. Without those roles, Ionic backgrounds remain
+information. The base/panel roles above refine ordinary surfaces without
+replacing their Ionic color intent. Without those roles, Ionic backgrounds remain
 unchanged. Groups retain 20px outer corners and 2px gaps. The assignments above
 name optional roles; they do not imply generated surface colors for omitted roles.
 
