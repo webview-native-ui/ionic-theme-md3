@@ -1,8 +1,8 @@
 @use '../utils/colors' as md3;
 
 ion-toggle.md:not(.md3-disabled) {
-  --handle-width: 24px;
-  --handle-height: 24px;
+  --handle-width: 20px;
+  --handle-height: 20px;
   --handle-border-radius: 16px;
   --border-radius: 16px;
   --handle-box-shadow: none;
@@ -11,7 +11,7 @@ ion-toggle.md:not(.md3-disabled) {
 
   &::part(track) {
     box-sizing: border-box;
-    min-height: 32px;
+    min-height: 28px;
     min-width: 52px;
     border-width: 2px;
     border-style: solid;

@@ -60,9 +60,15 @@ for (const mode of ['light', 'dark'] as const) {
     expect(await accordions.first().evaluate((element) => getComputedStyle(element).marginBottom)).toBe('2px');
   });
 
-  test(`${mode}: Ionic label properties take priority over optional icons`, async ({ page }) => {
+  test(`${mode}: toggles are icon-free unless Ionic on/off labels are explicitly enabled`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/toggle');
+    for (const control of await page.locator('app-toggle ion-toggle:not([enable-on-off-labels])').all()) {
+      await expect(control).toHaveClass(/hydrated/);
+      const handle = control.locator('[part~="handle"]');
+      await expect(handle.locator('ion-icon')).toHaveCount(0);
+      expect(await handle.evaluate((element) => getComputedStyle(element, '::before').content)).toBe('none');
+    }
     const toggle = page.locator('app-toggle ion-toggle').first();
     const icons = () =>
       toggle.evaluate((element) => {
@@ -70,7 +76,8 @@ for (const mode of ['light', 'dark'] as const) {
         const s = getComputedStyle(h, '::before');
         return { count: h.querySelectorAll('ion-icon').length, content: s.content, mask: s.maskImage };
       });
-    await expect.poll(async () => (await icons()).mask).toContain('svg');
+    await expect.poll(async () => (await icons()).content).toBe('none');
+    await expect.poll(async () => (await icons()).count).toBe(0);
     await toggle.evaluate((element) => ((element as HTMLIonToggleElement).enableOnOffLabels = true));
     await expect.poll(async () => (await icons()).count).toBe(1);
     await expect.poll(async () => (await icons()).content).toBe('none');
@@ -78,7 +85,8 @@ for (const mode of ['light', 'dark'] as const) {
     await expect(toggle).toHaveClass(/toggle-checked/);
     expect((await icons()).content).toBe('none');
     await toggle.evaluate((element) => ((element as HTMLIonToggleElement).enableOnOffLabels = false));
-    await expect.poll(async () => (await icons()).mask).toContain('svg');
+    await expect.poll(async () => (await icons()).content).toBe('none');
+    await expect.poll(async () => (await icons()).count).toBe(0);
     await toggle.evaluate((element) => element.classList.add('md3-disabled'));
     expect((await icons()).content).toBe('none');
   });

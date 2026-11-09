@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ToggleStateIconsDirective } from './toggle-state-icons.directive';
-
 import { FormsModule } from '@angular/forms';
 import {
   IonBackButton,
@@ -41,7 +39,6 @@ import {
     IonNote,
     IonText,
     IonToggle,
-    ToggleStateIconsDirective,
   ],
 })
 export class TogglePage implements OnInit {

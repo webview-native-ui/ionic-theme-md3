@@ -119,13 +119,59 @@ That circle is transparent by default; supplying `--md-sys-color-surface-contain
 paints it. An explicitly colored toolbar retains a transparent back-button background
 and Ionic's contrast foreground. Set `--md3-back-background` on the back button to
 customize its paint.
-Switch thumbs retain their 24px size. CSS-only installation retains Ionic's normal
-thumb and its `enableOnOffLabels` API. Optional cross/check icons are described below.
+Icon-free switches use a 52×28px track and a 20px thumb, measured from the Pixel
+Android 17 Internet panel. CSS-only installation retains Ionic's normal
+thumb and its `enableOnOffLabels` API. The standard toggle and demo use an icon-free thumb.
 Component `md3-disabled` and explicit Ionic colors remain available.
+
+## Optional Settings typography
+
+The default theme keeps Ionic's application font. For the measured Pixel Settings
+variant, import this separate stylesheet and call the optional helper once for the
+application (or a scoped container):
+
+```scss
+@use '@rdlabo/ionic-theme-md3/src/styles/settings-font';
+```
+
+```ts
+import { applySettingsFont } from '@rdlabo/ionic-theme-md3/settings-font';
+
+const removeSettingsFont = applySettingsFont();
+// On teardown:
+removeSettingsFont();
+```
+
+The compiled alternative is `@rdlabo/ionic-theme-md3/dist/css/settings-font.css`.
+The helper owns the `md3-settings-font` class and `--md3-device-pixel`, updates the
+pixel unit on window resize when DPR changes, and restores prior values on cleanup.
+It does not measure every frame. In Angular, register cleanup with `DestroyRef`.
+The demo opts in on Android only.
+
+This variant resolves local `GoogleSansFlex-Regular` and Japanese
+`NotoSansCJKJP-Regular`, then the application's `--ion-font-family`. No font is
+bundled or downloaded. Its font metrics and rounded sizes were measured against
+Japanese Pixel Settings TextViews; this is an optional application typography
+choice, not a universal Android/OEM or multilingual font prescription. Apply it
+only where that typography is desired. Normal CSS font overrides remain available.
+Without the helper/class, Ionic typography remains in use.
+
+The Settings back arrow is also optional and uses Ionic's configuration API:
+
+```ts
+import { settingsBackIcon } from '@rdlabo/ionic-theme-md3';
+
+provideIonicAngular({ backButtonIcon: settingsBackIcon });
+```
+
+An explicit `ion-back-button` `icon` still takes precedence. The arrow is a Material
+Symbols SVG distributed under Apache-2.0; see `THIRD_PARTY_NOTICES.md`.
 
 ## Optional switch state icons
 
-To add Android Settings cross/check icons to a toggle, install the optional helper
+Cross/check icons are specific to some Settings screens, not the standard toggle
+appearance. The existing helper remains available for applications that explicitly
+need that variant; the demo does not apply it. To opt in, install the optional helper
 once for that element and remove it during component teardown:
 
 ```ts
@@ -148,8 +194,7 @@ The helper adds one style element to the public `handle` Part's Shadow DOM. It d
 not observe the document or intercept component properties. Icons appear only while
 the handle is empty: Ionic's own labels take priority when `enableOnOffLabels` is
 set through either an attribute or a framework/property binding, including later
-changes. `md3-disabled` and iOS mode suppress the enhancement. The demo's optional
-`md3StateIcons` directive is an example wrapper, not a globally registered Ionic API.
+changes. `md3-disabled` and iOS mode suppress the enhancement.
 
 The theme's colors and geometry work without this helper or a Capacitor plugin.
 For a range on an arbitrary HTML surface, set `--md3-range-gap-color` to that surface

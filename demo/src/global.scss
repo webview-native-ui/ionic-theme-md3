@@ -39,6 +39,7 @@
 @use '../../src/styles/default-variables';
 @use '../../src/styles/ionic-theme-md3';
 @use '../../src/styles/md-remove-ios-class-effect';
+@use '../../src/styles/settings-font';
 
 // Align Ionic 8 demo layout with the Ionic 9 screenshot baseline.
 html.ionic-v8 {

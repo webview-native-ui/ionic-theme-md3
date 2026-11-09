@@ -5,7 +5,7 @@ import * as allIcons from 'ionicons/icons';
 import { routes } from './app.routes';
 import { IONIC_MAJOR, provideIonicAngular } from '@demo/ionic';
 import { addIcons } from 'ionicons';
-import { mdTransitionAnimation } from '../../../src';
+import { mdTransitionAnimation, settingsBackIcon } from '../../../src';
 
 addIcons(allIcons);
 
@@ -24,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       useSetInputAPI: true,
       mode: 'md',
       backButtonText: '',
+      backButtonIcon: settingsBackIcon,
       navAnimation: mdTransitionAnimation,
       animated: !isE2ETesting,
     }),
