@@ -17,14 +17,13 @@ Then choose the command that matches the task:
 npm run test:e2e          # Run the suite
 npm run test:e2e:ui       # Open Playwright UI mode
 npm run test:e2e:debug    # Run with the Playwright debugger
-npm run test:e2e:update   # Regenerate intentional baseline changes
+# For accepted PR baseline changes, comment /update-screenshots on the PR.
 ```
 
 To reproduce the Linux environment used by CI, run the Docker variants from `demo/`:
 
 ```bash
 npm run test:e2e:docker
-npm run test:e2e:docker:update
 ```
 
 The Docker commands use the Playwright image pinned in `demo/package.json`.
@@ -36,7 +35,9 @@ A screenshot mismatch can be a regression or an intentional visual change. Befor
 1. Inspect the actual, expected, and diff images in `demo/test-results/`.
 2. Check the affected route in both light and dark modes.
 3. Confirm that the component change is intentional.
-4. Regenerate the baseline with `npm run test:e2e:update`, or use the Docker variant when matching CI rendering.
+4. Request `/update-screenshots` on the PR and review the CI-generated commit.
+   Local `test:e2e:update` / `test:e2e:docker:update` runs may be used for investigation
+   in a disposable checkout; do not commit those local images as PR baselines.
 
 The HTML report is written to `demo/playwright-report/` and can be opened with:
 
@@ -46,6 +47,23 @@ npx playwright show-report
 
 ## Add coverage
 
-When adding a demo route or overlay variant, update `demo/e2e/screenshot.spec.ts` and regenerate the relevant baselines. Commit baseline changes only after reviewing the visual diff.
+When adding a demo route or overlay variant, update `demo/e2e/screenshot.spec.ts` and regenerate the relevant baselines. Use the CI update workflow and review its committed visual diff.
 
 Pull requests run the E2E workflow in `.github/workflows/e2e-pull_request.yml`; pushes to `main` run `.github/workflows/e2e-main.yml`.
+
+## Updating PR baselines
+
+For an intentional PR appearance change, post `/update-screenshots` on that PR.
+The workflow checks collaborator permission, generates images in the pinned
+Playwright container and commits them to the PR branch. Fetch that commit before
+continuing work. Inspect changed images in light/dark mode and keep unexpected
+changes out of the baseline. Local screenshots are investigation artifacts, not
+replacement baselines for this workflow.
+
+## Documentation previews
+
+The demo Docs page is generated from `docs/special-markup.md`. After editing it,
+run `npm --prefix demo run docs:generate`, commit the generated content and inspect
+`/main/docs` in the running demo. `prestart` and `prebuild` also regenerate it.
+Keep setup instructions in the linked user guides and preview markup in the source
+Markdown; do not edit `docs-content.generated.ts` by hand.

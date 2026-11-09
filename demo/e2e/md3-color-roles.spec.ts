@@ -94,7 +94,7 @@ test('the CSS theme works without application JavaScript or a Capacitor plugin',
 });
 
 for (const mode of ['light', 'dark'] as const) {
-  test(`${mode}: Android Settings surfaces, groups, back button and switch glyphs`, async ({ page }) => {
+  test(`${mode}: Android Settings surfaces, groups, back button and icon-free switches`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/color-palette');
     const title = page.locator('app-color-palette ion-card-title').first();
@@ -141,12 +141,12 @@ for (const mode of ['light', 'dark'] as const) {
     const glyph = () =>
       toggle.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part~="handle"]')!, '::before').maskImage);
     const offGlyph = await glyph();
-    expect(offGlyph).toContain('svg');
+    expect(offGlyph).toBe('none');
     await toggle.evaluate((element) => {
       (element as HTMLIonToggleElement).checked = true;
     });
     await expect(toggle).toHaveClass(/toggle-checked/);
-    expect(await glyph()).not.toBe(offGlyph);
+    expect(await glyph()).toBe('none');
     await toggle.evaluate((element) => element.classList.add('md3-disabled'));
     expect(await glyph()).toBe('none');
   });

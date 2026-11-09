@@ -100,6 +100,35 @@ This is an introductory group. Place regular list items in a separate `ion-item-
 </ion-list>
 ```
 
+## Android Settings controls
+
+The standard toggle is icon-free. Ionic's `enableOnOffLabels` remains available
+when the application explicitly requests labels:
+
+```html preview
+<ion-list inset="true">
+  <ion-item-group>
+    <ion-item><ion-toggle justify="space-between">Notifications</ion-toggle></ion-item>
+    <ion-item>
+      <ion-toggle justify="space-between" enable-on-off-labels="true">Notifications with on/off labels</ion-toggle>
+    </ion-item>
+  </ion-item-group>
+</ion-list>
+```
+
+The theme uses a 52×28px track and 20px thumb. Grouped rows have a 56px minimum
+height, or 72px for radio rows; long content can grow. Use Ionic's public CSS
+variables for application sizing, and keep the [shared list structure](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group).
+
+The main theme supplies a CSS-only MD font default using local Google Sans Flex
+when available and standard fallbacks otherwise. An application's
+`--ion-font-family` takes priority. Back icons are managed by Ionic; the theme does
+not bundle a replacement. See [Android Settings appearance](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/android-settings)
+for font defaults, fallbacks and application overrides.
+Review the [migration guide](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/migration)
+when updating applications with custom dimensions. These options preserve Ionic's
+palette intent and explicit component properties.
+
 ## Platform-specific extensions
 
 The shared structure above works without platform-specific templates. iOS-only

@@ -33,3 +33,25 @@ The theme therefore:
 - leaves `ion-list-header` outside that surface.
 
 For two-line items and section-header groups, see [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup).
+
+## Sizing and overrides
+
+MD grouped rows have a 56px minimum height, or 72px when they contain a radio
+control. Two-line items use a 16px title, 14px note and 16px block padding; their
+height grows with their content. Titles use the same normal line height as ordinary
+items, so a supporting note does not increase the spacing between wrapped title lines. Headed inset lists use a 56px section header and
+2px gaps between grouped rows. Keep the header outside `ion-item-group`.
+
+Use Ionic's public CSS variables in your application stylesheet after the theme:
+
+```css
+ion-item.app-setting {
+  --min-height: 64px;
+}
+```
+
+A minimum height does not clip long text. Avoid fixed row heights or positional
+transforms intended to compensate for a particular device font. Ionic's ordinary
+trailing note (`slot="end"`) and radio/toggle label APIs retain their meaning.
+The [CSS font default](android-settings.md#default-font-css-only) respects application
+font overrides. Row text follows normal browser metrics without device-pixel compensation.

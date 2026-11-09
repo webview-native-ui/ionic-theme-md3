@@ -8,6 +8,37 @@ Review every section newer than the version currently installed, in ascending or
 
 Each section lists only the changes that require application code or configuration updates.
 
+## Unreleased: Android Settings alignment
+
+No template migration is required. Review application CSS that compensates for
+previous theme dimensions before adopting this update:
+
+| Component | Previous theme | Updated theme |
+| --- | --- | --- |
+| Standard toggle | 52×32px track, 24px thumb | 52×28px track, 20px thumb |
+| Regular toolbar title | 20px; 4px start padding beside start controls | 22px / 28px line; 12px start padding |
+| Two-line inset item title | 18.4px, weight 500 | 16px, weight 400; note 14px |
+| Grouped item minimum height | 48px | 56px; rows containing radio controls 72px |
+| Headed inset lists | Additional list margin/padding | 56px heading; no extra block margin/padding |
+
+These are theme defaults, not fixed content heights. Wrapping and application
+sizing overrides remain available. See [list sizing](using-ion-item-group.md#sizing-and-overrides)
+and [Android Settings appearance](android-settings.md) for examples.
+
+The demo no longer attaches cross/check icons automatically. Applications that
+explicitly call `applyToggleStateIcons` keep that behavior; remove the call and run
+its cleanup if an icon-free toggle is desired. Ionic's `enableOnOffLabels` remains
+supported.
+
+The main theme now includes its MD font default in CSS. Load it after Ionic core
+styles. Existing `--ion-font-family` overrides retain priority; when no application
+font is set, the browser uses local Google Sans Flex if available, then the normal
+fallback stack. No TypeScript font helper or extra stylesheet is required. Check
+text wrapping on supported devices and locales; fonts are not bundled.
+
+Back icons remain managed by Ionic. Named colors, Material You mapping and
+per-button icon overrides retain their meaning.
+
 ## Migrating to 9.0.0
 
 Version 9 aligns the theme's major version with Ionic Framework 9. It does not introduce additional breaking changes beyond those documented in the earlier migration sections.

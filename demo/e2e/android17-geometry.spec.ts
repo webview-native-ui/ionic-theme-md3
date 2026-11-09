@@ -1,0 +1,119 @@
+import { expect, test } from '@playwright/test';
+import { mockDeviceColors, expectDeviceColors } from './device-colors';
+import { arrowBackSharp } from 'ionicons/icons';
+
+test('CSS font default respects Ionic application overrides and iOS mode', async ({ page }) => {
+  await page.goto('/main/index/item-list');
+  const title = page.locator('app-item-list > ion-header ion-title');
+  await expect(title).toHaveCSS('font-family', '"MD3 Settings", Roboto, "Helvetica Neue", sans-serif');
+  await page.addStyleTag({ content: ':root { --ion-font-family: monospace; }' });
+  await expect(title).toHaveCSS('font-family', 'monospace');
+  await title.evaluate((element) => (element as HTMLElement).style.setProperty('font-family', 'serif'));
+  await expect(title).toHaveCSS('font-family', 'serif');
+  await page.evaluate(() => {
+    document.documentElement.classList.replace('md', 'ios');
+  });
+  expect(await page.locator('html').evaluate((el) => getComputedStyle(el).getPropertyValue('--ion-default-font'))).not.toContain(
+    'MD3 Settings',
+  );
+});
+
+test('section headings remain readable with enlarged, wrapped text', async ({ page }) => {
+  await page.setViewportSize({ width: 411, height: 900 });
+  await page.goto('/main/index/item-list');
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = '32px';
+  });
+  const heading = page.locator('app-item-list ion-list-header ion-label').filter({ hasText: 'Inset List 2 Lines with danger header' });
+  const metrics = await heading.evaluate((element) => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    const rows = [...range.getClientRects()].filter((r) => r.width > 0).map((r) => ({ top: r.top, bottom: r.bottom }));
+    const parent = element.closest('ion-list-header')!.getBoundingClientRect();
+    return { rows, parent: { top: parent.top, bottom: parent.bottom } };
+  });
+  expect(metrics.rows.length).toBeGreaterThan(1);
+  for (let i = 1; i < metrics.rows.length; i++) {
+    expect(metrics.rows[i].top).toBeGreaterThanOrEqual(metrics.rows[i - 1].bottom);
+  }
+  expect(metrics.rows[0].top).toBeGreaterThanOrEqual(metrics.parent.top);
+  expect(metrics.rows.at(-1)!.bottom).toBeLessThanOrEqual(metrics.parent.bottom);
+});
+
+for (const mode of ['light', 'dark'] as const) {
+  test(`${mode}: measured Android control geometry and Ionic overrides`, async ({ page }, testInfo) => {
+    await mockDeviceColors(page, mode);
+    await page.setViewportSize({ width: 412, height: 915 });
+    await page.goto('/main/index/toggle');
+    await expectDeviceColors(page, mode);
+    const toggle = page.locator('app-toggle ion-toggle').nth(2);
+    const track = toggle.locator('[part~="track"]');
+    const handle = toggle.locator('[part~="handle"]');
+    await expect(track).toHaveCSS('width', '52px');
+    await expect(track).toHaveCSS('height', '28px');
+    await expect(handle).toHaveCSS('width', '20px');
+    await expect(handle).toHaveCSS('height', '20px');
+    await expect(handle.locator('ion-icon')).toHaveCount(0);
+    await page.screenshot({ path: testInfo.outputPath(`toggle-${mode}.png`), fullPage: true });
+    await toggle.evaluate((element) => (element as HTMLElement).style.setProperty('--handle-width', '18px'));
+    await expect(handle).toHaveCSS('width', '18px');
+    await toggle.evaluate((element) => element.classList.add('md3-disabled'));
+    await expect(track).not.toHaveCSS('height', '28px');
+
+    await page.goto('/main/index/item-list');
+    const title = page.locator('app-item-list > ion-header ion-title');
+    await expect(title).toHaveCSS('font-size', '22px');
+    await expect(title).toHaveCSS('padding-inline-start', '12px');
+    const back = page.locator('app-item-list > ion-header ion-back-button');
+    await expect(back.locator('ion-icon')).toHaveJSProperty('icon', arrowBackSharp);
+    await expect(back.locator('ion-icon svg')).toBeVisible();
+    await back.evaluate((element) => ((element as HTMLIonBackButtonElement).icon = 'close'));
+    await expect(back.locator('ion-icon')).toHaveJSProperty('icon', 'close');
+    const list = page
+      .locator('app-item-list ion-list')
+      .filter({ has: page.locator('ion-list-header') })
+      .first();
+    await expect(list).toHaveCSS('padding-top', '0px');
+    await expect(list.locator('ion-list-header')).toHaveCSS('min-height', '56px');
+    const item = list.locator('ion-item').first();
+    await expect(item).toHaveCSS('height', '56px');
+    await item.evaluate((element) => (element as HTMLElement).style.setProperty('--min-height', '80px'));
+    await expect(item).toHaveCSS('height', '80px');
+
+    // A supporting note must not change the title's line spacing. Use identical
+    // wrapped text so this catches cumulative height growth, not just CSS values.
+    const labels = list.locator('ion-item > ion-label');
+    const twoLineList = page
+      .locator('app-item-list ion-list')
+      .filter({ has: page.locator('ion-list-header') })
+      .nth(1);
+    const twoLineLabel = twoLineList.locator('ion-item > ion-label').nth(1);
+    const plainLabel = labels.nth(1);
+    await twoLineLabel.evaluate(
+      (element, text) => {
+        element.textContent = text;
+      },
+      await plainLabel.textContent(),
+    );
+    const plainBox = await plainLabel.boundingBox();
+    const twoLineBox = await twoLineLabel.boundingBox();
+    expect(plainBox).not.toBeNull();
+    expect(twoLineBox).not.toBeNull();
+    expect(twoLineBox!.height).toBeCloseTo(plainBox!.height, 1);
+    const twoLineItem = twoLineList.locator('ion-item').nth(1);
+    const noteBox = await twoLineItem.locator('ion-note').boundingBox();
+    const itemBox = await twoLineItem.boundingBox();
+    expect(itemBox!.height).toBeCloseTo(twoLineBox!.height + noteBox!.height + 32, 1);
+
+    await page.goto('/main/index/radio');
+    const radio = page.locator('app-radio ion-radio').first();
+    await expect(radio.locator('[part~="container"]')).toHaveCSS('width', '20px');
+    await expect(radio.locator('..')).toHaveCSS('height', '72px');
+
+    await page.goto('/main/index/range');
+    const range = page.locator('app-range ion-range').first();
+    await expect(range.locator('[part~="bar"]')).toHaveCSS('height', '16px');
+    await expect(range.locator('[part~="knob"]').first()).toHaveCSS('width', '4px');
+    await expect(range.locator('[part~="knob"]').first()).toHaveCSS('height', '44px');
+  });
+}

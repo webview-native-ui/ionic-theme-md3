@@ -30,11 +30,15 @@ for (const mode of ['light', 'dark'] as const) {
     await page.setViewportSize({ width: 411, height: 900 });
     await page.goto('/main/index/item-list');
     const label = page.locator('app-item-list ion-list.list-inset').nth(2).locator('ion-item').last().locator('ion-label');
-    const metrics = await label.evaluate((element) => {
-      const s = getComputedStyle(element);
-      return { size: parseFloat(s.fontSize), line: parseFloat(s.lineHeight) };
+    const lines = await label.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return [...range.getClientRects()].filter((rect) => rect.width > 0).map((rect) => ({ top: rect.top, bottom: rect.bottom }));
     });
-    expect(metrics.line).toBeGreaterThanOrEqual(metrics.size * 1.2);
+    expect(lines.length).toBeGreaterThan(1);
+    for (let index = 1; index < lines.length; index++) {
+      expect(lines[index].top).toBeGreaterThanOrEqual(lines[index - 1].bottom - 1);
+    }
     const back = page.locator('app-item-list > ion-header ion-back-button');
     await back.evaluate((element) => (element as HTMLElement).style.setProperty('--background', '#ff0000'));
     expect(await back.evaluate((element) => getComputedStyle(element.shadowRoot!.querySelector('[part~="native"]')!).backgroundColor)).toBe(
@@ -60,9 +64,15 @@ for (const mode of ['light', 'dark'] as const) {
     expect(await accordions.first().evaluate((element) => getComputedStyle(element).marginBottom)).toBe('2px');
   });
 
-  test(`${mode}: Ionic label properties take priority over optional icons`, async ({ page }) => {
+  test(`${mode}: toggles are icon-free unless Ionic on/off labels are explicitly enabled`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/toggle');
+    for (const control of await page.locator('app-toggle ion-toggle:not([enable-on-off-labels])').all()) {
+      await expect(control).toHaveClass(/hydrated/);
+      const handle = control.locator('[part~="handle"]');
+      await expect(handle.locator('ion-icon')).toHaveCount(0);
+      expect(await handle.evaluate((element) => getComputedStyle(element, '::before').content)).toBe('none');
+    }
     const toggle = page.locator('app-toggle ion-toggle').first();
     const icons = () =>
       toggle.evaluate((element) => {
@@ -70,7 +80,8 @@ for (const mode of ['light', 'dark'] as const) {
         const s = getComputedStyle(h, '::before');
         return { count: h.querySelectorAll('ion-icon').length, content: s.content, mask: s.maskImage };
       });
-    await expect.poll(async () => (await icons()).mask).toContain('svg');
+    await expect.poll(async () => (await icons()).content).toBe('none');
+    await expect.poll(async () => (await icons()).count).toBe(0);
     await toggle.evaluate((element) => ((element as HTMLIonToggleElement).enableOnOffLabels = true));
     await expect.poll(async () => (await icons()).count).toBe(1);
     await expect.poll(async () => (await icons()).content).toBe('none');
@@ -78,7 +89,8 @@ for (const mode of ['light', 'dark'] as const) {
     await expect(toggle).toHaveClass(/toggle-checked/);
     expect((await icons()).content).toBe('none');
     await toggle.evaluate((element) => ((element as HTMLIonToggleElement).enableOnOffLabels = false));
-    await expect.poll(async () => (await icons()).mask).toContain('svg');
+    await expect.poll(async () => (await icons()).content).toBe('none');
+    await expect.poll(async () => (await icons()).count).toBe(0);
     await toggle.evaluate((element) => element.classList.add('md3-disabled'));
     expect((await icons()).content).toBe('none');
   });

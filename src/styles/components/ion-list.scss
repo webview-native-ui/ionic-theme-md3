@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use '../utils/structured-list';
 
 ion-list.md:not(.md3-disabled) {
@@ -14,11 +15,46 @@ ion-list.md:not(.md3-disabled).list-inset {
 
   @include structured-list.layout(8px, $group-border-radius, $disabled-selector: '.md3-disabled');
 
+  // Measured Settings groups: a 56dp section heading, with no extra list margin.
+  &:has(> ion-list-header:not(.md3-disabled)) {
+    margin-block: 0;
+    padding-block: 0;
+  }
+
+  & + ion-list.md.list-inset:not(.md3-disabled):has(> ion-list-header:not(.md3-disabled)) {
+    margin-block-start: 2px;
+  }
+
+  > ion-list-header:not(.md3-disabled) {
+    min-height: 56px;
+    align-items: flex-end;
+
+    > ion-label:not(.md3-disabled) {
+      margin-block: 0 10px;
+      font-size: 0.875rem;
+      // Preserve 22px at the default 14px font, and scale with enlarged text.
+      line-height: math.div(22, 14);
+    }
+  }
+
   :is(#{structured-list.$groups}):not(.md3-disabled) ion-item:not(.md3-disabled) {
     --border-color: var(--ion-color-light, #fff);
 
     &:has(> ion-label:not([slot])):has(> ion-note:not([slot])) > ion-label:not(.md3-disabled) {
-      line-height: 1.25;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    &:has(> ion-label:not([slot])):has(> ion-note:not([slot])) {
+      &::part(container) {
+        padding-block: 16px;
+      }
+
+      > ion-note:not(.md3-disabled) {
+        font-size: 0.875rem;
+        line-height: normal;
+      }
     }
 
     ion-note[slot='end'] {
@@ -71,6 +107,15 @@ ion-list.md:not(.md3-disabled).list-inset {
 
   ion-radio-group:has(> .radio-group-top) ion-item:not(.md3-disabled):first-of-type:not(.item-lines-inset):not(.item-lines-none) {
     --border-radius: #{$group-border-radius} #{$group-border-radius} 0 0;
+  }
+}
+
+// Keep the public Ionic sizing variable easy to override from application CSS.
+:where(ion-list.md.list-inset:not(.md3-disabled) :is(#{structured-list.$groups}):not(.md3-disabled) ion-item.md:not(.md3-disabled)) {
+  --min-height: 56px;
+
+  &:where(:has(> ion-radio.md:not(.md3-disabled))) {
+    --min-height: 72px;
   }
 }
 

@@ -1,0 +1,14 @@
+// Use a device-local font when available. Never download or bundle platform fonts.
+@font-face {
+  font-family: 'MD3 Settings';
+  src: local('GoogleSansFlex-Regular');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+// Ionic resolves --ion-font-family through --ion-default-font. Change only its
+// MD default so application --ion-font-family overrides keep their precedence.
+html.md {
+  --ion-default-font: 'MD3 Settings', Roboto, 'Helvetica Neue', sans-serif;
+}

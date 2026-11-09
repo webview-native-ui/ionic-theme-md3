@@ -18,7 +18,13 @@ ion-toolbar.md:not(.md3-disabled) {
   }
 
   &:has(> [slot='start']) ion-title {
-    padding-inline-start: 4px;
+    padding-inline-start: 12px;
+  }
+
+  ion-title.md:not(.md3-disabled):not(.title-small):not(.title-large) {
+    font-size: 1.375rem;
+    line-height: 1.75rem;
+    letter-spacing: -0.0125em;
   }
   &:not(:has(> [slot='start'])) ion-title {
     padding-inline-start: calc(16px + 12px);
