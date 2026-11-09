@@ -87,11 +87,15 @@ const luminance = (value: RGB): number => {
 /** Matches Ionic Docs generateColor and generateSteppedColors (see THIRD_PARTY_NOTICES.md). */
 export const materialToIonicColors = (scheme: MaterialColorScheme): IonicColorVariables => {
   const variables: IonicColorVariables = {};
+  const dark = luminance(rgb(scheme.surface)) < luminance(rgb(scheme.onSurface));
   for (const [name, value] of Object.entries({
     primary: scheme.primary,
     secondary: scheme.secondary,
     tertiary: scheme.tertiary,
     danger: scheme.error,
+    light: (dark ? scheme.surfaceContainerHighest : scheme.surfaceContainerLow) ?? scheme.surface,
+    medium: scheme.outline ?? hex(mix(rgb(scheme.surface), rgb(scheme.onSurface), 0.5)),
+    dark: scheme.onSurface,
   })) {
     const base = rgb(value);
     const light = luminance(base);
@@ -104,7 +108,8 @@ export const materialToIonicColors = (scheme: MaterialColorScheme): IonicColorVa
     variables[`${prefix}-shade`] = hex(mix(base, [0, 0, 0], 0.12));
     variables[`${prefix}-tint`] = hex(mix(base, [255, 255, 255], 0.1));
   }
-  const background = rgb(scheme.surface);
+  // Keep the light base white and preserve Ionic MD's dark page/panel hierarchy.
+  const background = rgb((dark ? scheme.surfaceContainerLow : scheme.surfaceContainerLowest) ?? scheme.surface);
   const text = rgb(scheme.onSurface);
   variables['--ion-background-color'] = hex(background);
   variables['--ion-background-color-rgb'] = background.join(',');

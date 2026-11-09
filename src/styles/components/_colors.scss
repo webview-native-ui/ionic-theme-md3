@@ -2,6 +2,18 @@
 
 // Resolve optional roles locally, retaining Ionic palettes and per-component opt-outs.
 
+// Resolve at each consumer to keep local Material role overrides working.
+// Ionic MD uses white planes in light mode, but separates dark pages and panels.
+.md {
+  --md3-base-surface: var(--md-sys-color-surface-container-lowest);
+  --md3-panel-surface: var(--md-sys-color-surface-container-lowest);
+}
+
+:where(.ion-palette-dark) .md {
+  --md3-base-surface: var(--md-sys-color-surface-container-low);
+  --md3-panel-surface: var(--md-sys-color-surface-container-high);
+}
+
 // Resolve the surrounding paint at its owner, before a child control's color can change it.
 :is(ion-content, ion-toolbar, ion-item, ion-card, ion-modal, ion-popover).md {
   --md3-surface-background: var(--background, var(--ion-background-color, #fff));
@@ -12,17 +24,17 @@
 }
 
 ion-accordion.md:where(:not(.md3-disabled)) {
-  background: var(--md-sys-color-surface-bright, transparent);
+  background: var(--md3-panel-surface, transparent);
 }
 
 ion-content.md:where(:not(.md3-disabled):not(.ion-color)),
 ion-menu.md:where(:not(.md3-disabled):not(.ion-color)) {
-  --background: var(--md-sys-color-surface-container, var(--ion-background-color, #fff));
+  --background: var(--md3-base-surface, var(--ion-background-color, #fff));
   --color: var(--md-sys-color-on-surface, var(--ion-text-color, #000));
 }
 
 ion-toolbar.md:where(:not(.md3-disabled):not(.ion-color)) {
-  --background: var(--md-sys-color-surface-container, var(--ion-toolbar-background, var(--ion-background-color, #fff)));
+  --background: var(--md3-panel-surface, var(--ion-toolbar-background, var(--ion-background-color, #fff)));
   --color: var(--md-sys-color-on-surface, var(--ion-toolbar-color, var(--ion-text-color, #424242)));
 }
 
@@ -83,10 +95,7 @@ ion-back-button.md:where(:not(.md3-disabled):not(.ion-color)) {
 }
 
 ion-card.md:where(:not(.md3-disabled):not(.ion-color)) {
-  --background: var(
-    --md-sys-color-surface-container-low,
-    var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)))
-  );
+  --background: var(--md3-panel-surface, var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff))));
   --color: var(
     --md-sys-color-on-surface,
     var(--ion-card-color, var(--ion-item-color, var(--ion-color-step-550, var(--ion-text-color-step-450, #737373))))
@@ -141,11 +150,11 @@ ion-chip.md:where(:not(.md3-disabled):not(.ion-color)).md3-selected {
 }
 
 ion-list.md:where(:not(.md3-disabled):not(.ion-color)) {
-  background: var(--md-sys-color-surface, var(--ion-item-background, var(--ion-background-color, #fff)));
+  background: var(--md3-panel-surface, var(--ion-item-background, var(--ion-background-color, #fff)));
 }
 
 ion-item.md:where(:not(.md3-disabled):not(.ion-color)) {
-  --background: var(--md-sys-color-surface, var(--ion-item-background, var(--ion-background-color, #fff)));
+  --background: var(--md3-panel-surface, var(--ion-item-background, var(--ion-background-color, #fff)));
   --color: var(--md-sys-color-on-surface, var(--ion-item-color, var(--ion-text-color, #000)));
   --border-color: var(
     --ion-item-border-color,
@@ -157,14 +166,11 @@ ion-item.md:where(:not(.md3-disabled):not(.ion-color)) {
 }
 
 :where(ion-list.md.list-inset:not(.md3-disabled)) ion-item.md:where(:not(.md3-disabled):not(.ion-color)) {
-  --background: var(
-    --md-sys-color-surface-bright,
-    var(--md-sys-color-surface, var(--ion-item-background, var(--ion-background-color, #fff)))
-  );
+  --background: var(--md3-panel-surface, var(--md-sys-color-surface, var(--ion-item-background, var(--ion-background-color, #fff))));
 }
 
 ion-tab-bar.md:where(:not(.md3-disabled):not(.ion-color)) {
-  --background: var(--md-sys-color-surface-container, var(--ion-tab-bar-background, var(--ion-background-color, #fff)));
+  --background: var(--md3-panel-surface, var(--ion-tab-bar-background, var(--ion-background-color, #fff)));
   --color: var(
     --md-sys-color-on-surface-variant,
     var(--ion-tab-bar-color, var(--ion-color-step-650, var(--ion-text-color-step-350, #595959)))
@@ -199,6 +205,15 @@ ion-searchbar.md:where(:not(.md3-disabled):not(.ion-color)) {
   --background: var(--md-sys-color-surface-container-high, rgba(var(--ion-color-contrast-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.08));
   --color: var(--md-sys-color-on-surface, var(--ion-text-color, #000));
   --icon-color: var(--md-sys-color-on-surface-variant, var(--ion-color-step-600, var(--ion-text-color-step-400, #666)));
+}
+
+// Dark toolbar/item panels already use container-high; keep the search field distinct.
+:where(.ion-palette-dark :is(ion-toolbar, ion-item).md:not(.md3-disabled):not(.ion-color))
+  ion-searchbar.md:where(:not(.md3-disabled):not(.ion-color)) {
+  --background: var(
+    --md-sys-color-surface-container-highest,
+    var(--md-sys-color-surface-container-high, rgba(var(--ion-color-contrast-rgb, var(--ion-text-color-rgb, 0, 0, 0)), 0.08))
+  );
 }
 
 ion-toggle.md:where(:not(.md3-disabled):not(.ion-color)) {
@@ -252,7 +267,7 @@ ion-progress-bar.md:where(:not(.md3-disabled):not(.ion-color)) {
 }
 
 :is(ion-modal, ion-popover).md:where(:not(.md3-disabled):not(.ion-color)) {
-  --background: var(--md-sys-color-surface-container-low, var(--ion-background-color, #fff));
+  --background: var(--md3-base-surface, var(--ion-background-color, #fff));
 }
 
 // A select menu is one surface; its list must not repaint the overlay as a page.
@@ -271,7 +286,7 @@ ion-popover.md:where(:not(.md3-disabled):not(.ion-color)) {
 }
 
 ion-alert.md:where(:not(.md3-disabled)) {
-  --background: var(--md-sys-color-surface-container-high, var(--ion-overlay-background-color, var(--ion-background-color, #fff)));
+  --background: var(--md3-base-surface, var(--ion-overlay-background-color, var(--ion-background-color, #fff)));
 }
 
 ion-alert.md:where(:not(.md3-disabled)) .alert-title,
@@ -317,7 +332,7 @@ ion-alert.md:where(:not(.md3-disabled)) .alert-button-role-destructive.ion-focus
 }
 
 ion-action-sheet.md:where(:not(.md3-disabled)) {
-  --background: var(--md-sys-color-surface-container-low, var(--ion-overlay-background-color, var(--ion-background-color, #fff)));
+  --background: var(--md3-base-surface, var(--ion-overlay-background-color, var(--ion-background-color, #fff)));
   --color: var(--md-sys-color-on-surface-variant, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54));
   --button-color: var(--md-sys-color-on-surface, var(--ion-color-step-850, var(--ion-text-color-step-150, #262626)));
 }

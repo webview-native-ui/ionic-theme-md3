@@ -81,7 +81,7 @@ export const expectDeviceColorPairs = async (page: Page, mode: 'light' | 'dark')
     ['filled', roles.primary, roles.onPrimary],
     ['tonal', roles.secondaryContainer, roles.onSecondaryContainer],
     ['elevated', roles.surfaceContainerLow, roles.primary],
-    ['card', roles.surfaceContainerLow, roles.onSurface],
+    ['card', mode === 'light' ? roles.surfaceContainerLowest : roles.surfaceContainerHigh, roles.onSurface],
     ['card-filled', roles.surfaceContainerHighest, roles.onSurface],
     ['card-outlined', roles.surface, roles.onSurface],
     ['fab', roles.primaryContainer, roles.onPrimaryContainer],
@@ -111,7 +111,7 @@ export const expectDeviceColorPairs = async (page: Page, mode: 'light' | 'dark')
   await expect(page.getByTestId('palette-search').locator('.searchbar-search-icon')).toHaveCSS('color', rgb(roles.onSurfaceVariant));
   await expect(page.locator('app-color-palette ion-content #background-content')).toHaveCSS(
     'background-color',
-    rgb(roles.surfaceContainer),
+    rgb(mode === 'light' ? roles.surfaceContainerLowest : roles.surfaceContainerLow),
   );
 };
 

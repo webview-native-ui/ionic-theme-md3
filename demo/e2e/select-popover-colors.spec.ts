@@ -21,7 +21,7 @@ for (const mode of ['light', 'dark'] as const) {
       const surface = popover.locator('[part~=content]');
       const background = await surface.evaluate((el) => getComputedStyle(el).backgroundColor);
       if (device) {
-        const hex = scheme[mode].surfaceContainerLow;
+        const hex = mode === 'light' ? scheme.light.surfaceContainerLowest : scheme.dark.surfaceContainerLow;
         expect(background).toBe(`rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(', ')})`);
       }
       await expect(list).toHaveCSS('background-color', background);

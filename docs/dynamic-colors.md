@@ -52,12 +52,15 @@ There may be one controller per document. Call `destroy()` on application teardo
 
 ## Mapping
 
-| Material role                  | Ionic token               |
-| ------------------------------ | ------------------------- |
-| primary / secondary / tertiary | corresponding named color |
-| error                          | danger                    |
-| surface                        | background color          |
-| onSurface                      | text color                |
+| Material role                                                                     | Ionic token               |
+| --------------------------------------------------------------------------------- | ------------------------- |
+| primary / secondary / tertiary                                                    | corresponding named color |
+| error                                                                             | danger                    |
+| surfaceContainerLowest in light / surfaceContainerLow in dark (surface fallback)  | background color          |
+| surfaceContainerLow in light / surfaceContainerHighest in dark (surface fallback) | light                     |
+| outline (surface/onSurface midpoint fallback)                                     | medium                    |
+| onSurface                                                                         | dark                      |
+| onSurface                                                                         | text color                |
 
 The native bridge supplies the supported Material color roles for both modes;
 the original six fields remain the compatibility inputs and additional roles are
@@ -65,11 +68,16 @@ optional in the TypeScript contract. Named colors generate base, RGB, contrast,
 contrast RGB, shade and tint. Contrast
 uses Ionic's black/white contrast-ratio comparison, rather than Material's `on*`
 roles. MD3 components use the supplied `on*` role when present. Background and text generate separate step-50 through step-950 tokens;
-legacy `--ion-color-step-*` aliases are also supplied. Success, warning, light, medium, and dark retain their existing Ionic values.
+legacy `--ion-color-step-*` aliases are also supplied. Success and warning retain their existing Ionic values. Light, medium, and dark follow the device neutral palette; their RGB, contrast, shade and tint values are generated together. The light base uses surfaceContainerLowest (white), while the dark base uses surfaceContainerLow. Older six-role schemes fall back to surface for background/light and a surface/onSurface midpoint for medium.
+
+Default light surfaces remain white: Content, Menu, Toolbar, TabBar, Card, lists/items and Modal/Popover/Alert/ActionSheet. In dark mode, pages and overlay shells use surfaceContainerLow, while Toolbar, TabBar, Card and lists/items use surfaceContainerHigh. The named light palette uses surfaceContainerHighest in dark mode, preserving the order of page, panel and light-colored surfaces instead of flattening them all to black. These roles resolve at each component so local overrides continue to work. Without optional roles, existing Ionic background variables remain the fallback.
+
+Explicit Material variants (filled/outlined cards and tonal/elevated buttons), search fields, loading indicators and inverse Toast surfaces retain their dedicated roles. Explicit color attributes and md3-disabled continue to take precedence over default component paint.
+
 The supplied native roles also become optional `--md-sys-color-*` tokens used by
 MD3 components. Missing optional roles return to local/user overrides or the
 Ionic-derived CSS fallback, including when switching modes or refreshing.
-An explicit `color="light"`, for example, continues using that Ionic palette.
+An explicit `color="light"`, for example, keeps the Ionic light role while following its generated device-neutral palette.
 
 For conversion without DOM changes, use `materialToIonicColors(scheme)` for
 Ionic variables and `materialToMd3Colors(partialRoles)` for optional MD3 tokens.
