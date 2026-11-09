@@ -4,9 +4,7 @@ A CSS/JS theme for Ionic applications, using Android Settings as its visual refe
 
 <!-- rdlabo-docs-pick -->
 
-<img src="screenshots/android17-light.png" alt="Pixel 8a Android 17: light Material You colors applied to Ionic components" width="270"> <img src="screenshots/android17-dark.png" alt="Pixel 8a Android 17: dark Material You colors applied to Ionic components" width="270">
-
-Pixel 8a, Android 17, with optional device colors enabled.
+![Ionic MD3 theme with the default Ionic palette on Android 17](screenshots/md3.png)
 
 <!-- /rdlabo-docs-pick -->
 

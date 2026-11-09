@@ -11,6 +11,14 @@ APIs from the `@rdlabo/capacitor-native-ui` root entrypoint. No activation of Na
 UI projection is needed. The theme conversion helper remains available from
 `@rdlabo/ionic-theme-md3/dynamic-colors`.
 
+## Device color example
+
+Pixel 8a running Android 17, with optional Material You colors enabled. The default
+theme works with Ionic's own palette; these screenshots show the additional native
+color integration in light and dark appearance.
+
+<img src="../screenshots/android17-light.png" alt="Optional Material You colors in light appearance" width="270"> <img src="../screenshots/android17-dark.png" alt="Optional Material You colors in dark appearance" width="270">
+
 ## Setup
 
 Install the theme and the native provider in your Capacitor application:
