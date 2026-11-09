@@ -126,7 +126,10 @@ for (const mode of ['light', 'dark'] as const) {
     await expect(item).toHaveClass(/hydrated/);
     expect(await item.evaluate((element) => getComputedStyle(element).marginBottom)).toBe('2px');
     await list.evaluate((element, mode) => {
-      (element as HTMLElement).style.setProperty('--md-sys-color-surface-bright', mode === 'light' ? '#faf8fe' : '#2a2c34');
+      (element as HTMLElement).style.setProperty(
+        mode === 'light' ? '--md-sys-color-surface-container-lowest' : '--md-sys-color-surface-container-high',
+        mode === 'light' ? '#faf8fe' : '#2a2c34',
+      );
     }, mode);
     await expect.poll(async () => (await colors(item)).background).toEqual(mode === 'light' ? [250, 248, 254] : [42, 44, 52]);
     await item.evaluate((element) => element.classList.add('md3-disabled'));

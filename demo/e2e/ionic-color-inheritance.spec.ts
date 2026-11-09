@@ -7,7 +7,8 @@ for (const mode of ['light', 'dark'] as const) {
       await page.emulateMedia({ colorScheme: mode });
       await page.goto('/main/index/color-palette');
       await expect(page.getByTestId('palette-card')).toHaveClass(/hydrated/);
-      const result = await page.evaluate(async () => {
+      const result = await page.evaluate(async (mode) => {
+        const panelRole = mode === 'light' ? '--md-sys-color-surface-container-lowest' : '--md-sys-color-surface-container-high';
         const fixture = document.createElement('section');
         fixture.style.cssText =
           '--ion-background-color:#123456;--ion-text-color:#fedcba;--ion-text-color-rgb:0,128,64;--ion-color-primary:#008040;--ion-color-primary-contrast:#fff';
@@ -63,14 +64,14 @@ for (const mode of ['light', 'dark'] as const) {
           records.push({ tag, themed: properties.map((p) => sample(themed, p)), baseline: properties.map((p) => sample(baseline, p)) });
         }
         const card = fixture.querySelector('ion-card') as HTMLElement;
-        fixture.style.setProperty('--md-sys-color-surface-container-low', '#abcdef');
+        fixture.style.setProperty(panelRole, '#abcdef');
         const materialCard = sample(card, '--background');
-        const unchangedToolbar = sample(fixture.querySelector('ion-toolbar')!, '--background');
+        const materialToolbar = sample(fixture.querySelector('ion-toolbar')!, '--background');
         fixture.style.setProperty('--ion-card-background', '#654321');
-        fixture.style.removeProperty('--md-sys-color-surface-container-low');
+        fixture.style.removeProperty(panelRole);
         const dedicatedCard = sample(card, '--background');
         const insetItem = fixture.querySelector('ion-list ion-item') as HTMLElement;
-        fixture.style.setProperty('--md-sys-color-surface-bright', '#abcdef');
+        fixture.style.setProperty(panelRole, '#abcdef');
         const materialInset = sample(insetItem, '--background');
         const customStyle = document.createElement('style');
         customStyle.textContent = 'ion-card.inheritance-custom, ion-item.inheritance-custom { --background: #ff0080; }';
@@ -78,15 +79,15 @@ for (const mode of ['light', 'dark'] as const) {
         card.classList.add('inheritance-custom');
         insetItem.classList.add('inheritance-custom');
         const customInset = sample(insetItem, '--background');
-        fixture.style.removeProperty('--md-sys-color-surface-bright');
+        fixture.style.removeProperty(panelRole);
         const customInsetWithoutRole = sample(insetItem, '--background');
         const localCard = sample(card, '--background');
         fixture.remove();
-        return { records, materialCard, unchangedToolbar, dedicatedCard, localCard, materialInset, customInset, customInsetWithoutRole };
-      });
+        return { records, materialCard, materialToolbar, dedicatedCard, localCard, materialInset, customInset, customInsetWithoutRole };
+      }, mode);
       for (const record of result.records) expect(record.themed, record.tag).toEqual(record.baseline);
       expect(result.materialCard).toBe('rgb(171, 205, 239)');
-      expect(result.unchangedToolbar).toBe(result.records.find((record) => record.tag === 'ion-toolbar')!.baseline[0]);
+      expect(result.materialToolbar).toBe('rgb(171, 205, 239)');
       expect(result.dedicatedCard).toBe('rgb(101, 67, 33)');
       expect(result.localCard).toBe('rgb(255, 0, 128)');
       expect(result.materialInset).toBe('rgb(171, 205, 239)');

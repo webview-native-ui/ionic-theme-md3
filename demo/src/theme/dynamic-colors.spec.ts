@@ -7,6 +7,7 @@ import {
   type DynamicColorTheme,
 } from '../../../src/dynamic-colors';
 import fixtures from './ionic-color-fixtures.json';
+import deviceScheme from '../../e2e/fixtures/android17-device-colors.json';
 
 const light = { primary: '#6750a4', secondary: '#625b71', tertiary: '#7d5260', error: '#b3261e', surface: '#fffbfe', onSurface: '#1c1b1f' };
 const dark = { primary: '#d0bcff', secondary: '#ccc2dc', tertiary: '#efb8c8', error: '#f2b8b5', surface: '#1c1b1f', onSurface: '#e6e1e5' };
@@ -251,5 +252,39 @@ describe('dynamic theme lifecycle', () => {
     root.style.setProperty('--md-sys-color-outline', '#fedcba');
     await theme.destroy();
     expect(root.style.getPropertyValue('--md-sys-color-outline')).toBe('#fedcba');
+  });
+});
+
+describe('device neutral colors', () => {
+  for (const mode of ['light', 'dark'] as const) {
+    it(`${mode}: preserves the base plane and maps all neutral palette variants`, () => {
+      const scheme = deviceScheme[mode];
+      const result = materialToIonicColors(scheme);
+      expect(result['--ion-background-color']).toBe(mode === 'light' ? '#ffffff' : scheme.surfaceContainerLow);
+      for (const [name, value] of Object.entries({
+        light: mode === 'light' ? scheme.surfaceContainerLow : scheme.surfaceContainerHighest,
+        medium: scheme.outline,
+        dark: scheme.onSurface,
+      })) {
+        expect(result[`--ion-color-${name}`]).toBe(value);
+        for (const suffix of ['-rgb', '-contrast', '-contrast-rgb', '-shade', '-tint']) {
+          expect(result[`--ion-color-${name}${suffix}`]).toBeDefined();
+        }
+      }
+      expect(result['--ion-color-success']).toBeUndefined();
+      expect(result['--ion-color-warning']).toBeUndefined();
+    });
+  }
+  it('refreshes neutral palettes and restores user overrides on destroy', async () => {
+    const root = document.documentElement;
+    root.style.setProperty('--ion-color-light', '#123456');
+    theme = await enableDynamicColors({ getScheme: async () => ({ ...deviceScheme, systemDark: false }) });
+    expect(root.style.getPropertyValue('--ion-color-light')).toBe(deviceScheme.light.surfaceContainerLow);
+    theme.setMode('dark');
+    expect(root.style.getPropertyValue('--ion-color-light')).toBe(deviceScheme.dark.surfaceContainerHighest);
+    expect(root.style.getPropertyValue('--ion-background-color')).toBe(deviceScheme.dark.surfaceContainerLow);
+    await theme.destroy();
+    expect(root.style.getPropertyValue('--ion-color-light')).toBe('#123456');
+    expect(root.style.getPropertyValue('--ion-color-medium')).toBe('');
   });
 });
