@@ -31,8 +31,7 @@ npx cap run android
 
 The plugin's root exports and native getter are included in 2.1.3; an older native
 binary (for example 2.1.1) must be rebuilt, not just supplied with new JavaScript.
-Use a theme release containing the mapping described below. The source guide can
-include changes newer than the installed npm release; check its release notes.
+Use theme 9.2.0 or later for the mapping described below.
 The [plugin guide](https://github.com/webview-native-ui/capacitor-plugin/blob/main/docs/dynamic-colors.md)
 documents availability, role types and native notifications.
 

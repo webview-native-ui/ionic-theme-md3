@@ -81,7 +81,7 @@ initialization code or Capacitor plugin is required. Back icons remain Ionic's r
 
 See [Android Settings appearance](docs/android-settings.md) for installation,
 font fallbacks and component overrides. Existing users should
-review the [unreleased migration notes](docs/migration.md#unreleased-android-settings-alignment)
+review the [9.2.0 migration notes](docs/migration.md#migrating-to-920-android-settings-alignment)
 for changes to toolbar, list and toggle dimensions.
 
 ### Optional: use the MD3 and iOS 27 themes together
