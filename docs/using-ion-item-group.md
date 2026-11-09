@@ -38,7 +38,8 @@ For two-line items and section-header groups, see [Special markup](https://docs.
 
 MD grouped rows have a 56px minimum height, or 72px when they contain a radio
 control. Two-line items use a 16px title, 14px note and 16px block padding; their
-height grows with their content. Headed inset lists use a 56px section header and
+height grows with their content. Titles use the same normal line height as ordinary
+items, so a supporting note does not increase the spacing between wrapped title lines. Headed inset lists use a 56px section header and
 2px gaps between grouped rows. Keep the header outside `ion-item-group`.
 
 Use Ionic's public CSS variables in your application stylesheet after the theme:

@@ -58,6 +58,31 @@ for (const mode of ['light', 'dark'] as const) {
     await item.evaluate((element) => (element as HTMLElement).style.setProperty('--min-height', '80px'));
     await expect(item).toHaveCSS('height', '80px');
 
+    // A supporting note must not change the title's line spacing. Use identical
+    // wrapped text so this catches cumulative height growth, not just CSS values.
+    const labels = list.locator('ion-item > ion-label');
+    const twoLineList = page
+      .locator('app-item-list ion-list')
+      .filter({ has: page.locator('ion-list-header') })
+      .nth(1);
+    const twoLineLabel = twoLineList.locator('ion-item > ion-label').nth(1);
+    const plainLabel = labels.nth(1);
+    await twoLineLabel.evaluate(
+      (element, text) => {
+        element.textContent = text;
+      },
+      await plainLabel.textContent(),
+    );
+    const plainBox = await plainLabel.boundingBox();
+    const twoLineBox = await twoLineLabel.boundingBox();
+    expect(plainBox).not.toBeNull();
+    expect(twoLineBox).not.toBeNull();
+    expect(twoLineBox!.height).toBeCloseTo(plainBox!.height, 1);
+    const twoLineItem = twoLineList.locator('ion-item').nth(1);
+    const noteBox = await twoLineItem.locator('ion-note').boundingBox();
+    const itemBox = await twoLineItem.boundingBox();
+    expect(itemBox!.height).toBeCloseTo(twoLineBox!.height + noteBox!.height + 32, 1);
+
     await page.goto('/main/index/radio');
     const radio = page.locator('app-radio ion-radio').first();
     await expect(radio.locator('[part~="container"]')).toHaveCSS('width', '20px');

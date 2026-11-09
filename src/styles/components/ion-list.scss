@@ -41,7 +41,7 @@ ion-list.md:not(.md3-disabled).list-inset {
     &:has(> ion-label:not([slot])):has(> ion-note:not([slot])) > ion-label:not(.md3-disabled) {
       font-size: 1rem;
       font-weight: 400;
-      line-height: 1.5;
+      line-height: normal;
     }
 
     &:has(> ion-label:not([slot])):has(> ion-note:not([slot])) {

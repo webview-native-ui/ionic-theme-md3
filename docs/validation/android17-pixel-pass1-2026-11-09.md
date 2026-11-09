@@ -95,6 +95,28 @@ are covered in the web demo/tests, not claimed as separately measured native sta
 Tablet layout/RTL tests are regression checks, not native tablet pixel acceptance.
 Other components in the map still need their own native references.
 
+## Item-height follow-up after CSS-only typography
+
+The installed Pixel demo was measured at DPR 2.625. Default one-line inset items
+are 56 CSS px (non-inset Ionic items remain 48px). The 56px minimum is a constraint,
+not padding added to the content. Both native/inner wrappers have zero block
+padding. For a label plus note, the container has 16px top/bottom padding and
+zero label/note margins; there is no duplicate padding.
+
+The title of a supporting-note row still had a fixed 24px line height, while the
+same 16px local font in an ordinary item used about 20.19px. Changing the title to
+`line-height: normal` removes that inconsistency. Same-device CSS probing measured:
+
+| Demo content | Before | After | Height decomposition after |
+| --- | --- | --- | --- |
+| One-line label only | 56px | 56px | Minimum height dominates |
+| One-line title + note | 73.90px | 70.10px | 20.19 + 17.90 + 32px padding |
+| Three-line title + note | 121.90px | 110.48px | 60.57 + 17.90 + 32px padding |
+
+These are web measurements, not native pixel-equality claims. Browser coverage
+compares identical wrapped titles with/without supporting notes, checks the total
+height against content plus padding, and verifies that rendered lines do not overlap.
+
 ## Reproducing the comparison
 
 1. Build the theme and demo using the repository scripts. Run the demo E2E
