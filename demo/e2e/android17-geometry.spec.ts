@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { mockDeviceColors, expectDeviceColors } from './device-colors';
-import { settingsBackIcon } from '../../src/settings-icons';
+import { arrowBackSharp } from 'ionicons/icons';
 import { applySettingsFont } from '../../src/settings-font';
 
 test('Settings font preserves application CSS priority and responds to DPR changes', async ({ page }) => {
@@ -51,8 +51,8 @@ for (const mode of ['light', 'dark'] as const) {
     await expect(title).toHaveCSS('font-size', '22px');
     await expect(title).toHaveCSS('padding-inline-start', '12px');
     const back = page.locator('app-item-list > ion-header ion-back-button');
-    await expect(back.locator('ion-icon')).toHaveJSProperty('icon', settingsBackIcon);
-    await expect(back.locator('ion-icon svg path')).toHaveAttribute('d', /m313/);
+    await expect(back.locator('ion-icon')).toHaveJSProperty('icon', arrowBackSharp);
+    await expect(back.locator('ion-icon svg')).toBeVisible();
     await back.evaluate((element) => ((element as HTMLIonBackButtonElement).icon = 'close'));
     await expect(back.locator('ion-icon')).toHaveJSProperty('icon', 'close');
     await page.addStyleTag({ path: '../dist/css/settings-font.css' });

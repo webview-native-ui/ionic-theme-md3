@@ -16,13 +16,12 @@ on Android 17; other Android manufacturers can use different designs.
 | Toolbar, grouped lists and controls | Android-aligned dimensions | Override with application CSS |
 | Toggle thumb | No state icon | Ionic `enableOnOffLabels`, or the state-icon helper below |
 | Font | Application's Ionic font | Separate local Settings font stylesheet and helper |
-| Back arrow | Ionic's configured icon | Set `settingsBackIcon` through Ionic configuration |
+| Back arrow | Ionic's configured icon | Use Ionic's own icon configuration; no theme icon is bundled |
 | Palette | Existing Ionic color intent | Device colors are a separate [dynamic colors](dynamic-colors.md) feature |
 
 Install the main theme as described in the [README](../README.md#installation).
 The options below work independently and do not require a Capacitor plugin.
-The demo enables Settings typography only on Android and configures the back
-arrow separately; a desktop demo does not prove local Pixel fonts are available.
+The demo enables Settings typography only on Android; a desktop demo does not prove local Pixel fonts are available.
 
 ## Optional local Settings font
 
@@ -93,31 +92,16 @@ application typography; remove the font scope/helper to restore it. Component
 geometry opt-out remains independent. Prefer the normal theme plus your existing
 `--ion-font-family` when a fully custom typeface is required.
 
-## Optional Settings back arrow
+## Back buttons remain Ionic components
 
-`settingsBackIcon` is an SVG data URL suitable for Ionic's `backButtonIcon` option.
-Configure it during the application's normal Ionic initialization. For Angular:
+The theme does not bundle or replace the back-arrow icon. Ionic owns its default
+icon, `backButtonIcon` configuration, per-button `icon` property, navigation and
+accessibility. Applications can use those existing Ionic APIs directly.
 
-```ts
-import { isPlatform, provideIonicAngular } from '@ionic/angular';
-import { settingsBackIcon } from '@rdlabo/ionic-theme-md3';
-
-const ionicProvider = provideIonicAngular({
-  backButtonIcon: isPlatform('ios') ? undefined : settingsBackIcon,
-});
-// Include ionicProvider in your existing application providers.
-```
-
-With Ionic 8 Angular, import `provideIonicAngular` from
-`@ionic/angular/standalone`. React's `setupIonicReact` and Vue's `IonicVue` plugin
-accept the same configuration property. Use your application's platform/mode
-selection when supporting both themes; the setting is an Ionic-wide default.
-An explicit back-button `icon` still takes precedence. Navigation, accessibility
-and the 56px touch target are unchanged. The circle remains transparent unless its
-optional color role is supplied; see [color system](color-system.md).
-
-The SVG is derived from Material Symbols under Apache-2.0; attribution and license
-are included in [third-party notices](../THIRD_PARTY_NOTICES.md).
+The theme styles the button's spacing, 56px touch target and 40px circular paint
+area. The circle is transparent unless its optional color role is supplied; see
+[color system](color-system.md). Native Settings and Ionic glyphs can differ;
+matching the native arrow is not a theme requirement.
 
 ## Toggle labels and optional state icons
 

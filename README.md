@@ -75,8 +75,8 @@ Use this markup to preview the inset grouped list look. For the list structure t
 ### Optional: Android Settings appearance
 
 The theme keeps Ionic's color semantics and application font. Standard toggles are
-icon-free. Pixel Settings typography and the Material back arrow are separate
-opt-ins; neither requires Material You colors or a Capacitor plugin.
+icon-free. Pixel Settings typography is an optional enhancement; it requires neither
+Material You colors nor a Capacitor plugin. Back icons remain Ionic's responsibility.
 
 See [Android Settings appearance](docs/android-settings.md) for installation,
 framework setup, cleanup, fallbacks and component overrides. Existing users should
@@ -141,7 +141,7 @@ createApp(App)
 
 ## Documentation
 
-- [Android Settings appearance](docs/android-settings.md) — default geometry, optional local typography and back arrow.
+- [Android Settings appearance](docs/android-settings.md) — default geometry, optional local typography and Ionic customization.
 
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
 - [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.

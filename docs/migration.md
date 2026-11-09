@@ -30,8 +30,8 @@ explicitly call `applyToggleStateIcons` keep that behavior; remove the call and 
 its cleanup if an icon-free toggle is desired. Ionic's `enableOnOffLabels` remains
 supported.
 
-The new `applySettingsFont` helper and `settingsBackIcon` are optional. Importing
-the main theme does not activate either. Existing application fonts, named colors,
+The new `applySettingsFont` helper is optional. Importing the main theme does
+not activate it. Back icons remain managed by Ionic. Existing application fonts, named colors,
 Material You mapping and per-button icon overrides retain their meaning.
 
 ## Migrating to 9.0.0

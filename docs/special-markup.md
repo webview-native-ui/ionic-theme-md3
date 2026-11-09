@@ -121,8 +121,8 @@ height, or 72px for radio rows; long content can grow. Use Ionic's public CSS
 variables for application sizing, and keep the [shared list structure](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group).
 
 The application's font and configured back icon remain the defaults. Local Pixel
-Settings typography and the Material back arrow are separate opt-ins, unrelated
-to device colors. See [Android Settings appearance](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/android-settings)
+Settings typography is an opt-in unrelated to device colors. Back icons are
+managed by Ionic; the theme does not bundle a replacement. See [Android Settings appearance](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/android-settings)
 for stylesheet imports, lifecycle cleanup, platform selection and fallbacks.
 Review the [migration guide](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/migration)
 when updating applications with custom dimensions. These options preserve Ionic's

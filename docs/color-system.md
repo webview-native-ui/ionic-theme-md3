@@ -124,7 +124,7 @@ Android 17 Internet panel. CSS-only installation retains Ionic's normal
 thumb and its `enableOnOffLabels` API. The standard toggle and demo use an icon-free thumb.
 Component `md3-disabled` and explicit Ionic colors remain available.
 
-Typography, optional back-arrow configuration and switch state icons are documented
+Typography, Ionic back-button responsibilities and switch state icons are documented
 in [Android Settings appearance](android-settings.md). They do not change the
 palette or require device colors.
 

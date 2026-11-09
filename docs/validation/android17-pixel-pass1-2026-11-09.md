@@ -31,7 +31,7 @@ and 70% for the dark reference. System brightness was not changed for this test.
 | --- | --- | --- |
 | Icon-free checked Toggle | Internet panel track 137×73 physical px, thumb 53×53 | 52×28 CSS px, thumb 20×20; all 12 installed demo toggles checked |
 | Back circle / hit target | Circle 105×105 physical px = 40dp | 40px paint, existing 56px target retained |
-| Back arrow | Settings arrow_back vector | Optional Material Symbols SVG through Ionic `backButtonIcon`; rendered SVG tested, explicit per-button icon wins |
+| Back arrow | Native glyph differs from Ionic | Ionic default retained; glyph matching is outside theme scope |
 | Toolbar title | 22sp text | 22px / 28px, start padding 12px, tracking −0.0125em |
 | First heading / group | Heading layout y≈126.10dp, group y≈158.10dp | y=126 / 158 CSS px |
 | Two-line grouped rows | Title 16sp, summary 14sp, native fallback padding | 16/14px default; optional local font metrics and device-pixel rounding align TextView boxes |
@@ -43,8 +43,8 @@ and 70% for the dark reference. System brightness was not changed for this test.
 [Raw ink-bound measurements](android17-pixel-measurements-2026-11-09.json) record
 native/web coordinates, masks, crops and deltas. In light and dark, all 11 sampled
 text regions (toolbar, titles, toggle labels and summaries through the final row)
-have bounding edges within **1 physical pixel**. The back-arrow bounds differ by
-up to **2 physical pixels** in light and **1** in dark. Matching bounding boxes is
+have bounding edges within **1 physical pixel**. Back-arrow measurements from the removed custom-icon experiment are excluded.
+Matching bounding boxes is
 not equality of every antialiased glyph pixel. No screenshot tolerance, device-
 specific translation, or background recoloring was used to hide these differences.
 
@@ -58,12 +58,12 @@ specific translation, or background recoloring was used to hide these difference
 - Local Settings fonts are a separate optional stylesheet/helper. Default theme
   consumers retain their application font. No platform font is bundled/downloaded.
   This variant is calibrated for the Japanese Pixel font stack, not every locale/OEM.
-- Back-arrow replacement is optional Ionic configuration, not a CSS mask.
+- Back-arrow selection remains Ionic's responsibility; no replacement icon is bundled.
 - Compound navigation-plus-switch rows are not forced onto plain Ionic toggle rows.
 
 ## Validation and acceptance boundary
 
-60 browser tests passed: light/dark geometry, real back-arrow SVG rendering,
+60 browser tests passed: light/dark geometry, Ionic default back-arrow rendering,
 explicit icon/size overrides, optional font lifecycle and DPR changes, palette
 inheritance, overlays/Searchbar contrast, shared markup, RTL, tablet layout and
 Ionic contracts. 31 unit tests passed. Theme build, production demo build, Android
