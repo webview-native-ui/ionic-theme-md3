@@ -86,8 +86,7 @@ export const expectDeviceColorPairs = async (page: Page, mode: 'light' | 'dark')
     ['card-outlined', roles.surface, roles.onSurface],
     ['fab', roles.primaryContainer, roles.onPrimaryContainer],
     ['chip-selected', roles.secondaryContainer, roles.onSecondaryContainer],
-    // Explicit Ionic danger keeps Ionic's contrast choice rather than Material onError.
-    ['danger', roles.error, mode === 'light' ? '#ffffff' : '#000000'],
+    ['danger', roles.error, roles.onError],
   ];
   const rgb = (hex: string) => `rgb(${[1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)).join(', ')})`;
   for (const [id, background, foreground] of pairs) {

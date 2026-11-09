@@ -48,6 +48,53 @@ describe('Ionic Docs reference fixtures (019986b8)', () => {
   });
 });
 
+describe('optional Material foreground pairs', () => {
+  for (const mode of ['light', 'dark'] as const) {
+    it(`${mode}: preserves all four device foregrounds and their RGB values`, () => {
+      const scheme = deviceScheme[mode];
+      const result = materialToIonicColors(scheme);
+      for (const [name, role] of [
+        ['primary', 'onPrimary'],
+        ['secondary', 'onSecondary'],
+        ['tertiary', 'onTertiary'],
+        ['danger', 'onError'],
+      ] as const) {
+        expect(result[`--ion-color-${name}-contrast`]).toBe(scheme[role].toLowerCase());
+        expect(result[`--ion-color-${name}-contrast-rgb`]).toBe(
+          [1, 3, 5].map((offset) => parseInt(scheme[role].slice(offset, offset + 2), 16)).join(','),
+        );
+      }
+    });
+  }
+  it('changes only supplied foreground pairs, leaving other Ionic values intact', () => {
+    const original = materialToIonicColors(light);
+    const result = materialToIonicColors({ ...light, onSecondary: '#AbCdEf' });
+    expect(result).toEqual({
+      ...original,
+      '--ion-color-secondary-contrast': '#abcdef',
+      '--ion-color-secondary-contrast-rgb': '171,205,239',
+    });
+  });
+  it('rejects invalid supplied foregrounds instead of silently replacing them', () => {
+    for (const role of ['onPrimary', 'onSecondary', 'onTertiary', 'onError']) {
+      expect(() => materialToIonicColors({ ...light, [role]: 'invalid' })).toThrow(TypeError);
+    }
+  });
+  it('restores computed contrast when optional roles disappear after refresh', async () => {
+    let snapshot: DynamicColorScheme = { ...available(), available: true, light: { ...light, onPrimary: '#fff0ff' }, dark };
+    theme = await enableDynamicColors({ getScheme: async () => snapshot });
+    expect(document.documentElement.style.getPropertyValue('--ion-color-primary-contrast')).toBe('#fff0ff');
+    snapshot = available();
+    await theme.refresh();
+    expect(document.documentElement.style.getPropertyValue('--ion-color-primary-contrast')).toBe(
+      materialToIonicColors(light)['--ion-color-primary-contrast'],
+    );
+    expect(document.documentElement.style.getPropertyValue('--ion-color-primary-contrast-rgb')).toBe(
+      materialToIonicColors(light)['--ion-color-primary-contrast-rgb'],
+    );
+  });
+});
+
 describe('dynamic theme lifecycle', () => {
   it('switches cached light/dark schemes without native calls and follows system only in system mode', async () => {
     let snapshot = available();
@@ -218,7 +265,7 @@ describe('dynamic theme lifecycle', () => {
     });
     expect(() => materialToMd3Colors({ outline: 'invalid' })).toThrow(TypeError);
   });
-  it('uses native role pairs while keeping the Ionic generator output intact', async () => {
+  it('uses native role pairs for both Material and Ionic foregrounds', async () => {
     theme = await enableDynamicColors({
       getScheme: async () => ({
         available: true,
@@ -229,7 +276,7 @@ describe('dynamic theme lifecycle', () => {
     });
     const style = document.documentElement.style;
     expect(style.getPropertyValue('--md-sys-color-on-primary')).toBe('#ffffee');
-    expect(style.getPropertyValue('--ion-color-primary-contrast')).toBe('#ffffff');
+    expect(style.getPropertyValue('--ion-color-primary-contrast')).toBe('#ffffee');
     expect(style.getPropertyValue('--md-sys-color-primary-container')).toBe('#aabbcc');
     theme.setMode('dark');
     expect(style.getPropertyValue('--md-sys-color-primary-container')).toBe('');

@@ -84,10 +84,16 @@ const luminance = (value: RGB): number => {
   return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
 };
 
-/** Matches Ionic Docs generateColor and generateSteppedColors (see THIRD_PARTY_NOTICES.md). */
+/** Uses Ionic Docs generators, with supplied Material on-colors overriding contrast (see THIRD_PARTY_NOTICES.md). */
 export const materialToIonicColors = (scheme: MaterialColorScheme): IonicColorVariables => {
   const variables: IonicColorVariables = {};
   const dark = luminance(rgb(scheme.surface)) < luminance(rgb(scheme.onSurface));
+  const foregrounds: Record<string, string | undefined> = {
+    primary: scheme.onPrimary,
+    secondary: scheme.onSecondary,
+    tertiary: scheme.onTertiary,
+    danger: scheme.onError,
+  };
   for (const [name, value] of Object.entries({
     primary: scheme.primary,
     secondary: scheme.secondary,
@@ -99,7 +105,9 @@ export const materialToIonicColors = (scheme: MaterialColorScheme): IonicColorVa
   })) {
     const base = rgb(value);
     const light = luminance(base);
-    const contrast: RGB = (light + 0.05) / 0.05 >= 1.05 / (light + 0.05) ? [0, 0, 0] : [255, 255, 255];
+    const foreground = foregrounds[name];
+    const contrast: RGB =
+      foreground !== undefined ? rgb(foreground) : (light + 0.05) / 0.05 >= 1.05 / (light + 0.05) ? [0, 0, 0] : [255, 255, 255];
     const prefix = `--ion-color-${name}`;
     variables[prefix] = hex(base);
     variables[`${prefix}-rgb`] = base.join(',');

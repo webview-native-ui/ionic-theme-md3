@@ -65,9 +65,11 @@ There may be one controller per document. Call `destroy()` on application teardo
 The native bridge supplies the supported Material color roles for both modes;
 the original six fields remain the compatibility inputs and additional roles are
 optional in the TypeScript contract. Named colors generate base, RGB, contrast,
-contrast RGB, shade and tint. Contrast
-uses Ionic's black/white contrast-ratio comparison, rather than Material's `on*`
-roles. MD3 components use the supplied `on*` role when present. Background and text generate separate step-50 through step-950 tokens;
+contrast RGB, shade and tint. Primary, secondary, tertiary and danger use the
+supplied `onPrimary`, `onSecondary`, `onTertiary` and `onError` roles for contrast
+and contrast RGB. Missing roles fall back individually to Ionic's black/white
+contrast-ratio comparison. Shade/tint generation and the light/medium/dark palettes
+retain the Ionic calculation. MD3 components also use the supplied `on*` role when present. Background and text generate separate step-50 through step-950 tokens;
 legacy `--ion-color-step-*` aliases are also supplied. Success and warning retain their existing Ionic values. Light, medium, and dark follow the device neutral palette; their RGB, contrast, shade and tint values are generated together. The light base uses surfaceContainerLowest (white), while the dark base uses surfaceContainerLow. Older six-role schemes fall back to surface for background/light and a surface/onSurface midpoint for medium.
 
 Default light surfaces remain white: Content, Menu, Toolbar, TabBar, Card, lists/items and Modal/Popover/Alert/ActionSheet. In dark mode, pages and overlay shells use surfaceContainerLow, while Toolbar, TabBar, Card and lists/items use surfaceContainerHigh. The named light palette uses surfaceContainerHighest in dark mode, preserving the order of page, panel and light-colored surfaces instead of flattening them all to black. These roles resolve at each component so local overrides continue to work. Without optional roles, existing Ionic background variables remain the fallback.
