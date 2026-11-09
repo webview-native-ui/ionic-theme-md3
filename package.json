@@ -30,6 +30,7 @@
     "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
+    "prebuild": "rm -rf dist",
     "build": "npm run build:css && npm run build:ts",
     "prebuild:css": "rdlabo-copy-structured-list src/styles/utils/structured-list.scss",
     "build:css": "rm -rf dist/css && sass src/styles:dist/css --style=compressed --no-source-map",

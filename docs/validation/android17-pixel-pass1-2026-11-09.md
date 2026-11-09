@@ -1,145 +1,105 @@
-# Android 17 pixel alignment — measured control pass
+# Android 17 typography and control geometry validation
 
-Base: `8a67646` (#63). Scope: Toolbar/back, grouped list headings/rows,
-icon-free Toggle, Radio and Range. The [component map](android17-component-map-2026-11-09.md)
-records the reference screens and components outside this pass.
+Base: `8a67646` (#63). This review covers toolbar titles, grouped list headings
+and rows, icon-free toggles, radio rows and range geometry. The
+[component map](android17-component-map-2026-11-09.md) identifies reference screens
+and components that still need their own native comparison.
 
-## Final typography policy
+## Reference and implementation boundary
 
-The final theme uses a CSS-only MD font default via Ionic's `--ion-default-font`.
-Application `--ion-font-family` overrides take priority. The font TS helper,
-DPR rounding, forced Japanese fallback, metric overrides and variable-font axis
-corrections were removed. The following original native/text measurements record
-an earlier experiment, **not acceptance measurements for the final typography**.
-No 1px text-match claim applies to the final implementation.
+Native reference: Pixel 8a, Android 17 `CP2A.260705.006`, 1080×2400, density 420,
+font scale 1.0, Japanese; WebView DPR 2.625. Settings supplies the list, toolbar,
+radio and range references. The icon-free checked toggle comes from SystemUI's
+Internet panel, which is a different variant from Settings' icon-bearing switches.
 
-## Reference and original measurement method
+The theme preserves Ionic palette semantics, application font and sizing overrides,
+component properties and interaction APIs. Back-icon selection remains Ionic's
+responsibility. Typography uses local Google Sans Flex when available, followed
+by ordinary browser fallbacks. No native font, runtime font helper, device-pixel
+rounding or per-device metric compensation is included. Native TextView and WebView
+text can differ; this report does not claim glyph or whole-screen pixel equality.
 
-Pixel 8a, Android 17 `CP2A.260705.006`, 1080×2400, density 420, font scale 1.0,
-Japanese; WebView DPR 2.625. Native Settings is the source of truth. Internet-panel
-Toggle geometry is from SystemUI, not the icon-bearing Settings variant.
+## Geometry evidence
 
-Native accessibility bounds, raster crops and actual Settings TextViews were
-measured separately. A temporary instrumentation probe instantiated TextViews
-with Settings' own PreferenceTitle/PreferenceSummary text appearances. It found
-GoogleSansFlex, title weight 500/optical size 16 and body weight 400/optical size 14.
-The native 14sp text size rounds to 37 physical pixels; Japanese title/summary
-layout heights are 62/55 physical pixels. A Latin `64%` summary is 50 pixels high.
-These differences explained the earlier baseline error and accumulated row drift.
+Native accessibility bounds and raster extents were measured separately. Raster
+extents depend on antialiasing and must not be treated as touch-target dimensions.
+CSS values below assume the default 16px root font size where rem units are used.
 
-The measured experimental production demo was packaged and installed as the separate
-`io.ionic.theme.md3.review` app. That APK did not contain the temporary
-instrumentation. Comparisons below used the earlier installed source CSS, without runtime CSS
-injection. The [same-content fixture](../../demo/e2e/fixtures/android17-settings.html)
-was loaded into that WebView. Its brightness text was 64% for the light reference
-and 70% for the dark reference. System brightness was not changed for this test.
-
-## Results
-
-| Part | Native reference | Final implementation/check |
+| Part | Native observation | Theme behavior |
 | --- | --- | --- |
-| Icon-free checked Toggle | Internet panel track 137×73 physical px, thumb 53×53 | 52×28 CSS px, thumb 20×20; all 12 installed demo toggles checked |
-| Back circle / hit target | Circle 105×105 physical px = 40dp | 40px paint, existing 56px target retained |
-| Back arrow | Native glyph differs from Ionic | Ionic default retained; glyph matching is outside theme scope |
-| Toolbar title | 22sp text | 22px / 28px, start padding 12px, tracking −0.0125em |
-| First heading / group | Heading layout y≈126.10dp, group y≈158.10dp | y=126 / 158 CSS px |
-| Two-line grouped rows | Title 16sp, summary 14sp, native fallback padding | 16/14px default; final typography uses normal browser metrics |
-| Group gaps | 2dp rounds to 5 physical px | 2 CSS px; no DPR rounding |
-| Toggle rows | Native Japanese title + 16dp padding each side | Default min-height 56px; no font-specific row adjustment |
-| Radio | Approximately 72dp row, 20dp circle | Grouped row minimum 72px; existing 20px circle retained |
-| Range | 16dp track, approximately 4×44dp handle | Existing dimensions retained |
+| Icon-free checked toggle | Track 137×73 physical px; thumb 53×53 | Track 52×28 CSS px; thumb 20×20 |
+| Back-button circle | 105×105 physical px, approximately 40dp | Existing 40px paint area and 56px touch target retained |
+| Toolbar title | 22sp text | 22px text / 28px line height; 12px start padding beside start controls |
+| Section heading | Approximately 56dp layout height | 56px minimum; no extra block margin/padding around headed lists |
+| Title plus supporting note | 16sp title and 14sp summary | 16/14px text, natural line height, 16px top/bottom padding |
+| Group gaps | 2dp, rounded by Android to physical pixels | 2 CSS px without DPR compensation |
+| Radio | Approximately 72dp row and 20dp circle | 72px grouped-row minimum; existing 20px circle retained |
+| Range | 16dp track and approximately 4×44dp handle | Existing dimensions retained |
 
-The retained [experimental ink-bound measurements](android17-pixel-measurements-2026-11-09.json)
-record the earlier compensated font experiment. They must not be used as a
-baseline or accuracy claim for the CSS-only font default. Native/web rasterization
-and line metrics can differ; the final implementation prioritizes Ionic overrides
-and normal browser text layout. Back-arrow matching is outside theme scope.
+## Item height: text, padding and minimum height
 
-## Ionic compatibility
+The CSS-only review APK was measured on the Pixel at DPR 2.625. Ordinary one-line
+inset items are 56 CSS px; non-inset Ionic items remain 48px. The minimum height is
+a constraint, not an additional contribution to content height. Native/inner
+wrappers have zero block padding. Supporting-note rows have 16px container padding
+on each side and zero label/note margins, so padding is not counted twice.
 
-- #63's palette semantics and white default surfaces are unchanged. Pixel Settings
-  surface RGB is not imposed on ordinary Ionic components.
-- `color`, local sizing variables, explicit icons, `enableOnOffLabels`, component
-  opt-out and existing interaction APIs remain available.
-- The default Toggle is icon-free; the public optional icon helper remains.
-- The CSS-only font default uses local Google Sans Flex with standard fallbacks.
-  Application font overrides retain precedence. No platform font is bundled or
-  downloaded; no locale-specific fallback is forced.
-- Back-arrow selection remains Ionic's responsibility; no replacement icon is bundled.
-- Compound navigation-plus-switch rows are not forced onto plain Ionic toggle rows.
+A same-device CSS probe confirmed that using natural title line height also for
+supporting-note rows removes extra height accumulated by wrapped titles:
 
-## Validation and acceptance boundary
+| Demo content | Height with natural title line height | Decomposition |
+| --- | --- | --- |
+| One-line label only | 56px | Minimum height dominates |
+| One-line title + note | 70.10px | 20.19 + 17.90 + 32px padding |
+| Three-line title + note | 110.48px | 60.57 + 17.90 + 32px padding |
 
-After removing the font helper, all 60 related browser checks passed (the new
-font-override assertion was corrected to use normal component `font-family` and
-its three-test file was rerun). The remaining 29 dynamic-color unit tests, theme
-and production demo builds, lint, packed ESM imports and Android packaging passed.
-The CSS-only APK was installed and its Toggle, Radio, Range and Item/List screens
-were captured and visually inspected in light/dark mode. Chrome's platform-font
-inspection confirmed `GoogleSansFlex-Regular` renders the toolbar title without
-the old helper class. No new physical-pixel equality claim is made.
+These are browser layout measurements on this device, not cross-device constants.
+The final line-height adjustment was checked through CSS probing and browser tests;
+it was not separately packaged into the measured APK.
 
+## Verification
 
-Before the typography simplification, 60 browser tests passed: light/dark geometry, Ionic default back-arrow rendering,
-explicit icon/size overrides, the former optional font lifecycle and DPR changes, palette
-inheritance, overlays/Searchbar contrast, shared markup, RTL, tablet layout and
-Ionic contracts. 31 unit tests passed. Theme build, production demo build, Android
-packaging, lint and packed ESM import checks passed. Production demo build retains
-an initial-bundle budget warning (2.25MB versus 2MB).
+- The CSS-only APK's Toggle, Radio, Range and Item/List pages were captured and
+  visually inspected in light/dark mode. Platform-font inspection confirmed local
+  `GoogleSansFlex-Regular` renders the title without runtime initialization.
+- The related browser suite covers geometry, font overrides, iOS isolation, colors,
+  shared markup, RTL, tablet layout and Ionic contracts. The final item-height
+  adjustment passed 14 targeted checks, including equal wrapped-title height with
+  and without a note, total content-plus-padding height and non-overlapping lines.
+- The remaining 29 dynamic-color unit tests passed. Theme build and lint passed
+  after the item-height adjustment; production demo build, Android packaging and
+  packed ESM imports passed during the CSS-only typography validation. The demo
+  has a bundle-budget warning: approximately 2.25MB versus 2MB.
+- Baselines are generated in CI via `/update-screenshots`. The updated Item/List
+  screenshots were reviewed in light/dark and ordinary/device-color variants.
+  The PR checks are the authoritative record for the final tested commit.
+- Final review added 200% text-size coverage for wrapped headings; all 61 related
+  browser checks passed. Unitless heading line height preserves the default
+  proportions while preventing overlap at enlarged sizes. A clean-build/package
+  check also verified that deleted TS helpers cannot remain in the npm output.
 
-The earlier experimental installed app's Toggle, Radio, Range and Item/List pages were captured
-and visually inspected in light and dark (8 captures), in addition to the two
-same-content fixtures. The icon-free native Toggle reference is checked only;
-network settings were not changed to obtain another state. Disabled/on/off states
-are covered in the web demo/tests, not claimed as separately measured native states.
-Tablet layout/RTL tests are regression checks, not native tablet pixel acceptance.
-Other components in the map still need their own native references.
+The native icon-free toggle reference covers the checked state only; network
+settings were not changed for another state. Web tests cover other states. Tablet
+and RTL checks are regression coverage, not native tablet pixel acceptance.
+Other components in the map remain outside this measured subset.
 
-## Item-height follow-up after CSS-only typography
+## Repeat the checks
 
-The installed Pixel demo was measured at DPR 2.625. Default one-line inset items
-are 56 CSS px (non-inset Ionic items remain 48px). The 56px minimum is a constraint,
-not padding added to the content. Both native/inner wrappers have zero block
-padding. For a label plus note, the container has 16px top/bottom padding and
-zero label/note margins; there is no duplicate padding.
+1. Install dependencies in the repository and `demo`, build the theme, then run
+   `cd demo && npx playwright test e2e/android17-geometry.spec.ts e2e/android-settings-regressions.spec.ts`.
+   Use an unused local server port if another checkout is running.
+2. For device comparison, record build, density, font scale, locale, appearance,
+   viewport and system insets. Capture native Display Settings and its accessibility
+   hierarchy without changing functional settings.
+3. Build/install the demo on the same device. Render the
+   [same-content fixture](../../demo/e2e/fixtures/android17-settings.html) inside
+   its `ion-app`, matching the displayed brightness text. Capture light and dark
+   states with the same viewport, then restore the original appearance.
+4. Measure layout bounds, text line boxes, padding and painted extents separately.
+   Keep native reference and web results distinct; do not infer glyph equality
+   from matching outer bounds.
 
-The title of a supporting-note row still had a fixed 24px line height, while the
-same 16px local font in an ordinary item used about 20.19px. Changing the title to
-`line-height: normal` removes that inconsistency. Same-device CSS probing measured:
-
-| Demo content | Before | After | Height decomposition after |
-| --- | --- | --- | --- |
-| One-line label only | 56px | 56px | Minimum height dominates |
-| One-line title + note | 73.90px | 70.10px | 20.19 + 17.90 + 32px padding |
-| Three-line title + note | 121.90px | 110.48px | 60.57 + 17.90 + 32px padding |
-
-These are web measurements, not native pixel-equality claims. Browser coverage
-compares identical wrapped titles with/without supporting notes, checks the total
-height against content plus padding, and verifies that rendered lines do not overlap.
-
-## Reproducing the comparison
-
-1. Build the theme and demo using the repository scripts. Run the demo E2E
-   geometry checks with `cd demo && npx playwright test e2e/android17-geometry.spec.ts`.
-2. For native comparison, use a Pixel with the build, density, font scale and
-   locale recorded above. Open Display Settings, capture its image and accessibility
-   hierarchy, and record the displayed brightness value without changing it.
-3. Install the demo on that device. Its MD font default is included in the theme CSS.
-   Render `demo/e2e/fixtures/android17-settings.html` inside the demo's `ion-app`,
-   matching the brightness text. Use the same viewport/system insets and appearance.
-4. Compare the text-only crop rectangles in the measurement JSON. The recorded
-   bounds use an RGB mask: light `max(channel) < 180`, dark `max(channel) > 110`;
-   right/bottom bounds are exclusive. These are ink bounds, not per-pixel similarity.
-   Exclude other controls from the crop. Keep native/web measurements separate.
-5. Compare control paint independently of accessibility/touch bounds. Repeat for
-   dark mode and restore the device's original appearance after capture.
-
-The measurement JSON is retained in the repository. Original native/device
-captures and the temporary TextView instrumentation were local investigation
-artifacts and are not included; the raw screenshots cannot be recovered from this
-report. Do not treat their absence as a reproducible screenshot baseline. Native
-Internet-panel images can include network information and must not be published
-without removing it. Platform font files and reference APKs are not distributed.
-
-PR screenshot baselines are generated by `/update-screenshots` in CI and reviewed
-separately. See [E2E testing](../e2e-testing.md) for the contributor workflow.
+Original native captures and temporary instrumentation were local investigation
+artifacts and are not distributed. They are not reproducible screenshot baselines.
+Internet-panel images may contain network information. The repository's CI-generated
+web baselines and [E2E guide](../e2e-testing.md) provide the maintained regression path.

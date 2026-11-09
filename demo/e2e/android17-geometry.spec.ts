@@ -18,6 +18,28 @@ test('CSS font default respects Ionic application overrides and iOS mode', async
   );
 });
 
+test('section headings remain readable with enlarged, wrapped text', async ({ page }) => {
+  await page.setViewportSize({ width: 411, height: 900 });
+  await page.goto('/main/index/item-list');
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = '32px';
+  });
+  const heading = page.locator('app-item-list ion-list-header ion-label').filter({ hasText: 'Inset List 2 Lines with danger header' });
+  const metrics = await heading.evaluate((element) => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    const rows = [...range.getClientRects()].filter((r) => r.width > 0).map((r) => ({ top: r.top, bottom: r.bottom }));
+    const parent = element.closest('ion-list-header')!.getBoundingClientRect();
+    return { rows, parent: { top: parent.top, bottom: parent.bottom } };
+  });
+  expect(metrics.rows.length).toBeGreaterThan(1);
+  for (let i = 1; i < metrics.rows.length; i++) {
+    expect(metrics.rows[i].top).toBeGreaterThanOrEqual(metrics.rows[i - 1].bottom);
+  }
+  expect(metrics.rows[0].top).toBeGreaterThanOrEqual(metrics.parent.top);
+  expect(metrics.rows.at(-1)!.bottom).toBeLessThanOrEqual(metrics.parent.bottom);
+});
+
 for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: measured Android control geometry and Ionic overrides`, async ({ page }, testInfo) => {
     await mockDeviceColors(page, mode);

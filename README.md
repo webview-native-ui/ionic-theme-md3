@@ -22,7 +22,7 @@ npm install @rdlabo/ionic-theme-md3
 
 Note: **If you use @ionic/core@ < 8.8.0**, use @rdlabo/ionic-theme-md3@1.0.2.
 
-And import the theme in your project's main CSS file (e.g., `src/styles.scss`).
+Import the theme in your project's main CSS file (e.g., `src/styles.scss`) **after Ionic's core styles**. This order allows the MD default font to apply while preserving your application's `--ion-font-family` override.
 
 ```css
 @import '@rdlabo/ionic-theme-md3/dist/css/default-variables.css';

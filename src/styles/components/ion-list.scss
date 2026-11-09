@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use '../utils/structured-list';
 
 ion-list.md:not(.md3-disabled) {
@@ -31,7 +32,8 @@ ion-list.md:not(.md3-disabled).list-inset {
     > ion-label:not(.md3-disabled) {
       margin-block: 0 10px;
       font-size: 0.875rem;
-      line-height: 22px;
+      // Preserve 22px at the default 14px font, and scale with enlarged text.
+      line-height: math.div(22, 14);
     }
   }
 
