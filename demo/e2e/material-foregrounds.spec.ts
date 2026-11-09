@@ -15,7 +15,7 @@ for (const mode of ['light', 'dark'] as const) {
       section.style.cssText = 'position:fixed;inset:80px 20px auto;z-index:10000;padding:20px;background:var(--ion-background-color)';
       for (const color of ['primary', 'secondary', 'tertiary', 'danger']) {
         const row = document.createElement('div');
-        for (const tag of ['ion-button', 'ion-badge']) {
+        for (const tag of ['ion-button', 'ion-card']) {
           const el = document.createElement(tag);
           el.setAttribute('color', color);
           el.textContent = `${tag}: ${color}`;
@@ -32,7 +32,7 @@ for (const mode of ['light', 'dark'] as const) {
       ['tertiary', 'tertiary', 'onTertiary'],
       ['danger', 'error', 'onError'],
     ] as const) {
-      for (const tag of ['ion-button', 'ion-badge']) {
+      for (const tag of ['ion-button', 'ion-card']) {
         const el = page.locator(`#native-foreground-pairs ${tag}[color=${name}]`);
         await expect(el).toHaveClass(/hydrated/);
         await expect
