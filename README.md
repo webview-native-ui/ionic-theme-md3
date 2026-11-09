@@ -4,7 +4,9 @@ A CSS/JS theme for Ionic applications, using Android Settings as its visual refe
 
 <!-- rdlabo-docs-pick -->
 
-![Material Design 3 themed Ionic screens with updated components and navigation](https://raw.githubusercontent.com/rdlabo-dev/ionic-theme-md3/v2.0.0/screenshots/md3.png)
+<img src="screenshots/android17-light.png" alt="Pixel 8a Android 17: light Material You colors applied to Ionic components" width="270"> <img src="screenshots/android17-dark.png" alt="Pixel 8a Android 17: dark Material You colors applied to Ionic components" width="270">
+
+Pixel 8a, Android 17, with optional device colors enabled.
 
 <!-- /rdlabo-docs-pick -->
 
@@ -142,8 +144,9 @@ createApp(App)
 
 ## Documentation
 
+- [Android dynamic colors](docs/dynamic-colors.md) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
+- [Color system](docs/color-system.md) — Ionic palette defaults, optional Material roles and component color assignments.
 - [Android Settings appearance](docs/android-settings.md) — default geometry, CSS font defaults and Ionic customization.
-
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
 - [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.
 - [ESLint](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/eslint) — check list structure with ESLint rules.
@@ -238,18 +241,3 @@ Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, mi
 
 - [rdlabo](https://rdlabo.dev/)
 <!-- /rdlabo-docs-omit -->
-
-## Android dynamic colors
-
-Opt into supported Android 12+ Material You colors with light, dark, or system appearance.
-Read colors from `@rdlabo/capacitor-native-ui` and apply them with
-`@rdlabo/ionic-theme-md3/dynamic-colors`; Native UI projection is not required.
-Ionic palettes remain the fallback on other platforms. See
-[dynamic colors](docs/dynamic-colors.md) for setup, lifecycle, and role mapping.
-
-## Color system
-
-The theme preserves Ionic default color intent. Optional Material roles refine
-component colors, while explicit variants can derive additional colors from the
-Ionic palette. See [color system](docs/color-system.md) for the
-fallback rules, component assignments, and tonal/elevated/filled variants.
