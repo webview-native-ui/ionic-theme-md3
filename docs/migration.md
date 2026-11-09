@@ -30,9 +30,14 @@ explicitly call `applyToggleStateIcons` keep that behavior; remove the call and 
 its cleanup if an icon-free toggle is desired. Ionic's `enableOnOffLabels` remains
 supported.
 
-The new `applySettingsFont` helper is optional. Importing the main theme does
-not activate it. Back icons remain managed by Ionic. Existing application fonts, named colors,
-Material You mapping and per-button icon overrides retain their meaning.
+The main theme now includes its MD font default in CSS. Load it after Ionic core
+styles. Existing `--ion-font-family` overrides retain priority; when no application
+font is set, the browser uses local Google Sans Flex if available, then the normal
+fallback stack. No TypeScript font helper or extra stylesheet is required. Check
+text wrapping on supported devices and locales; fonts are not bundled.
+
+Back icons remain managed by Ionic. Named colors, Material You mapping and
+per-button icon overrides retain their meaning.
 
 ## Migrating to 9.0.0
 

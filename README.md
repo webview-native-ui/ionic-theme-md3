@@ -72,14 +72,15 @@ Use this markup to preview the inset grouped list look. For the list structure t
 </ion-list>
 ```
 
-### Optional: Android Settings appearance
+### Android Settings appearance
 
-The theme keeps Ionic's color semantics and application font. Standard toggles are
-icon-free. Pixel Settings typography is an optional enhancement; it requires neither
-Material You colors nor a Capacitor plugin. Back icons remain Ionic's responsibility.
+The theme keeps Ionic's color semantics and application font overrides. Standard
+toggles are icon-free. The MD font default uses the device's local Google Sans Flex
+when available, with standard fallbacks; it is included in the theme CSS. No font
+initialization code or Capacitor plugin is required. Back icons remain Ionic's responsibility.
 
 See [Android Settings appearance](docs/android-settings.md) for installation,
-framework setup, cleanup, fallbacks and component overrides. Existing users should
+font fallbacks and component overrides. Existing users should
 review the [unreleased migration notes](docs/migration.md#unreleased-android-settings-alignment)
 for changes to toolbar, list and toggle dimensions.
 
@@ -141,7 +142,7 @@ createApp(App)
 
 ## Documentation
 
-- [Android Settings appearance](docs/android-settings.md) — default geometry, optional local typography and Ionic customization.
+- [Android Settings appearance](docs/android-settings.md) — default geometry, CSS font defaults and Ionic customization.
 
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
 - [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.

@@ -620,5 +620,6 @@
         0
       ]
     }
-  ]
+  ],
+  "status": "Historical experiment with removed font-metric and DPR compensation; not a baseline or validation of the final CSS-only default."
 }

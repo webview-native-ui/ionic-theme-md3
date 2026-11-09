@@ -9,88 +9,47 @@ component APIs, named colors and application-defined styles. It does not replace
 Ionic components with Android widgets. The measured reference is Pixel Settings
 on Android 17; other Android manufacturers can use different designs.
 
-## Default theme and optional features
+## Default theme and application overrides
 
-| Feature | Main theme only | Optional setup |
+| Feature | Theme default | Application customization |
 | --- | --- | --- |
-| Toolbar, grouped lists and controls | Android-aligned dimensions | Override with application CSS |
+| Toolbar, grouped lists and controls | Android-aligned dimensions | Ionic CSS variables and application CSS |
 | Toggle thumb | No state icon | Ionic `enableOnOffLabels`, or the state-icon helper below |
-| Font | Application's Ionic font | Separate local Settings font stylesheet and helper |
-| Back arrow | Ionic's configured icon | Use Ionic's own icon configuration; no theme icon is bundled |
+| Font | Device-local Google Sans Flex, then Roboto / Helvetica Neue / sans-serif | Ionic `--ion-font-family` |
+| Back arrow | Ionic's configured icon | Ionic's own icon configuration; no theme icon is bundled |
 | Palette | Existing Ionic color intent | Device colors are a separate [dynamic colors](dynamic-colors.md) feature |
 
-Install the main theme as described in the [README](../README.md#installation).
-The options below work independently and do not require a Capacitor plugin.
-The demo enables Settings typography only on Android; a desktop demo does not prove local Pixel fonts are available.
+## Default font, CSS only
 
-## Optional local Settings font
+Import the main theme **after Ionic's core styles**, as described in the
+[README](../README.md#installation). Its MD typography is included automatically;
+no extra stylesheet, JavaScript initialization, class or teardown is needed.
 
-Import the separate stylesheet in the global stylesheet, after the theme:
+The theme sets `--ion-default-font` on `html.md`. Ionic's `--ion-font-family`
+continues to resolve that default unless the application supplies its own value:
 
 ```css
-@import '@rdlabo/ionic-theme-md3/dist/css/settings-font.css';
-```
-
-For Sass, use `@use '@rdlabo/ionic-theme-md3/src/styles/settings-font';` instead.
-Importing the stylesheet alone does not activate the font.
-
-Call the helper in a browser after the target root exists:
-
-```ts
-import { applySettingsFont } from '@rdlabo/ionic-theme-md3/settings-font';
-
-const restoreFont = applySettingsFont(document.documentElement);
-// When the owning application/view is destroyed:
-restoreFont();
-```
-
-`applySettingsFont(root?: HTMLElement): () => void` defaults to `document.documentElement`.
-It adds `md3-settings-font` and sets `--md3-device-pixel` from the window DPR.
-On resize it updates the value only if DPR changes; it does not measure every
-frame. Cleanup removes the listener and restores the root's prior class and CSS
-property, including its priority. Call once per owning root, and clean up before
-applying it again. Nested/overlapping helper ownership is not supported.
-
-Use the document root to include controller-created overlays. A container limits
-where the font applies but does not include overlays mounted outside it. Module
-imports are safe during SSR; invoking the helper requires a browser DOM.
-
-For Angular, register initialization after rendering and cleanup with the owner:
-
-```ts
-import { afterNextRender, Component, DestroyRef, inject } from '@angular/core';
-import { applySettingsFont } from '@rdlabo/ionic-theme-md3/settings-font';
-
-@Component({ selector: 'app-root', template: '<ng-content />' })
-export class AppComponent {
-  private readonly destroyRef = inject(DestroyRef);
-
-  constructor() {
-    afterNextRender(() => {
-      this.destroyRef.onDestroy(applySettingsFont());
-    });
-  }
+:root {
+  --ion-font-family: 'My App Font', sans-serif;
 }
 ```
 
-Add any application platform condition inside the callback. React/Vue applications
-can call the same helper on mount and call the returned function on unmount.
+The theme does not overwrite `--ion-font-family`. For a component-specific font,
+use its normal `font-family` styling; a local custom property alone only affects
+components that consume it. The iOS root font default is unchanged. An individual
+`md3-disabled` component inherits the application's font like other Ionic
+components; the class does not reset application-wide typography.
 
-### Font availability and limits
+The local font alias resolves `GoogleSansFlex-Regular` only when the device/browser
+makes it available. No font file is bundled or downloaded. Otherwise the browser
+uses Roboto, Helvetica Neue or its generic sans-serif fallback. Uncovered scripts
+use normal browser/platform fallback: no Japanese font is forced. The same CSS
+runs in native WebViews and the browser demo.
 
-The stylesheet resolves local `GoogleSansFlex-Regular`, then Japanese
-`NotoSansCJKJP-Regular`, then `--ion-font-family` (or Ionic's standard fallback).
-It neither downloads nor distributes these fonts. If the device/browser does not
-expose them, the application font remains the fallback; identical Pixel typography
-is not guaranteed. The variant includes font metrics, weight/optical-size settings
-and device-pixel rounding calibrated for the Japanese Pixel font stack. It is not
-a general font recommendation for every locale/OEM. Use the ordinary Ionic font
-when these assumptions do not suit the application.
-
-This is a scoped application font choice. `md3-disabled` does not undo inherited
-application typography; remove the font scope/helper to restore it. Component
-geometry opt-out remains independent. Prefer the normal theme plus your existing
-`--ion-font-family` when a fully custom typeface is required.
+The theme does not monitor DPR, round text to physical pixels, override font
+metrics, or force variable-font axes. Text layout therefore follows the selected
+font, browser and user settings. Native Android TextView and WebView text can
+differ; matching a particular Pixel's glyph bounds is not a portability guarantee.
 
 ## Back buttons remain Ionic components
 

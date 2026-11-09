@@ -1,29 +1,21 @@
 import { expect, test } from '@playwright/test';
 import { mockDeviceColors, expectDeviceColors } from './device-colors';
 import { arrowBackSharp } from 'ionicons/icons';
-import { applySettingsFont } from '../../src/settings-font';
 
-test('Settings font preserves application CSS priority and responds to DPR changes', async ({ page }) => {
+test('CSS font default respects Ionic application overrides and iOS mode', async ({ page }) => {
   await page.goto('/main/index/item-list');
+  const title = page.locator('app-item-list > ion-header ion-title');
+  await expect(title).toHaveCSS('font-family', '"MD3 Settings", Roboto, "Helvetica Neue", sans-serif');
+  await page.addStyleTag({ content: ':root { --ion-font-family: monospace; }' });
+  await expect(title).toHaveCSS('font-family', 'monospace');
+  await title.evaluate((element) => (element as HTMLElement).style.setProperty('font-family', 'serif'));
+  await expect(title).toHaveCSS('font-family', 'serif');
   await page.evaluate(() => {
-    document.documentElement.classList.add('md3-settings-font');
-    document.documentElement.style.setProperty('--md3-device-pixel', '0.25px', 'important');
-    Object.defineProperty(window, 'devicePixelRatio', { configurable: true, value: 2.625 });
+    document.documentElement.classList.replace('md', 'ios');
   });
-  const cleanup = await page.evaluateHandle(applySettingsFont);
-  expect(await page.evaluate(() => parseFloat(document.documentElement.style.getPropertyValue('--md3-device-pixel')))).toBeCloseTo(
-    1 / 2.625,
+  expect(await page.locator('html').evaluate((el) => getComputedStyle(el).getPropertyValue('--ion-default-font'))).not.toContain(
+    'MD3 Settings',
   );
-  await page.evaluate(() => {
-    Object.defineProperty(window, 'devicePixelRatio', { configurable: true, value: 2 });
-    window.dispatchEvent(new Event('resize'));
-  });
-  await expect(page.locator('html')).toHaveCSS('--md3-device-pixel', '0.5px');
-  await cleanup.evaluate((destroy) => destroy());
-  expect(await page.evaluate(() => document.documentElement.style.getPropertyPriority('--md3-device-pixel'))).toBe('important');
-  await expect(page.locator('html')).toHaveCSS('--md3-device-pixel', '0.25px');
-  await expect(page.locator('html')).toHaveClass(/md3-settings-font/);
-  await cleanup.dispose();
 });
 
 for (const mode of ['light', 'dark'] as const) {
@@ -55,15 +47,6 @@ for (const mode of ['light', 'dark'] as const) {
     await expect(back.locator('ion-icon svg')).toBeVisible();
     await back.evaluate((element) => ((element as HTMLIonBackButtonElement).icon = 'close'));
     await expect(back.locator('ion-icon')).toHaveJSProperty('icon', 'close');
-    await page.addStyleTag({ path: '../dist/css/settings-font.css' });
-    await page.evaluate(() => {
-      document.documentElement.style.setProperty('--ion-font-family', 'monospace');
-      document.documentElement.classList.add('md3-settings-font');
-    });
-    await expect(title).toHaveCSS('font-family', '"MD3 Settings", "MD3 Settings CJK", monospace');
-    await page.evaluate(() => document.documentElement.classList.remove('md3-settings-font'));
-    await expect(title).toHaveCSS('font-family', 'monospace');
-    await page.evaluate(() => document.documentElement.style.removeProperty('--ion-font-family'));
     const list = page
       .locator('app-item-list ion-list')
       .filter({ has: page.locator('ion-list-header') })

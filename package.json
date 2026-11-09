@@ -20,10 +20,6 @@
     "./toggle-state-icons": {
       "types": "./dist/toggle-state-icons.d.ts",
       "import": "./dist/toggle-state-icons.js"
-    },
-    "./settings-font": {
-      "types": "./dist/settings-font.d.ts",
-      "import": "./dist/settings-font.js"
     }
   },
   "files": [

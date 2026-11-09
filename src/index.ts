@@ -11,4 +11,3 @@ export type {
 } from './dynamic-colors';
 
 export { applyToggleStateIcons } from './toggle-state-icons';
-export { applySettingsFont } from './settings-font';

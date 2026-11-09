@@ -52,5 +52,5 @@ ion-item.app-setting {
 A minimum height does not clip long text. Avoid fixed row heights or positional
 transforms intended to compensate for a particular device font. Ionic's ordinary
 trailing note (`slot="end"`) and radio/toggle label APIs retain their meaning.
-Optional [Settings typography](android-settings.md#optional-local-settings-font)
-uses rounded device-pixel metrics; it is not required for this shared markup.
+The [CSS font default](android-settings.md#default-font-css-only) respects application
+font overrides. Row text follows normal browser metrics without device-pixel compensation.
