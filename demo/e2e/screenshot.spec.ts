@@ -87,7 +87,12 @@ test.describe('Screenshot Tests - All Routes', () => {
     test(`should match screenshot for ${route.name}`, async ({ page }) => {
       // Set E2E testing flag to disable animations
       await page.addInitScript(() => ((window as any).IONIC_E2E_TESTING = true));
-      await page.goto(route.path, { waitUntil: 'networkidle' });
+      await page.goto(route.name === 'select:popover' ? route.path.split('?')[0] : route.path, { waitUntil: 'networkidle' });
+      if (route.name === 'select:popover') {
+        await page.locator('app-select .select-popover').click();
+        await expect(page.locator('ion-popover:not(.overlay-hidden)')).toBeVisible();
+        await expect(page.locator('ion-alert')).toHaveCount(0);
+      }
       await prepareScreenShot(page, route.name);
       await expect(page).toHaveScreenshot(`${route.name}.png`, {
         fullPage: true,
@@ -104,7 +109,12 @@ test.describe('Screenshot Tests - Dark Mode', () => {
     test(`should match dark mode screenshot for ${route.name}`, async ({ page }) => {
       // Set E2E testing flag to disable animations
       await page.addInitScript(() => ((window as any).IONIC_E2E_TESTING = true));
-      await page.goto(route.path, { waitUntil: 'networkidle' });
+      await page.goto(route.name === 'select:popover' ? route.path.split('?')[0] : route.path, { waitUntil: 'networkidle' });
+      if (route.name === 'select:popover') {
+        await page.locator('app-select .select-popover').click();
+        await expect(page.locator('ion-popover:not(.overlay-hidden)')).toBeVisible();
+        await expect(page.locator('ion-alert')).toHaveCount(0);
+      }
       await page.evaluate(async () => {
         document.documentElement.classList.add('ion-palette-dark');
       });

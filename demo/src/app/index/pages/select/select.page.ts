@@ -64,6 +64,12 @@ export class SelectPage implements OnInit, ViewDidEnter {
 
   present(type: (typeof selectTypes)[number]) {
     const ionSelect = this.el.nativeElement.querySelector('.select-' + type);
+    if (type === 'popover') {
+      // Ionic needs a trigger event to anchor a popover; open() without one falls back to an alert.
+      ionSelect.scrollIntoView({ block: 'center' });
+      ionSelect.click();
+      return;
+    }
     ionSelect.open();
   }
 }
