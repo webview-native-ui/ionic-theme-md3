@@ -1,15 +1,43 @@
 # Android dynamic colors
 
-Dynamic colors are opt-in. Android 12+ supplies light and dark Material color
+Dynamic colors are supported and opt-in. Android 12+ supplies light and dark Material color
 schemes; this package converts their roles using the Ionic Docs color generator
 algorithms. Older Android, iOS, and Web use the existing Ionic palette and component color defaults.
 See [color system](color-system.md): Ionic palettes alone are sufficient; native
 Material roles only refine optional CSS tokens.
 
-Import the experimental `getDynamicColorScheme` and `addDynamicColorListener`
+Import `getDynamicColorScheme` and `addDynamicColorListener`
 APIs from the `@rdlabo/capacitor-native-ui` root entrypoint. No activation of Native
 UI projection is needed. The theme conversion helper remains available from
 `@rdlabo/ionic-theme-md3/dynamic-colors`.
+
+## Setup
+
+Install the theme and the native provider in your Capacitor application:
+
+```sh
+npm install @rdlabo/ionic-theme-md3 @rdlabo/capacitor-native-ui
+npx cap sync android
+npx cap run android
+```
+
+The plugin's root exports and native getter are included in 2.1.3; an older native
+binary (for example 2.1.1) must be rebuilt, not just supplied with new JavaScript.
+Use a theme release containing the mapping described below. The source guide can
+include changes newer than the installed npm release; check its release notes.
+The [plugin guide](https://github.com/webview-native-ui/capacitor-plugin/blob/main/docs/dynamic-colors.md)
+documents availability, role types and native notifications.
+
+Follow the [theme installation](../README.md) for Ionic and theme stylesheet order.
+Include the class-based dark palette in your global stylesheet:
+
+```scss
+@import '@ionic/core/css/palettes/dark.class.css';
+```
+
+For Ionic Angular, `@ionic/angular/css/palettes/dark.class.css` is equivalent.
+Initialize once at application startup in the browser, after the DOM exists.
+This helper writes to a document and must not run during server rendering.
 
 ```ts
 import { getDynamicColorScheme, addDynamicColorListener } from '@rdlabo/capacitor-native-ui';
@@ -28,11 +56,14 @@ theme.setMode('light');
 theme.setMode('system');
 
 await theme.refresh(); // Optional explicit wallpaper/palette refresh.
+
+// During application teardown, not immediately after initialization:
 await theme.destroy(); // Unsubscribe and restore original root properties/class.
 ```
 
-Import `@ionic/core/css/palettes/dark.class.css` (or the Ionic Angular equivalent)
-in your global stylesheet. Do not also import `dark.system.css` or
+## Appearance and lifecycle
+
+Do not also import `dark.system.css` or
 `dark.always.css`: this controller owns the `ion-palette-dark` class on
 `document.documentElement` and the root `color-scheme` property. Keep global
 palette overrides on that root; variables on body or individual components
@@ -49,6 +80,19 @@ unchanged properties skip CSS writes. Refresh errors preserve the last working
 palette. Automatic refresh failures reach `onError`; an explicit `theme.refresh()` rejects for the caller to handle.
 Initialization errors reject and clean up.
 There may be one controller per document. Call `destroy()` on application teardown.
+
+| Controller method | Behavior                                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------- |
+| `setMode(mode)`   | Selects `system`, `light` or `dark` synchronously using cached schemes; no native read.           |
+| `refresh()`       | Reads again and applies the selected appearance; rejects on failure.                              |
+| `destroy()`       | Removes listeners and restores the original inline properties and dark class; safe to call again. |
+
+When `available` is false, the controller preserves/restores the application's
+palette while still managing the selected appearance. An initialization failure
+rejects the `enableDynamicColors()` promise and cleans up listeners; `onError`
+handles automatic refresh errors, not initialization or explicit `refresh()` calls.
+Do not have a second appearance controller write the same root class/properties.
+The optional `document` option targets a specific browser document.
 
 ## Mapping
 
@@ -83,21 +127,42 @@ An explicit `color="light"`, for example, keeps the Ionic light role while follo
 
 For conversion without DOM changes, use `materialToIonicColors(scheme)` for
 Ionic variables and `materialToMd3Colors(partialRoles)` for optional MD3 tokens.
-Inputs are opaque `#RRGGBB` strings. No runtime color-library dependency is used.
+Both conversion functions return `Record<string, string>` CSS variable maps.
+`materialToIonicColors` needs the six required `MaterialColorScheme` roles;
+`materialToMd3Colors` accepts any subset of `MaterialColorRole` names and emits
+only the supplied roles. Inputs are opaque `#RRGGBB` strings; invalid supplied
+colors throw `TypeError`. Neither function writes to the DOM or calls the bridge.
+No runtime color-library dependency is used.
 Algorithm attribution and the upstream license are in `THIRD_PARTY_NOTICES.md`.
 
-## Demo and checks
+## Troubleshooting and verification
 
-The demo includes System / Light / Dark controls and imports `dark.class.css`.
-Browser builds use the published plugin dependency and a small typed bridge
-adapter, so they do not depend on unreleased JavaScript exports. To verify Android
-before the companion plugin release, build the sibling capacitor-plugin checkout,
-install that local build in the demo, run Capacitor sync, and build Android.
-Applications using the published plugin need a release containing the new APIs.
+- **No dynamic colors:** Android 12+ is required. On other platforms the Ionic
+  palette remains active; this is expected fallback behavior.
+- **Native getter not implemented:** update the plugin, sync, rebuild and
+  reinstall the native app. Updating web assets alone is insufficient.
+- **Dark mode conflicts:** use only the class-based dark palette and let one
+  controller own the root class. Check for body/component overrides that shadow
+  root variables.
+- **A refresh fails:** automatic failures reach `onError` and retain the last
+  working palette. Catch explicit `refresh()` failures in the caller.
+- **A component ignores a role:** check its explicit `color`, `md3-disabled`,
+  component CSS variables and the [consumer table](color-system.md#component-assignments).
 
-Run `npm run test:dynamic-colors` after installing the demo's dependencies.
-Reference fixtures were generated using the unmodified Ionic Docs `Color` class
-at commit `019986b8ef86f7ad235ceefa34e3ac40e617b0ba`.
+The demo includes System / Light / Dark controls. Its typed bridge adapter also
+supports browser-only builds; Android still requires a native plugin containing
+`getDynamicColorScheme`. The adapter is demo infrastructure, not the public import
+pattern for applications.
+
+Run `npm run test:dynamic-colors` after installing root and demo dependencies.
+Browser image tests use recorded Android colors, so they do not require an attached
+device. Screenshot baseline updates run through the PR's `/update-screenshots` CI.
+
+The [foreground-pair change](https://github.com/webview-native-ui/ionic-theme-md3/pull/67)
+was checked on a Pixel 8a running Android 17: four explicitly colored Ionic buttons
+matched the native background/foreground values in both modes. Final Ionic 8 and 9
+CI each passed 34 unit tests and 265 E2E tests without flaky results. This is color-pair
+verification, not full-device UI or wallpaper-change acceptance.
 
 ## Validation notes
 
@@ -114,7 +179,7 @@ a separate test disables application JavaScript. The
 [2026-11-07 screenshot-update CI](https://github.com/webview-native-ui/ionic-theme-md3/actions/runs/42332891975)
 verified 141 tests on each of Ionic 8 and 9, including 84 light/dark screenshots.
 See [Ionic color inheritance review](validation/ionic-color-inheritance-2026-11-07.md)
-for the latest color-policy correction and its browser-only verification scope.
+for that historical color-policy correction and its browser-only verification scope.
 
 A local WebView measurement of the expanded API (30 sequential native reads,
 1,000 warmed conversion iterations) gave approximately 9 ms median / 21 ms p90
