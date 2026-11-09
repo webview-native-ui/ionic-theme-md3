@@ -6,13 +6,13 @@ algorithms. Older Android, iOS, and Web use the existing Ionic palette and compo
 See [color system](color-system.md): Ionic palettes alone are sufficient; native
 Material roles only refine optional CSS tokens.
 
-Use a capacitor-plugin build exposing `getDynamicColorScheme` and
-`addDynamicColorListener` (these APIs are introduced alongside this feature).
-The `dynamic-colors` entrypoints avoid importing Native UI projection or Ionic
-transitions. No activation of Native UI projection is needed.
+Import the experimental `getDynamicColorScheme` and `addDynamicColorListener`
+APIs from the `@rdlabo/capacitor-native-ui` root entrypoint. No activation of Native
+UI projection is needed. The theme conversion helper remains available from
+`@rdlabo/ionic-theme-md3/dynamic-colors`.
 
 ```ts
-import { getDynamicColorScheme, addDynamicColorListener } from '@rdlabo/capacitor-native-ui/dynamic-colors';
+import { getDynamicColorScheme, addDynamicColorListener } from '@rdlabo/capacitor-native-ui';
 import { enableDynamicColors } from '@rdlabo/ionic-theme-md3/dynamic-colors';
 
 const theme = await enableDynamicColors({
