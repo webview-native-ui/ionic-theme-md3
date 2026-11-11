@@ -1,4 +1,5 @@
 export * from './transition/md.transition';
+export { md3ThemeConfig } from './config';
 export { materialToIonicColors, materialToMd3Colors, materialColorRoles, enableDynamicColors } from './dynamic-colors';
 export type {
   MaterialColorScheme,
