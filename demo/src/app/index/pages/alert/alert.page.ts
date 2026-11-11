@@ -57,7 +57,7 @@ export class AlertPage implements OnInit {
   ngOnInit() {}
 
   async present(type: (typeof alertTypes)[number]) {
-    const applyConfig: AlertOptions = ((type): AlertOptions => {
+    const applyConfig = ((type): AlertOptions => {
       if (type === 'checkbox' || type === 'radio') {
         return {
           header: 'Choose options',

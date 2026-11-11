@@ -82,9 +82,6 @@ ion-alert.md:not(.md3-disabled) {
     }
 
     [aria-checked='true'] .alert-checkbox-inner {
-      box-sizing: border-box;
-      width: 6px;
-      height: 10px;
       top: 1px;
       inset-inline-start: 4px;
     }
@@ -98,10 +95,6 @@ ion-alert.md:not(.md3-disabled) {
     .alert-input {
       font-size: 1.125rem;
       line-height: 1.5;
-    }
-
-    .alert-input:focus {
-      outline: none;
     }
 
     .alert-button-group {
