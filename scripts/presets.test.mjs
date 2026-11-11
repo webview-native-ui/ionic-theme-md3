@@ -6,15 +6,16 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import { md3ThemeConfig, mdTransitionAnimation } from '../dist/index.js';
 
-test('MD3 configuration supports defaults and application overrides during SSR', () => {
-  assert.equal(md3ThemeConfig().mode, 'md');
-  assert.equal(md3ThemeConfig().navAnimation, mdTransitionAnimation);
-  assert.equal(md3ThemeConfig({ mode: undefined }).mode, 'md');
-  assert.deepEqual(md3ThemeConfig({ mode: 'ios' }), { mode: 'ios' });
+test('MD3 configuration supports object spread and overrides during SSR', () => {
+  assert.equal(md3ThemeConfig.mode, 'md');
+  assert.equal(md3ThemeConfig.navAnimation, mdTransitionAnimation);
   const customAnimation = () => {};
-  const existing = Object.freeze({ mode: 'md', navAnimation: customAnimation, animated: false });
-  assert.deepEqual(md3ThemeConfig(existing), existing);
-  assert.equal(md3ThemeConfig({ navAnimation: undefined }).navAnimation, undefined);
+  const config = { ...md3ThemeConfig, navAnimation: customAnimation, animated: false };
+  assert.equal(config.navAnimation, customAnimation);
+  assert.equal(config.animated, false);
+  assert.equal(md3ThemeConfig.navAnimation, mdTransitionAnimation);
+  assert.equal({ ...md3ThemeConfig, navAnimation: undefined }.navAnimation, undefined);
+  assert.equal({ ...md3ThemeConfig, mode: undefined }.mode, undefined);
 });
 
 test('the single MD3 preset is ordered, exported and packed without stale variants', async () => {

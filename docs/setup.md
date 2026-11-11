@@ -30,7 +30,7 @@ preset. MD3 has one preset for all appearance modes. For
 
 ## Configure Ionic
 
-Pass `md3ThemeConfig()` to the Ionic initializer your app already calls, before
+Spread `md3ThemeConfig` into the options passed to the Ionic initializer your app already calls, before
 rendering components. Choose the example for your framework.
 
 ### Angular
@@ -40,7 +40,10 @@ import { provideIonicAngular } from '@ionic/angular'; // Ionic 9
 // Ionic 8: import { provideIonicAngular } from '@ionic/angular/standalone';
 import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
 
-provideIonicAngular(md3ThemeConfig());
+provideIonicAngular({
+  ...md3ThemeConfig,
+  // animated: false,
+});
 ```
 
 ### React
@@ -49,7 +52,10 @@ provideIonicAngular(md3ThemeConfig());
 import { setupIonicReact } from '@ionic/react';
 import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
 
-setupIonicReact(md3ThemeConfig());
+setupIonicReact({
+  ...md3ThemeConfig,
+  // animated: false,
+});
 ```
 
 ### Vue
@@ -58,14 +64,17 @@ setupIonicReact(md3ThemeConfig());
 import { IonicVue } from '@ionic/vue';
 import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
 
-app.use(IonicVue, md3ThemeConfig());
+app.use(IonicVue, {
+  ...md3ThemeConfig,
+  // animated: false,
+});
 ```
 
-The helper defaults to `mode: 'md'` with the MD3 page transition. For an existing
-configuration, pass `md3ThemeConfig(existingIonicConfig)` to retain its explicit
-options, including custom animations. An explicit `mode: 'ios'` applies Ionic's
-iOS animation defaults. The helper returns its result synchronously and can be
-imported during server rendering.
+The configuration sets `mode: 'md'` and the MD3 page transition. Add application
+options after the spread to override these defaults. For platform-dependent
+appearance, select the configuration matching the mode as shown in
+[configuration](configuration.md#preserve-existing-mode-selection).
+The exported object supports imports during server rendering.
 
 ## Preview a screen
 

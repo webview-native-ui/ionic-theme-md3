@@ -4,7 +4,7 @@ title: Theme configuration
 
 # Theme configuration
 
-The [setup guide](setup.md) uses the combined MD3 CSS preset and `md3ThemeConfig()`.
+The [setup guide](setup.md) uses the combined MD3 CSS preset and `md3ThemeConfig`.
 The individual stylesheets and animation exports support custom composition.
 
 ## Load individual stylesheets
@@ -46,25 +46,26 @@ imports `provideIonicAngular` from `@ionic/angular` in Ionic 9 and from
 [Combined theme configuration](#use-md3-and-ios-27-together) shows platform-based
 transitions when both themes are installed.
 
-## Preserve existing mode selection with the helper
+## Preserve existing mode selection
 
-`md3ThemeConfig()` defaults to Material Design mode. Pass an explicit mode to
-retain an application's existing iOS-versus-Material-Design selection:
+`md3ThemeConfig` includes both `mode: 'md'` and the MD3 transition. Select its
+configuration when the application selects Material Design mode:
 
 ```ts
 import { isPlatform } from '@ionic/core';
 import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
 
-const ionicConfig = md3ThemeConfig({
-  mode: isPlatform('ios') ? 'ios' : 'md',
-});
+const ionicConfig = {
+  ...(isPlatform('ios') ? { mode: 'ios' as const } : md3ThemeConfig),
+  // animated: false,
+};
 ```
 
-Existing options take precedence over helper defaults. A custom `navAnimation`
-passed to the helper is retained, including an explicit `undefined` value when the
-app wants Ionic's default transition. An explicit `mode: 'ios'` selects Ionic's iOS
-animation defaults. See [migration](migration.md#optional-adopt-the-setup-wrappers)
-for a before-and-after example.
+The iOS branch uses Ionic's standard iOS appearance and animations. Options after
+the spread override the selected defaults, including an explicit
+`navAnimation: undefined` for Ionic's default transition. See
+[migration](migration.md#optional-adopt-the-setup-wrappers) for a before-and-after
+example.
 
 ## Use MD3 and iOS 27 together
 
@@ -98,7 +99,7 @@ import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
 
 const ios = isPlatform('ios');
 const ionicConfig = {
-  ...existingIonicConfig,
+  // Add application options here.
   navAnimation: ios ? iosTransitionAnimation : mdTransitionAnimation,
   popoverEnter: ios ? popoverEnterAnimation : undefined,
   popoverLeave: ios ? popoverLeaveAnimation : undefined,
@@ -107,3 +108,16 @@ const ionicConfig = {
 
 Pass this object to your existing framework initializer using the imports described
 in [Configure animations directly](#configure-animations-directly).
+
+The exported theme configuration objects can also select both modes:
+
+```ts
+import { isPlatform } from '@ionic/core';
+import { ios27ThemeConfig } from '@rdlabo/ionic-theme-ios27';
+import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
+
+const ionicConfig = {
+  ...(isPlatform('ios') ? ios27ThemeConfig : md3ThemeConfig),
+  // animated: false,
+};
+```

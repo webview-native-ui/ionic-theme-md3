@@ -10,9 +10,9 @@ Versioned sections list changes that require application code or configuration u
 
 ## Optional: adopt the setup wrappers
 
-The CSS preset and `md3ThemeConfig()` provide a shorter setup. Existing individual
+The CSS preset and `md3ThemeConfig` provide a shorter setup. Existing individual
 stylesheet paths and animation exports remain supported. Applications can adopt
-the CSS preset and configuration helper independently.
+the CSS preset and configuration object independently.
 
 ### Replace the theme stylesheet imports
 
@@ -40,29 +40,32 @@ For an app already using Material Design mode, replace the manual setup as follo
 -   mode: 'md' as const,
 -   navAnimation: mdTransitionAnimation,
 - };
-+ const ionicConfig = md3ThemeConfig();
++ const ionicConfig = {
++   ...md3ThemeConfig,
++   // animated: false,
++ };
 ```
 
-Pass the result to your existing framework initializer. The helper defaults to
-`mode: 'md'`. If the app uses Ionic's automatic platform-based mode selection,
-make that selection explicit while adopting the helper:
+Pass the object to your existing framework initializer. The preset configuration
+sets `mode: 'md'` and the matching MD3 transition. For an application that chooses
+its appearance by platform, choose the configuration for the selected mode:
 
 ```ts
 import { isPlatform } from '@ionic/core';
 import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
 
-const ionicConfig = md3ThemeConfig({
-  ...existingIonicConfig,
-  mode: existingIonicConfig.mode ?? (isPlatform('ios') ? 'ios' : 'md'),
-});
+const ionicConfig = {
+  ...(isPlatform('ios') ? { mode: 'ios' as const } : md3ThemeConfig),
+  // animated: false,
+};
 ```
 
-Pass an application's explicit existing mode and other options through
-`md3ThemeConfig(existingIonicConfig)`. Custom animations take precedence over the
-helper defaults, including an explicit `navAnimation: undefined`. For a custom
-transition, keep its function in the existing configuration. See
-[setup](setup.md) for framework imports and [configuration](configuration.md)
-for individual APIs and mode selection. Dynamic Colors continues to use Ionic's
+The application owns mode selection. Retain an existing explicit mode by selecting
+the matching theme configuration. Put application settings after the spread so
+custom animations take precedence, including an explicit
+`navAnimation: undefined` for Ionic's default transition. See [setup](setup.md)
+for framework imports and [configuration](configuration.md) for individual APIs
+and combined-theme selection. Dynamic Colors continues to use Ionic's
 [class-based palette](dynamic-colors.md).
 
 ## Migrating to 9.2.0: Android Settings alignment

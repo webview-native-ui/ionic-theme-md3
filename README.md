@@ -15,8 +15,8 @@ Designed for compatibility with `@rdlabo/ionic-theme-ios27`, so one markup tree 
 ## Installation
 
 Use the [setup guide](docs/setup.md) to install the package, import
-`@rdlabo/ionic-theme-md3/preset/default.css`, and pass `md3ThemeConfig()` to your
-existing Ionic initializer. Ionic `>=8.8.0 <10` is supported. Apps on older Ionic
+`@rdlabo/ionic-theme-md3/preset/default.css`, and spread `md3ThemeConfig` into your
+existing Ionic initializer's options. Ionic `>=8.8.0 <10` is supported. Apps on older Ionic
 versions can use `@rdlabo/ionic-theme-md3@1.0.2`.
 
 For existing apps, follow the [optional wrapper migration](docs/migration.md#optional-adopt-the-setup-wrappers).
@@ -41,7 +41,7 @@ for stylesheet ordering and platform-based animation selection.
 
 ## Documentation
 
-- [Setup](docs/setup.md) — install and configure the theme with the preset and configuration helper.
+- [Setup](docs/setup.md) — install and configure the theme with the preset and configuration object.
 - [Configuration](docs/configuration.md) — individual stylesheets, animations and existing mode selection.
 - [Android dynamic colors](docs/dynamic-colors.md) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
 - [Color system](docs/color-system.md) — Ionic palette defaults, optional Material roles and component color assignments.
