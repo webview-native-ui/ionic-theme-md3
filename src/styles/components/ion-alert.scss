@@ -46,6 +46,15 @@ ion-alert.md:not(.md3-disabled) {
       padding-bottom: 16px;
     }
 
+    // Android 17 Settings choice dialogs have no persistent list dividers.
+    // Keep space between the last option and the rounded action buttons;
+    // action-only and text-input alerts already supply their own content gap.
+    .alert-radio-group,
+    .alert-checkbox-group {
+      border: 0;
+      padding-bottom: 24px;
+    }
+
     // Settings uses an 18dp checkbox. Keep the rotated check inside Ionic's
     // strictly contained icon; Ionic retains option placement and RTL ordering.
     .alert-checkbox-icon {
