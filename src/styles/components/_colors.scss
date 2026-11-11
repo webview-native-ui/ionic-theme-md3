@@ -298,6 +298,52 @@ ion-alert.md:where(:not(.md3-disabled)) .alert-message {
   color: var(--md-sys-color-on-surface-variant, var(--ion-color-step-550, var(--ion-text-color-step-450, #737373)));
 }
 
+// Alert inputs are native elements, not ion-checkbox / ion-radio / ion-input.
+// Map state colors explicitly so Material roles reach the embedded controls.
+// Beat Ionic’s scoped checked-state selectors, including its extra scope classes.
+ion-alert.md:not(.md3-disabled) {
+  .alert-checkbox-icon,
+  .alert-radio-icon {
+    border-color: #{md3.color(on-surface-variant)};
+  }
+
+  .alert-checkbox-label,
+  .alert-radio-label,
+  .alert-input {
+    color: #{md3.color(on-surface)};
+  }
+
+  [aria-checked='true'] .alert-checkbox-icon {
+    background: #{md3.color(primary)};
+    border-color: #{md3.color(primary)};
+  }
+
+  [aria-checked='true'] .alert-checkbox-inner {
+    border-color: #{md3.color(on-primary)};
+  }
+
+  [aria-checked='true'] .alert-radio-icon {
+    border-color: #{md3.color(primary)};
+  }
+
+  .alert-radio-inner {
+    background: #{md3.color(primary)};
+  }
+
+  .alert-input {
+    border-bottom-color: #{md3.color(on-surface-variant)};
+    caret-color: #{md3.color(primary)};
+  }
+
+  .alert-input::placeholder {
+    color: #{md3.color(on-surface-variant)};
+  }
+
+  .alert-input:focus {
+    border-bottom-color: #{md3.color(primary)};
+  }
+}
+
 ion-alert.md:where(:not(.md3-disabled)) .alert-button {
   background: transparent;
   color: var(--md-sys-color-on-surface, var(--ion-color-primary, #0054e9));

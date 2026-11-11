@@ -3,6 +3,7 @@ import { Component, effect, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
+  type AlertOptions,
   IonBackButton,
   IonContent,
   IonHeader,
@@ -56,7 +57,32 @@ export class AlertPage implements OnInit {
   ngOnInit() {}
 
   async present(type: (typeof alertTypes)[number]) {
-    const applyConfig = ((type) => {
+    const applyConfig = ((type): AlertOptions => {
+      if (type === 'checkbox' || type === 'radio') {
+        return {
+          header: 'Choose options',
+          inputs: [
+            { type, label: 'Apple', value: 'apple', checked: true },
+            { type, label: 'Banana', value: 'banana' },
+            { type, label: 'A longer option that wraps onto another line', value: 'orange' },
+            { type, label: 'Unavailable', value: 'disabled', disabled: true },
+          ],
+          buttons: [
+            { text: 'Cancel', role: 'cancel' },
+            { text: 'OK', role: 'preferred' },
+          ],
+        };
+      }
+      if (type === 'input' || type === 'textarea') {
+        return {
+          header: type === 'input' ? 'Device name' : 'Description',
+          inputs: [{ type: type === 'input' ? 'text' : 'textarea', value: type === 'input' ? 'Pixel 8a' : '', placeholder: 'Enter text' }],
+          buttons: [
+            { text: 'Cancel', role: 'cancel' },
+            { text: 'OK', role: 'preferred' },
+          ],
+        };
+      }
       if (type === 'preferred') {
         return {
           ...alertUtil(),

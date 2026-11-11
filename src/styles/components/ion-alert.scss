@@ -46,6 +46,57 @@ ion-alert.md:not(.md3-disabled) {
       padding-bottom: 16px;
     }
 
+    // Android 17 Settings choice dialogs have no persistent list dividers.
+    // Keep space between the last option and the rounded action buttons;
+    // action-only and text-input alerts already supply their own content gap.
+    .alert-radio-group,
+    .alert-checkbox-group {
+      border: 0;
+      padding-bottom: 24px;
+    }
+
+    // Settings uses an 18dp checkbox. Keep the rotated check inside Ionic's
+    // strictly contained icon; Ionic retains option placement and RTL ordering.
+    .alert-checkbox-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+    }
+
+    // Ionic 8 has no placement classes and uses different checkbox column
+    // offsets. Bring that legacy markup to the same columns as Ionic 9 while
+    // retaining Ionic 9's explicit placement/justification options.
+    .alert-checkbox-button > .alert-button-inner:not(.checkbox-label-placement-start):not(.checkbox-label-placement-end) {
+      justify-content: flex-start;
+
+      .alert-checkbox-icon {
+        inset-inline-start: 24px;
+      }
+
+      .alert-checkbox-label {
+        flex: 0 1 auto;
+        width: auto;
+        max-width: calc(100% - 16px);
+        padding-inline: 56px 24px;
+      }
+    }
+
+    [aria-checked='true'] .alert-checkbox-inner {
+      top: 1px;
+      inset-inline-start: 4px;
+    }
+
+    // The header already supplies spacing. Ionic adds another 20px above
+    // inputs even when the intervening message is empty.
+    .alert-head:not(:empty) + .alert-message:empty + .alert-input-group {
+      padding-top: 0;
+    }
+
+    .alert-input {
+      font-size: 1.125rem;
+      line-height: 1.5;
+    }
+
     .alert-button-group {
       padding: 0 24px 24px;
       column-gap: 8px;
