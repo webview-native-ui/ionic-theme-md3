@@ -42,7 +42,8 @@
     "fmt": "prettier --write \"./**/*.{scss,ts}\" &&  prettier --parser angular --write \"./**/*.html\"",
     "release": "np --no-tests --no-publish",
     "prepublishOnly": "npm run build",
-    "test:esm": "rdlabo-check-esm && node --test scripts/presets.test.mjs",
+    "test:esm": "rdlabo-check-esm && node --test scripts/presets.test.mjs && npm run test:release",
+    "test:release": "node --test scripts/release.test.mjs",
     "test:presets": "npm run build && node --test scripts/presets.test.mjs",
     "test:dynamic-colors": "npm --prefix demo run test:dynamic-colors"
   },
