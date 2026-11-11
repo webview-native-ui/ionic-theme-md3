@@ -43,6 +43,8 @@ for (const mode of ['light', 'dark'] as const) {
       'disabled',
       'toolbar-action',
     ];
+    // Read native colors only after every sampled component has hydrated.
+    await Promise.all(ids.map((id) => expect(page.getByTestId(`palette-${id}`)).toHaveClass(/hydrated/)));
     const before = Object.fromEntries(await Promise.all(ids.map(async (id) => [id, await colors(page.getByTestId(`palette-${id}`))])));
     expect(before['toolbar-action'].foreground).toEqual(before['filled'].foreground);
     expect(before['tonal'].background).not.toEqual(before['filled'].background);
