@@ -18,20 +18,20 @@ vi.mock('@capacitor/core', () => ({
 
 it('restores standard colors without changing dark mode, then reapplies the selected palette', async () => {
   vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
-  const { startDynamicColors, setDemoColorMode, setDemoMaterialYou } = await import('./dynamic-colors');
+  const { startDynamicColors, applyDemoThemeSettings } = await import('./dynamic-colors');
   const root = document.documentElement;
   root.style.setProperty('--ion-color-primary', '#123456');
   await startDynamicColors();
   expect(root.style.getPropertyValue('--ion-color-primary')).toBe('#6750a4');
-  setDemoColorMode('dark');
+  await applyDemoThemeSettings({ materialYou: true, darkMode: true });
   expect(root.style.getPropertyValue('--ion-color-primary')).toBe('#d0bcff');
-  await setDemoMaterialYou(false);
+  await applyDemoThemeSettings({ materialYou: false, darkMode: true });
   expect(root.style.getPropertyValue('--ion-color-primary')).toBe('#123456');
   expect(root.style.getPropertyValue('--md-sys-color-primary')).toBe('');
   expect(root.classList.contains('ion-palette-dark')).toBe(true);
-  await setDemoMaterialYou(true);
+  await applyDemoThemeSettings({ materialYou: true, darkMode: true });
   expect(root.style.getPropertyValue('--ion-color-primary')).toBe('#d0bcff');
-  setDemoColorMode('light');
+  await applyDemoThemeSettings({ materialYou: true, darkMode: false });
   expect(root.style.getPropertyValue('--ion-color-primary')).toBe('#6750a4');
   vi.unstubAllGlobals();
 });

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ErrorHandler, inject, signal, untracked } from '@angular/core';
 
-import type { ToggleCustomEvent } from '@ionic/core';
+import { form, FormField } from '@angular/forms/signals';
 import {
   IonButton,
   IonButtons,
@@ -16,7 +16,7 @@ import {
   IonToolbar,
   IonToggle,
 } from '@demo/ionic';
-import { demoColorMode, demoMaterialYou, setDemoColorMode, setDemoMaterialYou } from '../../theme/dynamic-colors';
+import { demoThemeSettings, applyDemoThemeSettings } from '../../theme/dynamic-colors';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface IComponent {
@@ -34,6 +34,7 @@ interface IComponent {
     IonTitle,
     IonToolbar,
     IonToggle,
+    FormField,
     IonButton,
     IonButtons,
     IonIcon,
@@ -84,15 +85,15 @@ export class IndexPageComponent {
     await this.#router.navigate([item.name], { relativeTo: this.#route });
   }
 
-  readonly colorMode = demoColorMode;
+  readonly settingsForm = form(demoThemeSettings);
+  readonly #errorHandler = inject(ErrorHandler);
 
-  readonly materialYou = demoMaterialYou;
-
-  changeColorMode(event: ToggleCustomEvent) {
-    setDemoColorMode(event.detail.checked ? 'dark' : 'light');
-  }
-
-  async changeMaterialYou(event: ToggleCustomEvent) {
-    await setDemoMaterialYou(event.detail.checked);
+  constructor() {
+    effect(() => {
+      const settings = demoThemeSettings();
+      untracked(() => {
+        void applyDemoThemeSettings(settings).catch((error: unknown) => this.#errorHandler.handleError(error));
+      });
+    });
   }
 }
