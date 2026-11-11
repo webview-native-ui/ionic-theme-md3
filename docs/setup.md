@@ -12,20 +12,20 @@ Use an existing Ionic Angular, React or Vue app with Ionic `>=8.8.0 <10`.
 npm install @rdlabo/ionic-theme-md3
 ```
 
-## Load the preset
+## Load the theme stylesheet
 
 Add one import to your global stylesheet after Ionic's base CSS and your selected
 Ionic dark palette:
 
 ```css
-@import '@rdlabo/ionic-theme-md3/preset/default.css';
+@import '@rdlabo/ionic-theme-md3/styles/theme.css';
 ```
 
-This preset combines the default variables and MD3 component styles. When adopting
+This stylesheet combines the default variables and MD3 component styles. When adopting
 it in an existing app, replace the individual MD3 stylesheet imports. Keep your
 chosen Ionic dark-palette import, such as
 `@ionic/core/css/palettes/dark.system.css`, and put application overrides after the
-preset. MD3 has one preset for all appearance modes. For
+theme stylesheet. MD3 has one theme stylesheet for all appearance modes. For
 [Dynamic Colors](dynamic-colors.md), select Ionic's `dark.class.css` palette.
 
 ## Configure Ionic

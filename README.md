@@ -15,11 +15,11 @@ Designed for compatibility with `@rdlabo/ionic-theme-ios27`, so one markup tree 
 ## Installation
 
 Use the [setup guide](docs/setup.md) to install the package, import
-`@rdlabo/ionic-theme-md3/preset/default.css`, and spread `md3ThemeConfig` into your
+`@rdlabo/ionic-theme-md3/styles/theme.css`, and spread `md3ThemeConfig` into your
 existing Ionic initializer's options. Ionic `>=8.8.0 <10` is supported. Apps on older Ionic
 versions can use `@rdlabo/ionic-theme-md3@1.0.2`.
 
-For existing apps, follow the [optional wrapper migration](docs/migration.md#optional-adopt-the-setup-wrappers).
+For existing apps, follow the [optional setup simplification](docs/migration.md#optional-simplify-the-setup).
 For individual CSS files and animation settings, use [configuration](docs/configuration.md).
 
 ### Android Settings appearance
@@ -41,7 +41,7 @@ for stylesheet ordering and platform-based animation selection.
 
 ## Documentation
 
-- [Setup](docs/setup.md) — install and configure the theme with the preset and configuration object.
+- [Setup](docs/setup.md) — install and configure the theme with the theme stylesheet and configuration object.
 - [Configuration](docs/configuration.md) — individual stylesheets, animations and existing mode selection.
 - [Android dynamic colors](docs/dynamic-colors.md) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
 - [Color system](docs/color-system.md) — Ionic palette defaults, optional Material roles and component color assignments.
@@ -49,7 +49,7 @@ for stylesheet ordering and platform-based animation selection.
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
 - [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.
 - [ESLint](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/eslint) — check list structure with ESLint rules.
-- [Migration](docs/migration.md) — optional wrapper adoption and version-specific upgrade steps.
+- [Migration](docs/migration.md) — optional setup simplification and version-specific upgrade steps.
 
 ## Related Projects
 

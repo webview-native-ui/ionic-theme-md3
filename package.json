@@ -12,7 +12,7 @@
       "import": "./dist/index.js"
     },
     "./dist/css/*": "./dist/css/*",
-    "./preset/default.css": "./dist/preset/default.css",
+    "./styles/theme.css": "./dist/styles/theme.css",
     "./src/styles/*": "./src/styles/*",
     "./dynamic-colors": {
       "types": "./dist/dynamic-colors.d.ts",

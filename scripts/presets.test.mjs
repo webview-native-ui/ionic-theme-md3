@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
@@ -18,12 +18,14 @@ test('MD3 configuration supports object spread and overrides during SSR', () => 
   assert.equal({ ...md3ThemeConfig, mode: undefined }.mode, undefined);
 });
 
-test('the single MD3 preset is ordered, exported and packed without stale variants', async () => {
+test('the MD3 stylesheet is ordered, exported and packed without stale variants', async () => {
   const cache = await mkdtemp(join(tmpdir(), 'md3-preset-pack-'));
   try {
-    await writeFile(new URL('../dist/preset/stale.css', import.meta.url), 'stale');
+    await writeFile(new URL('../dist/styles/stale.css', import.meta.url), 'stale');
+    await mkdir(new URL('../dist/preset/', import.meta.url), { recursive: true });
+    await writeFile(new URL('../dist/preset/default.css', import.meta.url), 'legacy');
     execFileSync(process.execPath, ['scripts/build-presets.mjs'], { cwd: new URL('../', import.meta.url) });
-    assert.deepEqual(await readdir(new URL('../dist/preset/', import.meta.url)), ['default.css']);
+    assert.deepEqual(await readdir(new URL('../dist/styles/', import.meta.url)), ['theme.css']);
     const [packed] = JSON.parse(
       execFileSync('npm', ['pack', '--dry-run', '--ignore-scripts', '--json', '--cache', cache], {
         cwd: new URL('../', import.meta.url),
@@ -31,10 +33,10 @@ test('the single MD3 preset is ordered, exported and packed without stale varian
       }),
     );
     assert.deepEqual(
-      packed.files.map(({ path }) => path).filter((path) => path.startsWith('dist/preset/')),
-      ['dist/preset/default.css'],
+      packed.files.map(({ path }) => path).filter((path) => path.startsWith('dist/styles/') || path.startsWith('dist/preset/')),
+      ['dist/styles/theme.css'],
     );
-    const url = import.meta.resolve('@rdlabo/ionic-theme-md3/preset/default.css');
+    const url = import.meta.resolve('@rdlabo/ionic-theme-md3/styles/theme.css');
     const css = await readFile(new URL(url), 'utf8');
     const expected = await Promise.all(
       ['default-variables', 'ionic-theme-md3'].map((name) => readFile(new URL(`../dist/css/${name}.css`, import.meta.url), 'utf8')),
@@ -42,7 +44,7 @@ test('the single MD3 preset is ordered, exported and packed without stale varian
     assert.equal(css, `${expected.join('\n')}\n`);
     assert(!css.includes('@import'));
     assert(!css.includes('sourceMappingURL='));
-    for (const mode of ['system', 'class', 'always']) {
+    for (const mode of ['default', 'system', 'class', 'always']) {
       assert.throws(() => import.meta.resolve(`@rdlabo/ionic-theme-md3/preset/${mode}.css`), { code: 'ERR_PACKAGE_PATH_NOT_EXPORTED' });
     }
   } finally {

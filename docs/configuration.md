@@ -4,7 +4,7 @@ title: Theme configuration
 
 # Theme configuration
 
-The [setup guide](setup.md) uses the combined MD3 CSS preset and `md3ThemeConfig`.
+The [setup guide](setup.md) uses the combined MD3 theme stylesheet and `md3ThemeConfig`.
 The individual stylesheets and animation exports support custom composition.
 
 ## Load individual stylesheets
@@ -16,7 +16,7 @@ Place these imports after Ionic's core CSS and your chosen Ionic dark palette:
 @import '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
 ```
 
-These two files form `preset/default.css`. Use either the preset or the individual
+These two files form `styles/theme.css`. Use either the theme stylesheet or the individual
 imports. Put application CSS overrides after the theme.
 
 Ionic owns dark-palette selection. Choose `dark.system.css`, `dark.class.css` or
@@ -64,7 +64,7 @@ const ionicConfig = {
 The iOS branch uses Ionic's standard iOS appearance and animations. Options after
 the spread override the selected defaults, including an explicit
 `navAnimation: undefined` for Ionic's default transition. See
-[migration](migration.md#optional-adopt-the-setup-wrappers) for a before-and-after
+[migration](migration.md#optional-simplify-the-setup) for a before-and-after
 example.
 
 ## Use MD3 and iOS 27 together

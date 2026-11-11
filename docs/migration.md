@@ -6,13 +6,13 @@ title: Migration
 
 Review every section newer than the version currently installed, in ascending order. For example, when upgrading from 1.x to 9.0.0, complete the 2.0.0 migration steps before reviewing 9.0.0.
 
-Versioned sections list changes that require application code or configuration updates. The setup-wrapper migration below is optional.
+Versioned sections list changes that require application code or configuration updates. The setup simplification below is optional.
 
-## Optional: adopt the setup wrappers
+## Optional: simplify the setup
 
-The CSS preset and `md3ThemeConfig` provide a shorter setup. Existing individual
+The theme stylesheet and `md3ThemeConfig` provide a shorter setup. Existing individual
 stylesheet paths and animation exports remain supported. Applications can adopt
-the CSS preset and configuration object independently.
+the theme stylesheet and configuration object independently.
 
 ### Replace the theme stylesheet imports
 
@@ -20,13 +20,13 @@ the CSS preset and configuration object independently.
  @import '@ionic/core/css/palettes/dark.system.css';
 - @import '@rdlabo/ionic-theme-md3/dist/css/default-variables.css';
 - @import '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
-+ @import '@rdlabo/ionic-theme-md3/preset/default.css';
++ @import '@rdlabo/ionic-theme-md3/styles/theme.css';
 ```
 
 Keep the Ionic dark palette your application already selects. The example uses
 system appearance; class-controlled and always-dark applications keep their
 corresponding palette. Keep Ionic's base styles before these imports and
-application overrides after them. MD3 provides one preset shared by these modes.
+application overrides after them. MD3 provides one theme stylesheet shared by these modes.
 
 ### Replace animation wiring
 
@@ -46,7 +46,7 @@ For an app already using Material Design mode, replace the manual setup as follo
 + };
 ```
 
-Pass the object to your existing framework initializer. The preset configuration
+Pass the object to your existing framework initializer. The theme configuration
 sets `mode: 'md'` and the matching MD3 transition. For an application that chooses
 its appearance by platform, choose the configuration for the selected mode:
 
