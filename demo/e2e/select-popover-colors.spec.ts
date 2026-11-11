@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { mockDeviceColors, expectDeviceColors } from './device-colors';
+import { mockDeviceColors, gotoDevicePage, expectDeviceColors } from './device-colors';
 import scheme from './fixtures/android17-device-colors.json';
 
 for (const mode of ['light', 'dark'] as const) {
@@ -7,7 +7,15 @@ for (const mode of ['light', 'dark'] as const) {
     test(`${mode} ${device ? 'device' : 'Ionic'}: select menu owns its surface and respects overrides`, async ({ page }) => {
       if (device) await mockDeviceColors(page, mode);
       else await page.emulateMedia({ colorScheme: mode });
-      await page.goto('/main/index/select');
+      if (device) await gotoDevicePage(page, '/main/index/select', mode);
+      else {
+        await page.goto('/main/index/select');
+        await page.locator('html').evaluate((element, dark) => {
+          element.classList.toggle('ion-palette-dark', dark);
+          (element as HTMLElement).style.colorScheme = dark ? 'dark' : 'light';
+        }, mode === 'dark');
+        await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+      }
       if (device) await expectDeviceColors(page, mode);
       const normalItem = page.locator('app-select ion-item').first();
       const normalPaint = await normalItem.locator('[part~=native]').evaluate((el) => getComputedStyle(el).backgroundColor);

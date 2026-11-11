@@ -4,6 +4,12 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: clicking a popover trigger presents its visible content`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/popover');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const trigger = page.locator('#click-trigger-item');
     await expect(trigger).toHaveClass(/hydrated/);
     await expect(page.locator('ion-popover:not(.overlay-hidden)')).toHaveCount(0);
@@ -22,6 +28,12 @@ for (const mode of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: mode });
     // Omit ?type so ionViewDidEnter does not race the user's click with an automatic open.
     await page.goto('/main/index/select');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const select = page.locator('app-select ion-select.select-popover');
     await expect(select).toHaveClass(/hydrated/);
     await expect(select).toHaveJSProperty('interface', 'popover');
@@ -45,6 +57,12 @@ for (const mode of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: mode });
     // Omit ?type so only this click creates the modal, including its nested ModalPage.
     await page.goto('/main/index/modal');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const trigger = page.locator('app-modal ion-item').filter({ hasText: /^present:sheet$/ });
     await expect(trigger).toHaveClass(/hydrated/);
     await expect(page.locator('ion-modal')).toHaveCount(0);

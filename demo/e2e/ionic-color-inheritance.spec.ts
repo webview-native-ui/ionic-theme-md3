@@ -6,6 +6,12 @@ for (const mode of ['light', 'dark'] as const) {
       await page.setViewportSize({ width, height: width === 411 ? 891 : 800 });
       await page.emulateMedia({ colorScheme: mode });
       await page.goto('/main/index/color-palette');
+      await page.locator('html').evaluate((root, appearance) => {
+        root.classList.toggle('ion-palette-dark', appearance === 'dark');
+        root.style.colorScheme = appearance;
+      }, mode);
+      await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+      await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
       await expect(page.getByTestId('palette-card')).toHaveClass(/hydrated/);
       const result = await page.evaluate(async (mode) => {
         const panelRole = mode === 'light' ? '--md-sys-color-surface-container-lowest' : '--md-sys-color-surface-container-high';

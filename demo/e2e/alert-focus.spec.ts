@@ -5,6 +5,14 @@ for (const appearance of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: appearance });
     await page.setViewportSize({ width: 411, height: 891 });
     await page.goto('/main/index/alert?type=preferred');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, appearance);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', appearance);
+    await expect
+      .poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark')))
+      .toBe(appearance === 'dark');
     const alert = page.locator('ion-alert');
     const wrapper = alert.locator('.alert-wrapper');
     await expect(wrapper).toBeFocused();

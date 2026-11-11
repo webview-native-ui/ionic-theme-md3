@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { mockDeviceColors, expectDeviceColors } from './device-colors';
+import { mockDeviceColors, gotoDevicePage, expectDeviceColors } from './device-colors';
 import scheme from './fixtures/android17-device-colors.json';
 
 for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: white base and named neutral colors preserve their order`, async ({ page }) => {
     await mockDeviceColors(page, mode);
-    await page.goto('/main/index/card');
+    await gotoDevicePage(page, '/main/index/card', mode);
     await expectDeviceColors(page, mode);
     const roles = scheme[mode];
     const rgb = (hex: string) => `rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(', ')})`;
@@ -46,7 +46,7 @@ for (const mode of ['light', 'dark'] as const) {
   ]) {
     test(`${mode}: ${route} preserves the default overlay surface`, async ({ page }) => {
       await mockDeviceColors(page, mode);
-      await page.goto('/main/index/' + (route.startsWith('modal') ? 'modal' : route));
+      await gotoDevicePage(page, '/main/index/' + (route.startsWith('modal') ? 'modal' : route), mode);
       if (route.startsWith('modal'))
         await page
           .locator('app-modal ion-item')
@@ -69,7 +69,7 @@ for (const mode of ['light', 'dark'] as const) {
 
 test('dark device search fields remain distinct from toolbar panels', async ({ page }) => {
   await mockDeviceColors(page, 'dark');
-  await page.goto('/main/index/searchbar');
+  await gotoDevicePage(page, '/main/index/searchbar', 'dark');
   await expectDeviceColors(page, 'dark');
   const searchbars = page.locator('app-searchbar ion-toolbar:not(.ion-color) ion-searchbar');
   await expect(searchbars.first()).toBeVisible();
