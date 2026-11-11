@@ -14,63 +14,13 @@ Designed for compatibility with `@rdlabo/ionic-theme-ios27`, so one markup tree 
 
 ## Installation
 
-In an existing Ionic project:
+Use the [setup guide](docs/setup.md) to install the package, import
+`@rdlabo/ionic-theme-md3/styles/theme.css`, and spread `md3ThemeConfig` into your
+existing Ionic initializer's options. Ionic `>=8.8.0 <10` is supported. Apps on older Ionic
+versions can use `@rdlabo/ionic-theme-md3@1.0.2`.
 
-```bash
-npm install @rdlabo/ionic-theme-md3
-```
-
-Note: **If you use @ionic/core@ < 8.8.0**, use @rdlabo/ionic-theme-md3@1.0.2.
-
-Import the theme in your project's main CSS file (e.g., `src/styles.scss`) **after Ionic's core styles**. This order allows the MD default font to apply while preserving your application's `--ion-font-family` override.
-
-```css
-@import '@rdlabo/ionic-theme-md3/dist/css/default-variables.css';
-@import '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
-```
-
-### Configure animations
-
-If you installed only the MD3 theme, configure its animation as follows.
-
-```ts
-import { isPlatform } from '@ionic/core'; // or @ionic/angular (Ionic 9), @ionic/angular/standalone (Ionic 8), @ionic/react, @ionic/vue
-import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
-
-// Angular
-provideIonicAngular({
-    ...
-    navAnimation: isPlatform('ios') ? undefined: mdTransitionAnimation,
-});
-
-// React
-setupIonicReact({
-    ...
-    navAnimation: isPlatform('ios') ? undefined: mdTransitionAnimation,
-});
-
-// Vue
-createApp(App)
-    .use(IonicVue, {
-        ...
-        navAnimation: isPlatform('ios') ? undefined: mdTransitionAnimation,
-})
-```
-
-### Check the theme
-
-Test on Android. When previewing on desktop, set Ionic mode to `md` in your existing framework initialization config (for example `mode: 'md'`).
-
-Use this markup to preview the inset grouped list look. For the list structure the theme expects, see [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group).
-
-```html
-<ion-list mode="md" inset="true">
-  <ion-item-group>
-    <ion-item><ion-label>Notifications</ion-label></ion-item>
-    <ion-item><ion-label>Appearance</ion-label></ion-item>
-  </ion-item-group>
-</ion-list>
-```
+For existing apps, follow the [optional setup simplification](docs/migration.md#optional-simplify-the-setup).
+For individual CSS files and animation settings, use [configuration](docs/configuration.md).
 
 ### Android Settings appearance
 
@@ -86,69 +36,20 @@ for changes to toolbar, list and toggle dimensions.
 
 ### Optional: use the MD3 and iOS 27 themes together
 
-Install the iOS 27 theme to style both Ionic modes from the same application.
-
-The current releases of both themes require `@ionic/core` 8.8.1 or later. Upgrade Ionic before using this setup if your application is on 8.8.0 or earlier.
-
-```bash
-npm install @rdlabo/ionic-theme-ios27
-```
-
-When your global stylesheet uses Sass, initialize the themes in this order:
-
-```scss
-@use '@rdlabo/ionic-theme-ios27/src/styles/default-variables.scss' as ios27-vars;
-@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios27.scss';
-@use '@rdlabo/ionic-theme-ios27/src/styles/ionic-theme-ios27-dark-class.scss';
-@use '@rdlabo/ionic-theme-ios27/src/styles/md-remove-ios-class-effect.scss';
-@use '@rdlabo/ionic-theme-md3/dist/css/default-variables.css' as md3-vars;
-@use '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
-```
-
-The example uses Ionic's class-based dark mode. Your global stylesheet must also load Ionic's matching dark palette, such as `@ionic/angular/css/palettes/dark.class.css` for Angular. When using `dark-system` or `dark-always`, select the same variant for both Ionic's palette and the iOS 27 theme. See Ionic's [Dark Mode documentation](https://ionicframework.com/docs/theming/dark-mode). The explicit `ios27-vars` and `md3-vars` namespaces prevent the two variable modules from using the same default namespace.
-
-Configure both transition implementations when both themes are installed:
-
-```ts
-import { isPlatform } from '@ionic/core'; // or @ionic/angular (Ionic 9), @ionic/angular/standalone (Ionic 8), @ionic/react, @ionic/vue
-import { iosTransitionAnimation, popoverEnterAnimation, popoverLeaveAnimation } from '@rdlabo/ionic-theme-ios27';
-import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
-
-// Angular
-provideIonicAngular({
-    ...
-    navAnimation: isPlatform('ios') ? iosTransitionAnimation : mdTransitionAnimation,
-    popoverEnter: isPlatform('ios') ? popoverEnterAnimation : undefined,
-    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation : undefined,
-});
-
-// React
-setupIonicReact({
-    ...
-    navAnimation: isPlatform('ios') ? iosTransitionAnimation : mdTransitionAnimation,
-    popoverEnter: isPlatform('ios') ? popoverEnterAnimation : undefined,
-    popoverLeave: isPlatform('ios') ? popoverLeaveAnimation : undefined,
-});
-
-// Vue
-createApp(App)
-    .use(IonicVue, {
-        ...
-        navAnimation: isPlatform('ios') ? iosTransitionAnimation : mdTransitionAnimation,
-        popoverEnter: isPlatform('ios') ? popoverEnterAnimation : undefined,
-        popoverLeave: isPlatform('ios') ? popoverLeaveAnimation : undefined,
-    });
-```
+Follow [combined theme configuration](docs/configuration.md#use-md3-and-ios-27-together)
+for stylesheet ordering and platform-based animation selection.
 
 ## Documentation
 
+- [Setup](docs/setup.md) — install and configure the theme with the theme stylesheet and configuration object.
+- [Configuration](docs/configuration.md) — individual stylesheets, animations and existing mode selection.
 - [Android dynamic colors](docs/dynamic-colors.md) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
 - [Color system](docs/color-system.md) — Ionic palette defaults, optional Material roles and component color assignments.
 - [Android Settings appearance](docs/android-settings.md) — default geometry, CSS font defaults and Ionic customization.
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
 - [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.
 - [ESLint](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/eslint) — check list structure with ESLint rules.
-- [Migration](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/migration) — changes required when updating theme markup.
+- [Migration](docs/migration.md) — optional setup simplification and version-specific upgrade steps.
 
 ## Related Projects
 
