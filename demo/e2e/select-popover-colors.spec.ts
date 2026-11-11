@@ -18,7 +18,17 @@ for (const mode of ['light', 'dark'] as const) {
       }
       if (device) await expectDeviceColors(page, mode);
       const normalItem = page.locator('app-select ion-item').first();
-      const normalPaint = await normalItem.locator('[part~=native]').evaluate((el) => getComputedStyle(el).backgroundColor);
+      await expect(normalItem).toHaveClass(/hydrated/);
+      // Resolve the target surface independently of the native part's color transition.
+      const normalPaint = await normalItem.evaluate((el) => {
+        const probe = document.createElement('span');
+        probe.style.backgroundColor = 'var(--background)';
+        el.append(probe);
+        const background = getComputedStyle(probe).backgroundColor;
+        probe.remove();
+        return background;
+      });
+      await expect(normalItem.locator('[part~=native]')).toHaveCSS('background-color', normalPaint);
       await page.locator('app-select .select-popover').click();
       const popover = page.locator('ion-popover:not(.overlay-hidden)');
       await expect(popover).toBeVisible();
