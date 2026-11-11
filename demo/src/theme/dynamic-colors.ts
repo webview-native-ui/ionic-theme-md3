@@ -9,14 +9,21 @@ const native = registerPlugin<{
   addListener(name: 'dynamicColorSchemeChange', listener: () => void): Promise<{ remove(): Promise<void> }>;
 }>('NativeUI');
 let theme: DynamicColorTheme | undefined;
-export const demoColorMode = signal<ColorMode>('system');
+export const demoColorMode = signal<ColorMode>('light');
+export const demoMaterialYou = signal(true);
 export const startDynamicColors = async (): Promise<void> => {
   theme = await enableDynamicColors({
-    mode: 'system',
-    getScheme: () =>
-      Capacitor.getPlatform() === 'android'
-        ? native.getDynamicColorScheme()
-        : Promise.resolve({ available: false, systemDark: matchMedia('(prefers-color-scheme: dark)').matches }),
+    mode: demoColorMode(),
+    getScheme: async () => {
+      if (!demoMaterialYou()) {
+        return { available: false, systemDark: matchMedia('(prefers-color-scheme: dark)').matches };
+      }
+      const scheme =
+        Capacitor.getPlatform() === 'android'
+          ? await native.getDynamicColorScheme()
+          : { available: false as const, systemDark: matchMedia('(prefers-color-scheme: dark)').matches };
+      return demoMaterialYou() ? scheme : { available: false, systemDark: scheme.systemDark };
+    },
     listen: (listener) =>
       Capacitor.getPlatform() === 'android'
         ? native.addListener('dynamicColorSchemeChange', listener)
@@ -26,4 +33,9 @@ export const startDynamicColors = async (): Promise<void> => {
 export const setDemoColorMode = (mode: ColorMode): void => {
   demoColorMode.set(mode);
   theme?.setMode(mode);
+};
+
+export const setDemoMaterialYou = async (enabled: boolean): Promise<void> => {
+  demoMaterialYou.set(enabled);
+  await theme?.refresh();
 };

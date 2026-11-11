@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import type { ToggleCustomEvent } from '@ionic/core';
 import {
   IonButton,
   IonButtons,
@@ -14,8 +14,9 @@ import {
   IonListHeader,
   IonTitle,
   IonToolbar,
+  IonToggle,
 } from '@demo/ionic';
-import { demoColorMode, setDemoColorMode } from '../../theme/dynamic-colors';
+import { demoColorMode, demoMaterialYou, setDemoColorMode, setDemoMaterialYou } from '../../theme/dynamic-colors';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface IComponent {
@@ -32,7 +33,7 @@ interface IComponent {
     IonHeader,
     IonTitle,
     IonToolbar,
-    FormsModule,
+    IonToggle,
     IonButton,
     IonButtons,
     IonIcon,
@@ -85,7 +86,13 @@ export class IndexPageComponent {
 
   readonly colorMode = demoColorMode;
 
-  changeColorMode(mode: 'system' | 'light' | 'dark') {
-    setDemoColorMode(mode);
+  readonly materialYou = demoMaterialYou;
+
+  changeColorMode(event: ToggleCustomEvent) {
+    setDemoColorMode(event.detail.checked ? 'dark' : 'light');
+  }
+
+  async changeMaterialYou(event: ToggleCustomEvent) {
+    await setDemoMaterialYou(event.detail.checked);
   }
 }

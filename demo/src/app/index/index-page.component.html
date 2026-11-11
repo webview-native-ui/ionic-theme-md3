@@ -19,14 +19,10 @@
     <ion-list-header><ion-label>Settings</ion-label></ion-list-header>
     <ion-item-group>
       <ion-item>
-        <ion-label>Color mode</ion-label>
-        <ion-button type="button" [fill]="colorMode() === 'system' ? 'solid' : 'outline'" (click)="changeColorMode('system')"
-          >System</ion-button
-        >
-        <ion-button type="button" [fill]="colorMode() === 'light' ? 'solid' : 'outline'" (click)="changeColorMode('light')"
-          >Light</ion-button
-        >
-        <ion-button type="button" [fill]="colorMode() === 'dark' ? 'solid' : 'outline'" (click)="changeColorMode('dark')">Dark</ion-button>
+        <ion-toggle [checked]="materialYou()" (ionChange)="changeMaterialYou($event)">Material You</ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-toggle [checked]="colorMode() === 'dark'" (ionChange)="changeColorMode($event)">Dark Mode</ion-toggle>
       </ion-item>
     </ion-item-group>
   </ion-list>
