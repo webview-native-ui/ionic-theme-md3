@@ -22,6 +22,12 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: Ionic-only palette, optional pairs, explicit colors and opt-out`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/color-palette');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     await expect(page.getByTestId('palette-tonal')).toBeVisible();
     await expect(page.getByTestId('palette-tonal')).toHaveClass(/hydrated/);
     const ids = [
@@ -97,11 +103,23 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: Android Settings surfaces, groups, back button and icon-free switches`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/color-palette');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const title = page.locator('app-color-palette ion-card-title').first();
     await expect(title).toHaveClass(/hydrated/);
     await title.evaluate((element) => element.setAttribute('color', 'danger'));
     await expect(title).toHaveClass(/ion-color-danger/);
-    expect((await colors(title)).foreground).toEqual((await colors(page.getByTestId('palette-danger'))).background);
+    await expect
+      .poll(
+        async () =>
+          JSON.stringify((await colors(title)).foreground) ===
+          JSON.stringify((await colors(page.getByTestId('palette-danger'))).background),
+      )
+      .toBe(true);
     await title.evaluate((element) => {
       element.removeAttribute('color');
       (element as HTMLElement).style.setProperty('--color', '#123456');
@@ -117,6 +135,12 @@ for (const mode of ['light', 'dark'] as const) {
     expect(backStyle.background).toContain('20px');
 
     await page.goto('/main/index/item-list');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const list = page.locator('app-item-list ion-list.list-inset').nth(1);
     await expect(list).toBeVisible();
     expect(await list.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
@@ -136,6 +160,12 @@ for (const mode of ['light', 'dark'] as const) {
     expect(await item.evaluate((element) => getComputedStyle(element).marginBottom)).toBe('0px');
 
     await page.goto('/main/index/toggle');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const toggle = page.locator('app-toggle ion-toggle').first();
     await expect(toggle).toHaveClass(/hydrated/);
     const glyph = () =>

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { mockDeviceColors, expectDeviceColors } from './device-colors';
+import { mockDeviceColors, gotoDevicePage, expectDeviceColors } from './device-colors';
 import { arrowBackSharp } from 'ionicons/icons';
 
 test('CSS font default respects Ionic application overrides and iOS mode', async ({ page }) => {
@@ -44,7 +44,7 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: measured Android control geometry and Ionic overrides`, async ({ page }, testInfo) => {
     await mockDeviceColors(page, mode);
     await page.setViewportSize({ width: 412, height: 915 });
-    await page.goto('/main/index/toggle');
+    await gotoDevicePage(page, '/main/index/toggle', mode);
     await expectDeviceColors(page, mode);
     const toggle = page.locator('app-toggle ion-toggle').nth(2);
     const track = toggle.locator('[part~="track"]');
@@ -60,7 +60,7 @@ for (const mode of ['light', 'dark'] as const) {
     await toggle.evaluate((element) => element.classList.add('md3-disabled'));
     await expect(track).not.toHaveCSS('height', '28px');
 
-    await page.goto('/main/index/item-list');
+    await gotoDevicePage(page, '/main/index/item-list', mode);
     const title = page.locator('app-item-list > ion-header ion-title');
     await expect(title).toHaveCSS('font-size', '22px');
     await expect(title).toHaveCSS('padding-inline-start', '12px');
@@ -105,12 +105,12 @@ for (const mode of ['light', 'dark'] as const) {
     const itemBox = await twoLineItem.boundingBox();
     expect(itemBox!.height).toBeCloseTo(twoLineBox!.height + noteBox!.height + 32, 1);
 
-    await page.goto('/main/index/radio');
+    await gotoDevicePage(page, '/main/index/radio', mode);
     const radio = page.locator('app-radio ion-radio').first();
     await expect(radio.locator('[part~="container"]')).toHaveCSS('width', '20px');
     await expect(radio.locator('..')).toHaveCSS('height', '72px');
 
-    await page.goto('/main/index/range');
+    await gotoDevicePage(page, '/main/index/range', mode);
     const range = page.locator('app-range ion-range').first();
     await expect(range.locator('[part~="bar"]')).toHaveCSS('height', '16px');
     await expect(range.locator('[part~="knob"]').first()).toHaveCSS('width', '4px');

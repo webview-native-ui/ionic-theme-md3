@@ -29,6 +29,12 @@ for (const mode of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: mode });
     await page.setViewportSize({ width: 411, height: 900 });
     await page.goto('/main/index/item-list');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const label = page.locator('app-item-list ion-list.list-inset').nth(2).locator('ion-item').last().locator('ion-label');
     const lines = await label.evaluate((element) => {
       const range = document.createRange();
@@ -54,6 +60,12 @@ for (const mode of ['light', 'dark'] as const) {
       .toBe('radial-gradient(20px, rgba(0, 0, 0, 0) 99%, rgba(0, 0, 0, 0) 100%)');
 
     await page.goto('/main/index/accordion');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const accordions = page.locator('app-accordion ion-accordion');
     await expect(accordions.first()).toHaveClass(/hydrated/);
     expect(await accordions.first().evaluate((element) => getComputedStyle(element).marginBottom)).toBe('2px');
@@ -67,6 +79,12 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: toggles are icon-free unless Ionic on/off labels are explicitly enabled`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/toggle');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     for (const control of await page.locator('app-toggle ion-toggle:not([enable-on-off-labels])').all()) {
       await expect(control).toHaveClass(/hydrated/);
       const handle = control.locator('[part~="handle"]');
@@ -98,6 +116,12 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: range cutout follows its Ionic container`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/range');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const range = page.locator('app-range ion-range').nth(3);
     await expect(range).toHaveClass(/hydrated/);
     await range.evaluate((element) => {

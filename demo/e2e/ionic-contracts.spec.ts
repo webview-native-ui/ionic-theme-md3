@@ -4,6 +4,12 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: MD parents retain a child's explicit iOS mode`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/color-palette');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const card = page.getByTestId('palette-mixed-mode');
     await expect(card).toHaveClass(/hydrated/);
     await card.evaluate((element) => {
@@ -24,6 +30,12 @@ for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: tab icon opt-out retains normal Ionic inheritance`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: mode });
     await page.goto('/main/index/tabs');
+    await page.locator('html').evaluate((root, appearance) => {
+      root.classList.toggle('ion-palette-dark', appearance === 'dark');
+      root.style.colorScheme = appearance;
+    }, mode);
+    await expect(page.locator('html')).toHaveCSS('color-scheme', mode);
+    await expect.poll(() => page.locator('html').evaluate((root) => root.classList.contains('ion-palette-dark'))).toBe(mode === 'dark');
     const tab = page.locator('app-tabs ion-tab-button').first();
     await expect(tab).toHaveClass(/hydrated/);
     await tab.evaluate((element) => {

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ErrorHandler, inject, signal, untracked } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import {
   IonButton,
   IonButtons,
@@ -14,8 +14,9 @@ import {
   IonListHeader,
   IonTitle,
   IonToolbar,
+  IonToggle,
 } from '@demo/ionic';
-import { demoColorMode, setDemoColorMode } from '../../theme/dynamic-colors';
+import { demoThemeSettings, demoMaterialYouAvailable, applyDemoThemeSettings } from '../../theme/dynamic-colors';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface IComponent {
@@ -32,7 +33,8 @@ interface IComponent {
     IonHeader,
     IonTitle,
     IonToolbar,
-    FormsModule,
+    IonToggle,
+    FormField,
     IonButton,
     IonButtons,
     IonIcon,
@@ -83,9 +85,18 @@ export class IndexPageComponent {
     await this.#router.navigate([item.name], { relativeTo: this.#route });
   }
 
-  readonly colorMode = demoColorMode;
+  readonly materialYouAvailable = demoMaterialYouAvailable;
+  readonly settingsForm = form(demoThemeSettings, (fields) => {
+    disabled(fields.materialYou, () => !demoMaterialYouAvailable());
+  });
+  readonly #errorHandler = inject(ErrorHandler);
 
-  changeColorMode(mode: 'system' | 'light' | 'dark') {
-    setDemoColorMode(mode);
+  constructor() {
+    effect(() => {
+      const settings = demoThemeSettings();
+      untracked(() => {
+        void applyDemoThemeSettings(settings).catch((error: unknown) => this.#errorHandler.handleError(error));
+      });
+    });
   }
 }

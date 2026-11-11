@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { mockDeviceColors, expectDeviceColors, expectDeviceColorPairs } from './device-colors';
+import { mockDeviceColors, gotoDevicePage, expectDeviceColors, expectDeviceColorPairs } from './device-colors';
 import scheme from './fixtures/android17-device-colors.json';
 
 for (const mode of ['light', 'dark'] as const) {
   test(`${mode}: explicit Ionic colors render native foreground pairs`, async ({ page }, testInfo) => {
     await mockDeviceColors(page, mode);
     await page.setViewportSize({ width: 800, height: 1000 });
-    await page.goto('/main/index/color-palette');
+    await gotoDevicePage(page, '/main/index/color-palette', mode);
     await expectDeviceColors(page, mode);
     await expectDeviceColorPairs(page, mode);
     await page.evaluate(() => {

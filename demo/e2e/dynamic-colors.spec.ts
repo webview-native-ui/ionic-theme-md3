@@ -1,21 +1,52 @@
 import { expect, test } from '@playwright/test';
+import { mockDeviceColors, expectDeviceColors } from './device-colors';
 
-test('system/light/dark appearance follows device only in system mode', async ({ page }) => {
+test('unsupported Material You is disabled while dark mode remains usable', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/');
   const root = page.locator('html');
+  const dark = page.getByRole('switch', { name: 'Dark Mode', exact: true });
+  const material = page.getByRole('switch', { name: /^Material You/ });
+  await expect(dark).not.toBeChecked();
+  await expect(material).not.toBeChecked();
+  await expect(material).toBeDisabled();
+  await dark.click();
   await expect(root).toHaveClass(/ion-palette-dark/);
-  await page.getByRole('button', { name: 'Light', exact: true }).click();
+  await expect(material).not.toBeChecked();
+  await expect(dark).toBeChecked();
+  await expect(root).toHaveClass(/ion-palette-dark/);
+  await dark.click();
+  await expect(root).not.toHaveClass(/ion-palette-dark/);
+  await expect(material).not.toBeChecked();
+  await expect(material).toBeDisabled();
   await expect(root).not.toHaveClass(/ion-palette-dark/);
   await page.emulateMedia({ colorScheme: 'light' });
   await page.emulateMedia({ colorScheme: 'dark' });
   await expect(root).not.toHaveClass(/ion-palette-dark/);
-  await page.getByRole('button', { name: 'Dark', exact: true }).click();
+});
+
+test('supported device toggles independently restore and reapply the selected palette', async ({ page }) => {
+  await mockDeviceColors(page, 'dark');
+  await page.goto('/main/index');
+  const dark = page.getByRole('switch', { name: 'Dark Mode', exact: true });
+  const material = page.getByRole('switch', { name: 'Material You', exact: true });
+  const root = page.locator('html');
+  await expect(material).toBeEnabled();
+  await expect(material).toBeChecked();
+  await expectDeviceColors(page, 'light');
+  await dark.click();
+  await expect(dark).toBeChecked();
+  await expectDeviceColors(page, 'dark');
+  await material.click();
+  await expect(material).not.toBeChecked();
+  await expect.poll(() => root.evaluate((el) => (el as HTMLElement).style.getPropertyValue('--md-sys-color-primary'))).toBe('');
   await expect(root).toHaveClass(/ion-palette-dark/);
-  await page.emulateMedia({ colorScheme: 'light' });
-  await expect(root).toHaveClass(/ion-palette-dark/);
-  await page.getByRole('button', { name: 'System', exact: true }).click();
-  await expect(root).not.toHaveClass(/ion-palette-dark/);
-  await page.emulateMedia({ colorScheme: 'dark' });
-  await expect(root).toHaveClass(/ion-palette-dark/);
+  await expect(dark).toBeChecked();
+  await material.click();
+  await expect(material).toBeChecked();
+  await expectDeviceColors(page, 'dark');
+  await dark.click();
+  await expect(dark).not.toBeChecked();
+  await expectDeviceColors(page, 'light');
+  await expect(material).toBeChecked();
 });

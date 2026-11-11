@@ -8,6 +8,7 @@ import {
   expectDeviceToggleColors,
   expectDeviceAlertFocusColors,
   mockDeviceColors,
+  gotoDevicePage,
   sendCompatibilityDeviceColors,
 } from './device-colors';
 
@@ -57,7 +58,7 @@ const routes = [
 ].sort(() => Math.random() - 0.5);
 
 const prepareScreenShot = async (page: Page, routeName: string) => {
-  await expect(page.locator('ion-content[role="main"]')).toHaveClass(/hydrated/);
+  await expect(page.locator('ion-content[role="main"]:visible')).toHaveClass(/hydrated/);
   await page.evaluate(async () => {
     await document.fonts.ready;
     await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
@@ -74,7 +75,7 @@ const prepareScreenShot = async (page: Page, routeName: string) => {
     await expect(focused).toHaveClass(/ion-focused/);
   }
   if (!routeName.includes(':')) {
-    const scrollHeight = await page.locator('ion-content[role="main"]').evaluate(async (el: any) => {
+    const scrollHeight = await page.locator('ion-content[role="main"]:visible').evaluate(async (el: any) => {
       const scrollEl = await el.getScrollElement();
       return scrollEl.scrollHeight;
     });
@@ -136,7 +137,7 @@ for (const mode of ['light', 'dark'] as const) {
       test(`should match device ${mode} screenshot for ${route.name}`, async ({ page }) => {
         await mockDeviceColors(page, mode);
         const manualOverlay = route.name === 'popover' || route.name.startsWith('select:') || route.name.startsWith('modal:');
-        await page.goto(manualOverlay ? route.path.split('?')[0] : route.path, { waitUntil: 'networkidle' });
+        await gotoDevicePage(page, manualOverlay ? route.path.split('?')[0] : route.path, mode);
         await expectDeviceColors(page, mode);
         if (route.name === 'color-palette') await expectDeviceColorPairs(page, mode);
         if (route.name === 'toggle') await expectDeviceToggleColors(page, mode);
@@ -194,7 +195,7 @@ for (const mode of ['light', 'dark'] as const) {
 for (const mode of ['light', 'dark'] as const) {
   test(`should match device ${mode} screenshot after a six-role native update`, async ({ page }) => {
     await mockDeviceColors(page, mode);
-    await page.goto('/main/index/color-palette', { waitUntil: 'networkidle' });
+    await gotoDevicePage(page, '/main/index/color-palette', mode);
     await expectDeviceColors(page, mode);
     await expectDeviceColorPairs(page, mode);
     await sendCompatibilityDeviceColors(page, mode);
@@ -206,7 +207,7 @@ for (const mode of ['light', 'dark'] as const) {
 for (const mode of ['light', 'dark'] as const) {
   test(`should match device ${mode} screenshot for an active range pin`, async ({ page }) => {
     await mockDeviceColors(page, mode);
-    await page.goto('/main/index/range', { waitUntil: 'networkidle' });
+    await gotoDevicePage(page, '/main/index/range', mode);
     await expectDeviceColors(page, mode);
     const range = page.locator('app-range .section-example ion-range').first();
     await expect(range).toHaveClass(/hydrated/);

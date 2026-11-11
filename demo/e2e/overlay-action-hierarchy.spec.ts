@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import type { ActionSheetButton } from '@ionic/core';
-import { mockDeviceColors, expectDeviceColors } from './device-colors';
+import { mockDeviceColors, gotoDevicePage, expectDeviceColors } from './device-colors';
 
 for (const width of [390, 1280]) {
   for (const mode of ['light', 'dark'] as const) {
@@ -9,7 +9,8 @@ for (const width of [390, 1280]) {
         await page.setViewportSize({ width, height: 844 });
         if (native) await mockDeviceColors(page, mode);
         else await page.addInitScript(() => ((window as unknown as { IONIC_E2E_TESTING: boolean }).IONIC_E2E_TESTING = true));
-        await page.goto('/main/index/action-sheet?type=preferred', { waitUntil: 'networkidle' });
+        if (native) await gotoDevicePage(page, '/main/index/action-sheet?type=preferred', mode);
+        else await page.goto('/main/index/action-sheet?type=preferred', { waitUntil: 'networkidle' });
         if (native) await expectDeviceColors(page, mode);
         else await page.locator('html').evaluate((element, dark) => element.classList.toggle('ion-palette-dark', dark), mode === 'dark');
         const sheet = page.locator('ion-action-sheet');

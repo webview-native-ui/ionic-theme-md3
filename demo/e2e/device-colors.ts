@@ -59,6 +59,25 @@ export const mockDeviceColors = async (page: Page, mode: 'light' | 'dark') => {
   );
 };
 
+/** Select appearance through the settings UI before opening a device-color test route. */
+export const gotoDevicePage = async (page: Page, path: string, mode: 'light' | 'dark') => {
+  await page.goto('/main/index', { waitUntil: 'networkidle' });
+  const dark = page.getByRole('switch', { name: 'Dark Mode', exact: true });
+  if (mode === 'dark') {
+    await dark.click();
+    await expect(dark).toBeChecked();
+  } else await expect(dark).not.toBeChecked();
+  await expectDeviceColors(page, mode);
+  // Use same-document browser navigation so the selected settings survive route changes.
+  await page.evaluate((path) => {
+    history.pushState(null, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  }, path);
+  await expect(page.locator('index-page')).toBeHidden();
+  await expect(page.locator('ion-content[role="main"]:visible').first()).toBeVisible();
+  await page.waitForLoadState('networkidle');
+};
+
 export const expectDeviceColors = async (page: Page, mode: 'light' | 'dark') => {
   const root = page.locator('html');
   await expect
