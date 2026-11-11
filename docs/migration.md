@@ -18,9 +18,9 @@ the CSS preset and configuration helper independently.
 
 ```diff
  @import '@ionic/core/css/palettes/dark.system.css';
--@import '@rdlabo/ionic-theme-md3/dist/css/default-variables.css';
--@import '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
-+@import '@rdlabo/ionic-theme-md3/preset/default.css';
+- @import '@rdlabo/ionic-theme-md3/dist/css/default-variables.css';
+- @import '@rdlabo/ionic-theme-md3/dist/css/ionic-theme-md3.css';
++ @import '@rdlabo/ionic-theme-md3/preset/default.css';
 ```
 
 Keep the Ionic dark palette your application already selects. The example uses
@@ -33,14 +33,14 @@ application overrides after them. MD3 provides one preset shared by these modes.
 For an app already using Material Design mode, replace the manual setup as follows.
 
 ```diff
--import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
-+import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
+- import { mdTransitionAnimation } from '@rdlabo/ionic-theme-md3';
++ import { md3ThemeConfig } from '@rdlabo/ionic-theme-md3';
 
--const ionicConfig = {
--  mode: 'md' as const,
--  navAnimation: mdTransitionAnimation,
--};
-+const ionicConfig = md3ThemeConfig();
+- const ionicConfig = {
+-   mode: 'md' as const,
+-   navAnimation: mdTransitionAnimation,
+- };
++ const ionicConfig = md3ThemeConfig();
 ```
 
 Pass the result to your existing framework initializer. The helper defaults to
