@@ -10,23 +10,35 @@ const native = registerPlugin<{
 }>('NativeUI');
 let theme: DynamicColorTheme | undefined;
 export const demoThemeSettings = signal({ materialYou: true, darkMode: false });
+export const demoMaterialYouAvailable = signal(false);
 let materialYou = demoThemeSettings().materialYou;
 export const startDynamicColors = async (): Promise<void> => {
   theme = await enableDynamicColors({
     mode: demoThemeSettings().darkMode ? 'dark' : 'light',
     getScheme: async () => {
-      if (!materialYou) {
-        return { available: false, systemDark: matchMedia('(prefers-color-scheme: dark)').matches };
+      const fallback: DynamicColorScheme = {
+        available: false,
+        systemDark: matchMedia('(prefers-color-scheme: dark)').matches,
+      };
+      let scheme: DynamicColorScheme = fallback;
+      if (Capacitor.getPlatform() === 'android') {
+        // Older native builds may not implement this method even when the plugin exists.
+        try {
+          scheme = await native.getDynamicColorScheme();
+        } catch {
+          scheme = fallback;
+        }
       }
-      const scheme =
-        Capacitor.getPlatform() === 'android'
-          ? await native.getDynamicColorScheme()
-          : { available: false as const, systemDark: matchMedia('(prefers-color-scheme: dark)').matches };
+      demoMaterialYouAvailable.set(scheme.available);
+      if (!scheme.available) {
+        demoThemeSettings.update((settings) => (settings.materialYou ? { ...settings, materialYou: false } : settings));
+        materialYou = false;
+      }
       return materialYou ? scheme : { available: false, systemDark: scheme.systemDark };
     },
     listen: (listener) =>
       Capacitor.getPlatform() === 'android'
-        ? native.addListener('dynamicColorSchemeChange', listener)
+        ? native.addListener('dynamicColorSchemeChange', listener).catch(() => ({ remove: async () => {} }))
         : Promise.resolve({ remove: async () => {} }),
   });
 };

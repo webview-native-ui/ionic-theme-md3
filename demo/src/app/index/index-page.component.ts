@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, ErrorHandler, inject, signal, untracked } from '@angular/core';
 
-import { form, FormField } from '@angular/forms/signals';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import {
   IonButton,
   IonButtons,
@@ -16,7 +16,7 @@ import {
   IonToolbar,
   IonToggle,
 } from '@demo/ionic';
-import { demoThemeSettings, applyDemoThemeSettings } from '../../theme/dynamic-colors';
+import { demoThemeSettings, demoMaterialYouAvailable, applyDemoThemeSettings } from '../../theme/dynamic-colors';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface IComponent {
@@ -85,7 +85,10 @@ export class IndexPageComponent {
     await this.#router.navigate([item.name], { relativeTo: this.#route });
   }
 
-  readonly settingsForm = form(demoThemeSettings);
+  readonly materialYouAvailable = demoMaterialYouAvailable;
+  readonly settingsForm = form(demoThemeSettings, (fields) => {
+    disabled(fields.materialYou, () => !demoMaterialYouAvailable());
+  });
   readonly #errorHandler = inject(ErrorHandler);
 
   constructor() {
