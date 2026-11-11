@@ -46,6 +46,36 @@ ion-alert.md:not(.md3-disabled) {
       padding-bottom: 16px;
     }
 
+    // Settings uses an 18dp checkbox. Keep the rotated check inside Ionic's
+    // strictly contained icon; Ionic retains option placement and RTL ordering.
+    .alert-checkbox-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    [aria-checked='true'] .alert-checkbox-inner {
+      box-sizing: border-box;
+      width: 6px;
+      height: 10px;
+      top: 1px;
+      inset-inline-start: 4px;
+    }
+
+    // The header already supplies spacing. Ionic adds another 20px above
+    // inputs even when the intervening message is empty.
+    .alert-head:not(:empty) + .alert-message:empty + .alert-input-group {
+      padding-top: 0;
+    }
+
+    .alert-input {
+      font-size: 1.125rem;
+      line-height: 1.5;
+    }
+
+    .alert-input:focus {
+      outline: none;
+    }
+
     .alert-button-group {
       padding: 0 24px 24px;
       column-gap: 8px;

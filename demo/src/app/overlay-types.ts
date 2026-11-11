@@ -1,4 +1,4 @@
-export const alertTypes = ['all', 'button-only', 'no-cancel', 'remove-app', 'preferred'];
+export const alertTypes = ['all', 'button-only', 'no-cancel', 'remove-app', 'preferred', 'checkbox', 'radio', 'input', 'textarea'];
 export const actionSheetTypes = ['all', 'button-only', 'no-cancel', 'preferred'];
 export const toastTypes = ['top', 'middle', 'bottom', 'anchor'];
 export const modalTypes = ['normal', 'card', 'sheet'];
