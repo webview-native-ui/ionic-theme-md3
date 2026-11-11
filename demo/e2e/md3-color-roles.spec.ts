@@ -113,7 +113,13 @@ for (const mode of ['light', 'dark'] as const) {
     await expect(title).toHaveClass(/hydrated/);
     await title.evaluate((element) => element.setAttribute('color', 'danger'));
     await expect(title).toHaveClass(/ion-color-danger/);
-    expect((await colors(title)).foreground).toEqual((await colors(page.getByTestId('palette-danger'))).background);
+    await expect
+      .poll(
+        async () =>
+          JSON.stringify((await colors(title)).foreground) ===
+          JSON.stringify((await colors(page.getByTestId('palette-danger'))).background),
+      )
+      .toBe(true);
     await title.evaluate((element) => {
       element.removeAttribute('color');
       (element as HTMLElement).style.setProperty('--color', '#123456');
