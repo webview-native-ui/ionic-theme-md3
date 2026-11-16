@@ -26,6 +26,52 @@ same Android appearance without an additional effect or JavaScript helper.
 Explicit Ionic colors, disabled state, and `fill="clear"` / `fill="outline"` keep their
 normal meaning. The class does not force a different fill.
 
+## Toolbar button badges
+
+Place `ion-badge` directly inside an `ion-button` in an `ion-toolbar`. Both
+standalone buttons and buttons inside `ion-buttons` support this markup.
+An empty badge shows an unread indicator; text such as `3` or `99+` shows a count.
+
+Standalone toolbar button:
+
+```html preview
+<ion-toolbar>
+  <ion-button slot="end" aria-label="Notifications">
+    <ion-icon name="ellipsis-horizontal" slot="icon-only"></ion-icon>
+    <ion-badge>3</ion-badge>
+  </ion-button>
+</ion-toolbar>
+```
+
+Grouped toolbar buttons, with empty, numeric and wide badges:
+
+```html preview
+<ion-toolbar>
+  <ion-buttons slot="end">
+    <ion-button aria-label="Unread notifications">
+      <ion-icon name="ellipsis-horizontal" slot="icon-only"></ion-icon>
+      <ion-badge></ion-badge>
+    </ion-button>
+    <ion-button aria-label="3 notifications">
+      <ion-icon name="ellipsis-horizontal" slot="icon-only"></ion-icon>
+      <ion-badge>3</ion-badge>
+    </ion-button>
+    <ion-button aria-label="99 or more notifications">
+      <ion-icon name="ellipsis-horizontal" slot="icon-only"></ion-icon>
+      <ion-badge>99+</ion-badge>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+```
+
+Use the badge's `color` property to choose an Ionic color. Setting `hidden` or
+`display: none`, or removing the badge, hides it without changing the action's
+layout. Include the notification state in the action's accessible label.
+
+The treatment is limited to direct-child badges in toolbar buttons. Badges in
+tabs, outside toolbars, or nested in another child keep their existing styling.
+Theme opt-outs on the toolbar, group, button or badge remain supported.
+
 ## Preferred overlay actions
 
 For alerts and action sheets, use `role: 'preferred'` for the recommended action,
