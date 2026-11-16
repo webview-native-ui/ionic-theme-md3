@@ -1,3 +1,5 @@
+@use '../utils/colors' as md3;
+
 @mixin theme-button() {
   // Default is be round button
   --box-shadow: none;
@@ -112,4 +114,63 @@ ion-back-button.md:not(.md3-disabled) {
   --min-height: 40px;
   --padding-start: 16px;
   --padding-end: 16px;
+}
+
+// Badge layout belongs only to toolbar buttons with a direct badge child.
+ion-toolbar.md:not(.md3-disabled) {
+  ion-button.md:has(> ion-badge:not(.md3-disabled)):not(.md3-disabled):not(:where(ion-buttons:is(.md3-disabled) *)) {
+    // Keep the action's layout and hit area; only the badge paints outside it.
+    overflow: visible;
+
+    &::part(native) {
+      overflow: visible;
+      contain: none;
+    }
+
+    > ion-badge:not(.md3-disabled) {
+      --background: #{md3.color(error)};
+      --color: #{md3.color(on-error)};
+      position: absolute;
+      box-sizing: border-box;
+      margin: 0;
+      pointer-events: none;
+      z-index: 1;
+      --padding-top: 0px;
+      --padding-bottom: 0px;
+      --padding-start: 4px;
+      --padding-end: 4px;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0;
+      text-transform: none;
+      unicode-bidi: plaintext;
+      // Material's text badge grows from the icon center toward the trailing edge.
+      inset-block-start: calc(50% - 16px);
+      inset-inline-start: 50%;
+
+      &[hidden] {
+        display: none;
+      }
+
+      // Override Ionic's empty-badge default without outranking application classes.
+      :where(&:empty) {
+        display: inline-block;
+      }
+
+      &:empty {
+        --padding-start: 0px;
+        --padding-end: 0px;
+        min-width: 6px;
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
+        inset-block-start: calc(50% - 12px);
+        inset-inline-start: calc(50% + 6px);
+      }
+    }
+  }
 }
