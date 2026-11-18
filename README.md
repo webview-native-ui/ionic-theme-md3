@@ -22,26 +22,12 @@ versions can use `@rdlabo/ionic-theme-md3@1.0.2`.
 For existing apps, follow the [optional setup simplification](https://webview-native-ui.com/projects/ionic-theme-md3/docs/migration#optional-simplify-the-setup).
 For individual CSS files and animation settings, use [configuration](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration).
 
-### Android Settings appearance
-
-The theme keeps Ionic's color semantics and application font overrides. Standard
-toggles are icon-free. The MD font default uses the device's local Google Sans Flex
-when available, with standard fallbacks; it is included in the theme CSS. No font
-initialization code or Capacitor plugin is required. Back icons remain Ionic's responsibility.
-
-See [Android Settings appearance](https://webview-native-ui.com/projects/ionic-theme-md3/docs/android-settings) for installation,
-font fallbacks and component overrides. Existing users should
-review the [9.2.0 migration notes](https://webview-native-ui.com/projects/ionic-theme-md3/docs/migration#migrating-to-920-android-settings-alignment)
-for changes to toolbar, list and toggle dimensions.
-
-### Optional: use the MD3 and iOS 27 themes together
-
-Follow [combined theme configuration](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration#use-md3-and-ios-27-together)
-for stylesheet ordering and platform-based animation selection.
+<a id="android-settings-appearance"></a>
+<a id="optional-use-the-md3-and-ios-27-themes-together"></a>
 
 ## Documentation
 
-- [Setup](https://webview-native-ui.com/projects/ionic-theme-md3/docs/setup) — install and configure the theme with the theme stylesheet and configuration object.
+- [Combine MD3 and iOS 27](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration#use-md3-and-ios-27-together) — share markup across Ionic modes.
 - [Configuration](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration) — individual stylesheets, animations and existing mode selection.
 - [Android Dynamic Color](https://webview-native-ui.com/projects/ionic-theme-md3/docs/dynamic-colors) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
 - [Color system](https://webview-native-ui.com/projects/ionic-theme-md3/docs/color-system) — Ionic palette defaults, optional Material roles and component color assignments.

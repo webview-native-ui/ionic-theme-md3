@@ -11,13 +11,13 @@ on Android 17; other Android manufacturers can use different designs.
 
 ## Default theme and application overrides
 
-| Feature | Theme default | Application customization |
-| --- | --- | --- |
-| Toolbar, grouped lists and controls | Android-aligned dimensions | Ionic CSS variables and application CSS |
-| Toggle thumb | No state icon | Ionic `enableOnOffLabels`, or the state-icon helper below |
-| Font | Device-local Google Sans Flex, then Roboto / Helvetica Neue / sans-serif | Ionic `--ion-font-family` |
-| Back arrow | Ionic's configured icon | Ionic's own icon configuration; no theme icon is bundled |
-| Palette | Existing Ionic color intent | Device colors are a separate [Android Dynamic Color](dynamic-colors.md) feature |
+| Feature                             | Theme default                                                            | Application customization                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| Toolbar, grouped lists and controls | Android-aligned dimensions                                               | Ionic CSS variables and application CSS                                         |
+| Toggle thumb                        | No state icon                                                            | Ionic `enableOnOffLabels`, or the state-icon helper below                       |
+| Font                                | Device-local Google Sans Flex, then Roboto / Helvetica Neue / sans-serif | Ionic `--ion-font-family`                                                       |
+| Back arrow                          | Ionic's configured icon                                                  | Ionic's own icon configuration; no theme icon is bundled                        |
+| Palette                             | Existing Ionic color intent                                              | Device colors are a separate [Android Dynamic Color](dynamic-colors.md) feature |
 
 ## Default font, CSS only
 
@@ -110,9 +110,29 @@ win when `enableOnOffLabels` is enabled, including subsequent property changes.
 `md3-disabled` and iOS mode suppress this icon enhancement. The demo does not
 attach this helper automatically.
 
+## Tablet Alert sizing
+
+Wide tablet Alerts follow the measured Android 17 Settings proportions: 85% in
+portrait and 65% in landscape. Android tablet typing keeps that width when the
+IME resizes the viewport. Phone-sized windows retain Ionic's content-sized layout.
+
+Use the public sizing properties to customize a dialog. For a controller-created
+Alert, set `cssClass: 'app-alert'` and place a component-qualified rule in the
+application's global stylesheet after the theme:
+
+```css
+ion-alert.app-alert {
+  --width: 400px;
+  --max-width: min(400px, calc(100vw - 32px));
+}
+```
+
+Inline style bindings work as well. The ordinary CSS minimum/maximum constraints
+still apply, and `md3-disabled` restores Ionic's own sizing defaults.
+
 ## Upgrading and verification
 
-Review the [migration notes](migration.md#unreleased-android-settings-alignment)
+Review the [migration notes](migration.md#migrating-to-920-android-settings-alignment)
 for dimension changes and [grouped-list markup](using-ion-item-group.md) for
 sizing. Explicit Ionic `color`, disabled state, interaction and local overrides
 retain their meaning. The [measurement report](validation/android17-pixel-pass1-2026-11-09.md)
