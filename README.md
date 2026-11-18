@@ -4,6 +4,8 @@ Apply Material Design 3 styling to Ionic components using the same markup as the
 
 [Set up the theme](https://webview-native-ui.com/projects/ionic-theme-md3/docs/setup) · [Try the browser demo](https://ionic-theme-md3.rdlabo.dev/)
 
+The setup guide shows Ionic 9. On Ionic 8 (8.8.0 or later), Angular apps import `provideIonicAngular` from `@ionic/angular/standalone`.
+
 <!-- rdlabo-docs-pick -->
 
 ![Ionic MD3 theme with the default Ionic palette on Android 17](screenshots/md3.png)
@@ -137,4 +139,5 @@ Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, mi
 ## Maintainers
 
 - [rdlabo](https://rdlabo.dev/)
+
 <!-- /rdlabo-docs-omit -->

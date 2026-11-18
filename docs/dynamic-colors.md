@@ -1,6 +1,6 @@
-<a id="android-dynamic-colors"></a>
-
 # Android Dynamic Color
+
+<a id="android-dynamic-colors"></a>
 
 Android Dynamic Color is opt-in. Android 12+ supplies light and dark Material color
 schemes; this package converts their roles using the Ionic Docs color generator
