@@ -23,6 +23,7 @@ For existing apps, follow the [optional setup simplification](https://webview-na
 For individual CSS files and animation settings, use [configuration](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration).
 
 <a id="android-settings-appearance"></a>
+<a id="optional%3A-use-the-md3-and-ios-27-themes-together"></a>
 <a id="optional-use-the-md3-and-ios-27-themes-together"></a>
 
 ## Documentation
