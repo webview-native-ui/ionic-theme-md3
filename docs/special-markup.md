@@ -185,7 +185,9 @@ positioning are not Android appearance requirements. MD3 retains Ionic's segment
 searchbar, modal, and tab-bar behavior. `.button-square` is an optional MD3 shape
 extension, not a required shared markup convention.
 
-## Opting out
+<a id="opting-out"></a>
+
+## Disable the theme for a component
 
 Add `.md3-disabled` to an individual Ionic component when it must retain Ionic's standard Material styling.
 

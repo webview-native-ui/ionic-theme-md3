@@ -49,7 +49,7 @@ Provide foreground/background role pairs together when changing a pair. Omitted
 roles still follow Ionic. No separate registration or complete scheme is needed.
 
 Material You is one optional provider of these values. See
-[dynamic colors](dynamic-colors.md) for native acquisition and appearance control.
+[Android Dynamic Color](dynamic-colors.md) for native acquisition and appearance control.
 The provider preserves Material's `on*` roles for MD3 components; Ionic named
 colors use supplied `onPrimary`, `onSecondary`, `onTertiary` and `onError` for their
 contrast values, with Ionic's contrast calculation as the per-role fallback.
@@ -148,22 +148,6 @@ native reference captures, see [Android 17 tablet review](validation/android17-t
 For the subsequent Ionic-default color correction and its browser verification, see
 [Ionic color inheritance review](validation/ionic-color-inheritance-2026-11-07.md).
 
-## Tablet Alert sizing
+<a id="tablet-alert-sizing"></a>
 
-Wide tablet Alerts follow the measured Android 17 Settings proportions: 85% in
-portrait and 65% in landscape. Android tablet typing keeps that width when the
-IME resizes the viewport. Phone-sized windows retain Ionic's content-sized layout.
-
-Use the public sizing properties to customize a dialog. For a controller-created
-Alert, set `cssClass: 'app-alert'` and place a component-qualified rule in the
-application's global stylesheet after the theme:
-
-```css
-ion-alert.app-alert {
-  --width: 400px;
-  --max-width: min(400px, calc(100vw - 32px));
-}
-```
-
-Inline style bindings work as well. The ordinary CSS minimum/maximum constraints
-still apply, and `md3-disabled` restores Ionic's own sizing defaults.
+For dialog dimensions, see [Tablet Alert sizing](android-settings.md#tablet-alert-sizing).

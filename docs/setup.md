@@ -4,7 +4,7 @@ title: Set up the MD3 theme
 
 # Set up the MD3 theme
 
-Use an existing Ionic Angular, React or Vue app with Ionic `>=8.8.0 <10`.
+Apply the Material Design 3 theme to an Ionic Angular, React or Vue app. This setup supports Ionic `>=8.8.0 <10`.
 
 ## Install the theme
 
@@ -26,7 +26,7 @@ it in an existing app, replace the individual MD3 stylesheet imports. Keep your
 chosen Ionic dark-palette import, such as
 `@ionic/core/css/palettes/dark.system.css`, and put application overrides after the
 theme stylesheet. MD3 has one theme stylesheet for all appearance modes. For
-[Dynamic Colors](dynamic-colors.md), select Ionic's `dark.class.css` palette.
+[Android Dynamic Color](dynamic-colors.md), select Ionic's `dark.class.css` palette.
 
 ## Configure Ionic
 

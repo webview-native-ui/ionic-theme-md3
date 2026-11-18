@@ -1,6 +1,10 @@
 # Ionic Theme Material Design 3
 
-A CSS/JS theme for Ionic applications, using Android Settings as its visual reference while preserving Ionic component APIs and color semantics.
+Apply Material Design 3 styling to Ionic components using the same markup as the iOS themes.
+
+[Set up the theme](https://webview-native-ui.com/projects/ionic-theme-md3/docs/setup) · [Try the browser demo](https://ionic-theme-md3.rdlabo.dev/)
+
+The setup guide shows Ionic 9. On Ionic 8 (8.8.0 or later), Angular apps import `provideIonicAngular` from `@ionic/angular/standalone`.
 
 <!-- rdlabo-docs-pick -->
 
@@ -8,48 +12,31 @@ A CSS/JS theme for Ionic applications, using Android Settings as its visual refe
 
 <!-- /rdlabo-docs-pick -->
 
-DEMO is here: https://ionic-theme-md3.rdlabo.dev/
-
-Designed for compatibility with `@rdlabo/ionic-theme-ios27`, so one markup tree can style both Ionic modes.
-
 ## Installation
 
-Use the [setup guide](docs/setup.md) to install the package, import
+Use the [setup guide](https://webview-native-ui.com/projects/ionic-theme-md3/docs/setup) to install the package, import
 `@rdlabo/ionic-theme-md3/styles/theme.css`, and spread `md3ThemeConfig` into your
 existing Ionic initializer's options. Ionic `>=8.8.0 <10` is supported. Apps on older Ionic
 versions can use `@rdlabo/ionic-theme-md3@1.0.2`.
 
-For existing apps, follow the [optional setup simplification](docs/migration.md#optional-simplify-the-setup).
-For individual CSS files and animation settings, use [configuration](docs/configuration.md).
+For existing apps, follow the [optional setup simplification](https://webview-native-ui.com/projects/ionic-theme-md3/docs/migration#optional-simplify-the-setup).
+For individual CSS files and animation settings, use [configuration](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration).
 
-### Android Settings appearance
-
-The theme keeps Ionic's color semantics and application font overrides. Standard
-toggles are icon-free. The MD font default uses the device's local Google Sans Flex
-when available, with standard fallbacks; it is included in the theme CSS. No font
-initialization code or Capacitor plugin is required. Back icons remain Ionic's responsibility.
-
-See [Android Settings appearance](docs/android-settings.md) for installation,
-font fallbacks and component overrides. Existing users should
-review the [9.2.0 migration notes](docs/migration.md#migrating-to-920-android-settings-alignment)
-for changes to toolbar, list and toggle dimensions.
-
-### Optional: use the MD3 and iOS 27 themes together
-
-Follow [combined theme configuration](docs/configuration.md#use-md3-and-ios-27-together)
-for stylesheet ordering and platform-based animation selection.
+<a id="android-settings-appearance"></a>
+<a id="optional%3A-use-the-md3-and-ios-27-themes-together"></a>
+<a id="optional-use-the-md3-and-ios-27-themes-together"></a>
 
 ## Documentation
 
-- [Setup](docs/setup.md) — install and configure the theme with the theme stylesheet and configuration object.
-- [Configuration](docs/configuration.md) — individual stylesheets, animations and existing mode selection.
-- [Android dynamic colors](docs/dynamic-colors.md) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
-- [Color system](docs/color-system.md) — Ionic palette defaults, optional Material roles and component color assignments.
-- [Android Settings appearance](docs/android-settings.md) — default geometry, CSS font defaults and Ionic customization.
-- [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
-- [Special markup](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.
-- [ESLint](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/eslint) — check list structure with ESLint rules.
-- [Migration](docs/migration.md) — optional setup simplification and version-specific upgrade steps.
+- [Combine MD3 and iOS 27](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration#use-md3-and-ios-27-together) — share markup across Ionic modes.
+- [Configuration](https://webview-native-ui.com/projects/ionic-theme-md3/docs/configuration) — individual stylesheets, animations and existing mode selection.
+- [Android Dynamic Color](https://webview-native-ui.com/projects/ionic-theme-md3/docs/dynamic-colors) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
+- [Color system](https://webview-native-ui.com/projects/ionic-theme-md3/docs/color-system) — Ionic palette defaults, optional Material roles and component color assignments.
+- [Android Settings appearance](https://webview-native-ui.com/projects/ionic-theme-md3/docs/android-settings) — default geometry, CSS font defaults and Ionic customization.
+- [Using ion-item-group](https://webview-native-ui.com/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.
+- [Special markup](https://webview-native-ui.com/projects/ionic-theme-md3/docs/special-markup) — opt-in component combinations used by the demo.
+- [ESLint](https://webview-native-ui.com/projects/ionic-theme-md3/docs/eslint) — check list structure with ESLint rules.
+- [Migration](https://webview-native-ui.com/projects/ionic-theme-md3/docs/migration) — optional setup simplification and version-specific upgrade steps.
 
 ## Related Projects
 
@@ -61,7 +48,7 @@ If you need a more comprehensive Material Design 3 implementation, you may also 
 
 <!-- rdlabo-docs-omit -->
 
-**Full documentation:** [https://docs.rdlabo.dev/projects/ionic-theme-md3](https://docs.rdlabo.dev/projects/ionic-theme-md3)
+**Full documentation:** [https://webview-native-ui.com/projects/ionic-theme-md3](https://webview-native-ui.com/projects/ionic-theme-md3)
 
 ## Development & Testing
 
@@ -139,4 +126,5 @@ Only `npm run release` can create a release tag. Stable `vX.Y.Z` tags (major, mi
 ## Maintainers
 
 - [rdlabo](https://rdlabo.dev/)
+
 <!-- /rdlabo-docs-omit -->
