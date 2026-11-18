@@ -4,7 +4,7 @@ title: Set up the MD3 theme
 
 # Set up the MD3 theme
 
-Use an existing Ionic Angular, React or Vue app with Ionic `>=8.8.0 <10`.
+Apply the Material Design 3 theme to an Ionic Angular, React or Vue app. This setup supports Ionic `>=8.8.0 <10`.
 
 ## Install the theme
 

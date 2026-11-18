@@ -1,16 +1,14 @@
 # Ionic Theme Material Design 3
 
-A CSS/JS theme for Ionic applications, using Android Settings as its visual reference while preserving Ionic component APIs and color semantics.
+Apply Material Design 3 styling to Ionic components using the same markup as the iOS themes.
+
+[Set up the theme](docs/setup.md) · [Try the browser demo](https://ionic-theme-md3.rdlabo.dev/)
 
 <!-- rdlabo-docs-pick -->
 
 ![Ionic MD3 theme with the default Ionic palette on Android 17](screenshots/md3.png)
 
 <!-- /rdlabo-docs-pick -->
-
-DEMO is here: https://ionic-theme-md3.rdlabo.dev/
-
-Designed for compatibility with `@rdlabo/ionic-theme-ios27`, so one markup tree can style both Ionic modes.
 
 ## Installation
 
