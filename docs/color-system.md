@@ -49,7 +49,7 @@ Provide foreground/background role pairs together when changing a pair. Omitted
 roles still follow Ionic. No separate registration or complete scheme is needed.
 
 Material You is one optional provider of these values. See
-[dynamic colors](dynamic-colors.md) for native acquisition and appearance control.
+[Android Dynamic Color](dynamic-colors.md) for native acquisition and appearance control.
 The provider preserves Material's `on*` roles for MD3 components; Ionic named
 colors use supplied `onPrimary`, `onSecondary`, `onTertiary` and `onError` for their
 contrast values, with Ionic's contrast calculation as the per-role fallback.

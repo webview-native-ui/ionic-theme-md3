@@ -41,7 +41,7 @@ for stylesheet ordering and platform-based animation selection.
 
 - [Setup](docs/setup.md) — install and configure the theme with the theme stylesheet and configuration object.
 - [Configuration](docs/configuration.md) — individual stylesheets, animations and existing mode selection.
-- [Android dynamic colors](docs/dynamic-colors.md) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
+- [Android Dynamic Color](docs/dynamic-colors.md) — opt-in Material You setup, light/dark appearance, lifecycle and role mapping.
 - [Color system](docs/color-system.md) — Ionic palette defaults, optional Material roles and component color assignments.
 - [Android Settings appearance](docs/android-settings.md) — default geometry, CSS font defaults and Ionic customization.
 - [Using ion-item-group](https://docs.rdlabo.dev/projects/ionic-theme-md3/docs/using-ion-item-group) — shared inset-list markup for iOS 27 and MD3.

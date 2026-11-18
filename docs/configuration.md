@@ -21,7 +21,7 @@ imports. Put application CSS overrides after the theme.
 
 Ionic owns dark-palette selection. Choose `dark.system.css`, `dark.class.css` or
 `dark.always.css` from `@ionic/core/css/palettes/` according to your app's appearance
-policy. [Dynamic Colors](dynamic-colors.md) manages `ion-palette-dark` and uses
+policy. [Android Dynamic Color](dynamic-colors.md) manages `ion-palette-dark` and uses
 `dark.class.css`.
 
 ## Configure animations directly

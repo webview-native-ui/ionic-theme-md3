@@ -26,7 +26,7 @@ it in an existing app, replace the individual MD3 stylesheet imports. Keep your
 chosen Ionic dark-palette import, such as
 `@ionic/core/css/palettes/dark.system.css`, and put application overrides after the
 theme stylesheet. MD3 has one theme stylesheet for all appearance modes. For
-[Dynamic Colors](dynamic-colors.md), select Ionic's `dark.class.css` palette.
+[Android Dynamic Color](dynamic-colors.md), select Ionic's `dark.class.css` palette.
 
 ## Configure Ionic
 

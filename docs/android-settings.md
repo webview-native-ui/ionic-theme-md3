@@ -17,7 +17,7 @@ on Android 17; other Android manufacturers can use different designs.
 | Toggle thumb | No state icon | Ionic `enableOnOffLabels`, or the state-icon helper below |
 | Font | Device-local Google Sans Flex, then Roboto / Helvetica Neue / sans-serif | Ionic `--ion-font-family` |
 | Back arrow | Ionic's configured icon | Ionic's own icon configuration; no theme icon is bundled |
-| Palette | Existing Ionic color intent | Device colors are a separate [dynamic colors](dynamic-colors.md) feature |
+| Palette | Existing Ionic color intent | Device colors are a separate [Android Dynamic Color](dynamic-colors.md) feature |
 
 ## Default font, CSS only
 

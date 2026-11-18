@@ -65,7 +65,7 @@ the matching theme configuration. Put application settings after the spread so
 custom animations take precedence, including an explicit
 `navAnimation: undefined` for Ionic's default transition. See [setup](setup.md)
 for framework imports and [configuration](configuration.md) for individual APIs
-and combined-theme selection. Dynamic Colors continues to use Ionic's
+and combined-theme selection. Android Dynamic Color continues to use Ionic's
 [class-based palette](dynamic-colors.md).
 
 ## Migrating to 9.2.0: Android Settings alignment
